@@ -1,7 +1,7 @@
 ---
-title: "Final Report: [Your Project Title]"
-date: 2026-06-04
-author: "Your Name"
+title: "Final Report: Looking for COVID Pieces"
+date: 2026-07-24
+author: "Silvano Ross"
 ---
 
 # Final Report: [Your Project Title]

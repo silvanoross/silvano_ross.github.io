@@ -8,11 +8,15 @@ Here are my research projects and work:
 
 ## Final Report
 
-My final project for CELL 6351 - Intro to Reproducible Data Analysis Using R.
+#### My final project for CELL 6351 - Intro to Reproducible Data Analysis Using R
 
-[**View Final Report** →](projects/final-report.qmd)
+Taking COVID-19 infected plasma, immunoaffinity purification using pan class I antibody. Eluting the peptides, running them over HP/LC and LC-MS. Looking for any ...
 
----
+**Add project summary here**
+
+[**View Final Report** →](projects/sHLA_covid_peptides.qmd)
+
+------------------------------------------------------------------------
 
 ## Adding More Projects
 
@@ -26,6 +30,6 @@ As you continue your research journey, you can add more pages here! For example:
 
 To add a new project:
 
-1. Create a new `.qmd` file in the `projects/` folder
-2. Add a link to it on this page
-3. Push to GitHub and your site updates automatically!
+1.  Create a new `.qmd` file in the `projects/` folder
+2.  Add a link to it on this page
+3.  Push to GitHub and your site updates automatically!

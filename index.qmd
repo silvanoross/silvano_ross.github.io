@@ -1,19 +1,18 @@
 ---
-title: "Your Name"
+title: "Silvano Ross"
 toc: false
-image: "your photo.jpg"
+image: "MyProfilePic.JPG"
 about:
   template: trestles
   links:
   - text: GitHub
-    href: link
+    href: https://github.com/silvanoross
   - text: email
-    href:  link
+    href: silvano-ross@ou.edu
 ---
 
-::: {.columnpage}
-
-# Hello! 👋
+::: columnpage
+# Greetings fellow scientists!
 
 Welcome to my research profile website. I'm a student in the Intro to Reproducible Data Analysis Using R course.
 
@@ -21,14 +20,14 @@ Welcome to my research profile website. I'm a student in the Intro to Reproducib
 
 Replace this section with information about yourself:
 
-- **Name:** Your Name Here
-- **Institution:** Your University
-- **Research Interests:** Add your research interests here
-- **Email:** your.email@university.edu
+- **Name:** Silvano Ross
+- **Institution:** The University of Oklahoma
+- **Research Interests:** Immunopeptidomics
+- **Email:** silvano-ross\@ou.edu
 
 ## My Research
 
-I'm interested in understanding [your topic area]. Through this course, I've learned how to:
+I'm interested in understanding how soluble HLA molecules present peptides in the context of disease. Through this course, I've learned how to:
 
 - Use R for data analysis
 - Create reproducible research workflows
@@ -46,6 +45,7 @@ As my research progresses, I'll continue adding:
 - New analyses and projects
 - Additional resources
 
----
+------------------------------------------------------------------------
 
 **Keep exploring!** Navigate using the menu above.
+:::

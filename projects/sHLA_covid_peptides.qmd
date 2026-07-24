@@ -1,0 +1,218 @@
+---
+title: "Final Report: Looking for COVID Pieces in Plasma"
+author: "Silvano Ross"
+format: html
+editor: visual
+---
+
+## Overview
+
+### Schematic
+
+1.  Process and purify soluble HLA class I using immunoaffinity purification
+2.  Fractionate using HP/LC
+3.  Run on TOF Mass Spec
+4.  Use mass spec analysis software to obtain peptide sequences, source proteins, and genes
+5.  Perform analysis
+
+[INSERT BIORENDER IMAGE HERE]()
+
+### Load libraries
+
+```{r}
+#| code-fold: true
+#| echo: false
+#| error: false
+#| message: false
+library(tidyverse)
+library(cowplot)
+
+```
+
+## Get CSV Output from Mass Spec
+
+```{r}
+# read in df
+peptides <- read.csv("data/peptideDb.peptides.csv")
+
+# glimpse df
+glimpse(peptides)
+
+```
+
+## Clean the Data
+
+```{r}
+#| code-fold: true
+#| echo: false
+#| error: false
+#| message: false
+# assign new df
+pep_clean <- peptides |>
+  
+  # Get desired columns 
+  select(Peptide, Length, Area.Sample.1, Intensity.Sample.1, Source.File, Accession, Gene, Found.By) |>
+  
+  # Take out anything in between parentheses including () using gsub()
+  mutate(Peptide, Peptide = gsub("\\([^()]*\\)", "", Peptide)) |>
+  
+  # Remove duplicate peptides
+  distinct(Peptide, .keep_all = TRUE) |>
+
+  # Filter out artificial peptides for QC and only DB Search 
+  # and peptides lengths between 8 and 14
+  # peptides with only I or Ls in them
+  
+  filter(!str_detect(Accession, "Biognosys") 
+         & Found.By=="DB Search" 
+         & Length <= 14 
+         & Length >=8
+         & !str_detect(Peptide, "^[IL]+$")) |>
+  
+  # arrange by length ascending
+  arrange(Length)
+
+# Look at new cleaned df
+head(pep_clean)
+
+# export csv to writes filepath
+write.csv(pep_clean, "writes/clean_peptide_df.csv", row.names=FALSE)
+
+```
+
+## Visualize Peptide Distribution Based on Length
+
+```{r}
+#| code-fold: true
+#| echo: false
+#| error: false
+#| message: false
+# get total for annotation
+total <- dim(pep_clean)[1]
+
+# create x, y coordinates for annotation
+annotations <- data.frame(
+  x = 7,
+  y = 200
+)
+
+# create label for annotation
+label <- "Total: "
+
+# Make length a factor variable for even distribution
+pep_clean$Length <- factor(pep_clean$Length)
+
+# plot
+pep_dist_length <- pep_clean |> ggplot(aes(x = Length)) + 
+  geom_bar(fill = "steelblue", color = "black") +
+  geom_text(data = annotations, aes(x = x, y = y, label = paste(label, total)), 
+            size = 4, fontface = "bold") +
+  stat_count(geom = "text", aes(label = after_stat(count)), vjust = -0.5) +
+  labs(title = "Peptide Distribution by Length",
+       y = "Peptide Count") +
+  ylim(0, 300) +
+  theme_cowplot()
+
+# visualize plot
+pep_dist_length
+
+# save plot 
+pep_dist_length |>
+  ggsave(filename = "plots/dist_len.png", width = 8, height = 6, dpi = 300)
+```
+
+## Visualize Peptide Distribution based on Fraction
+
+```{r}
+#| code-fold: true
+#| echo: false
+#| error: false
+#| message: false
+# get counts for source file
+grp_pep <- pep_clean |>
+  group_by(Source.File) |>
+  count(Source.File)
+
+# rename so easier to read
+names <- as.character(11:29)
+for (i in 1:19) {
+  grp_pep$Source.File[i] <- names[i]
+}
+
+# create label for annotation
+label <- "Total: "
+
+# turn source file into factor variable
+grp_pep$Source.File <- factor(grp_pep$Source.File)
+
+# get total to plot based on grp_pep dataframe
+total <- sum(grp_pep$n)
+label <- "Total: "
+
+# create annotations for coordinates
+annotations <- data.frame(x = 17, y = 85)  # define this with real coords
+
+# plot 
+pep_dist_frac <- grp_pep |> ggplot(aes(x = Source.File, y = n)) + 
+  geom_col(fill = "#fc6b03", color = "black") +
+  geom_text(data = annotations, aes(x = x, y = y, label = paste(label, total)), 
+            size = 4, fontface = "bold") +
+  geom_text(aes(label = n), vjust = -0.5) +
+  labs(title = "Peptide Distribution by Fraction", y = "Peptide Count",
+       x = "Fraction Number") +
+  ylim(0, 90) +
+  theme_cowplot()
+
+# visualize plot
+pep_dist_frac
+
+# save to plots filepath
+pep_dist_frac |>
+  ggsave(filename = "plots/dist_frac.png", width = 8, height = 6, dpi = 300)
+```
+
+## Check for COVID-19 Peptides
+
+```{r}
+```
+
+## Identify 10 Most Abundant Peptides Overall
+
+```{r}
+```
+
+## Identify 10 Peptides with Highest Intensity Peaks
+
+```{r}
+```
+
+## Perform GO Pathway Analysis
+
+```{r}
+```
+
+## Conclusions
+
+```{r}
+```
+
+```{r}
+```
+
+```{r}
+```
+
+```{r}
+```
+
+```{r}
+```
+
+```{r}
+```
+
+```{r}
+```
+
+```{r}
+```

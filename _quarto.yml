@@ -1,24 +1,28 @@
 project:
   type: website
-  execute-dir: file
-  output-dir: docs
+  execute-dir: file # tells where paths are looked from
+  output-dir: docs # where html get housed after rendered on R studio
 
-website:
+website: # website navigation bar, on top bar of profile
   title: "My Research Profile"
-  navbar:
+  navbar: # navigation bar breakdown
     search: false
-    right:
+    right: # on right side of website, and leads to index which is landing page
       - icon: house-fill
         text: "Home"
         href: index.qmd
-      - icon: briefcase-fill
+      - icon: briefcase-fill # where your projects are
         text: "Projects"
         href: projects.qmd
       - icon: github
         text: "GitHub"
         href: https://github.com
+      # add more pages by copying these icon, called bootstrap icons
+      # google bootstrap icons and add to icon holder, keep adding tabs
+      # if you have publications tab, or posters
+      # icons.getbootstrap.com
 
-format:
+format: # output and styling section, aesthetics
   html:
     theme: cosmo
     toc: true
@@ -26,7 +30,7 @@ format:
     code-overflow: wrap
     footer: "© 2026 My Research Profile | Built with Quarto"
 
-editor: source
+editor: source # could be visual for default, 
 
 execute:
-  freeze: auto
+  freeze: auto # only if codebocks that have changed from last render will be run
