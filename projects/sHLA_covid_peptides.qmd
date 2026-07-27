@@ -17,9 +17,10 @@ editor: visual
 
 ![Workflow Schematic](../photos/R_final_schematic.png "Workflow Schematic")
 
-### Install Bioconductor
+
 
 ```{r}
+# Install Bioconductor
 # # 1. Make sure BiocManager itself is installed and current
 # if (!requireNamespace("BiocManager", quietly = TRUE))
 #     install.packages("BiocManager")
@@ -31,9 +32,8 @@ editor: visual
 # BiocManager::install(c("clusterProfiler", "org.Hs.eg.db"))
 ```
 
-### Load libraries
-
 ```{r}
+# load libraries
 #| code-fold: true
 #| echo: false
 #| error: false
@@ -206,8 +206,7 @@ pep_clean |> filter(!str_detect(Accession, "HUMAN"))
 # select for top genes based on sample area
 top_area_genes <- pep_clean |> 
   select(Gene,accession_clean,Area.Sample.1) |>
-  arrange(desc(Area.Sample.1)) |>
-  head(11)
+  arrange(desc(Area.Sample.1))
 
 genes <- top_area_genes$Gene
 
@@ -215,13 +214,11 @@ genes <- top_area_genes$Gene
 gostres <- gost(query = genes,
                 organism = "hsapiens",
                 sources = c("GO:BP", "GO:MF", "GO:CC", "KEGG", "REAC"))
-# add pathways to df
-gostplot(gostres, capped = TRUE, interactive = TRUE)
 
 # use enrichR
 dbs <- c("GO_Biological_Process_2023", "KEGG_2021_Human", "Reactome_2022")
 enriched <- enrichr(top_area_genes$Gene, dbs)
-head(enriched$GO_Biological_Process_2023)
+enriched$GO_Biological_Process_2023[1:10,]
 
 ```
 
@@ -231,8 +228,7 @@ head(enriched$GO_Biological_Process_2023)
 # select genes based on intensity
 top_intensity_genes <- pep_clean |> 
   select(Gene, accession_clean,Intensity.Sample.1) |>
-  arrange(desc(Intensity.Sample.1)) |>
-  head(10)
+  arrange(desc(Intensity.Sample.1))
 
 genes <- top_area_genes$Gene
 
@@ -240,37 +236,11 @@ genes <- top_area_genes$Gene
 gostres <- gost(query = genes,
                 organism = "hsapiens",
                 sources = c("GO:BP", "GO:MF", "GO:CC", "KEGG", "REAC"))
-# add pathways to df
-gostplot(gostres, capped = TRUE, interactive = TRUE)
 
 # use enrichR
 dbs <- c("GO_Biological_Process_2023", "KEGG_2021_Human", "Reactome_2022")
 enriched <- enrichr(top_area_genes$Gene, dbs)
-head(enriched$GO_Biological_Process_2023)
+enriched$GO_Biological_Process_2023[1:10,]
 ```
 
 ## Conclusions
-
-```{r}
-```
-
-```{r}
-```
-
-```{r}
-```
-
-```{r}
-```
-
-```{r}
-```
-
-```{r}
-```
-
-```{r}
-```
-
-```{r}
-```
