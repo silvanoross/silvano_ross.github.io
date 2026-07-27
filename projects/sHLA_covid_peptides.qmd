@@ -15,7 +15,21 @@ editor: visual
 4.  Use mass spec analysis software to obtain peptide sequences, source proteins, and genes
 5.  Perform analysis
 
-[INSERT BIORENDER IMAGE HERE]()
+![Workflow Schematic](../photos/R_final_schematic.png "Workflow Schematic")
+
+### Install Bioconductor
+```{r}
+# # 1. Make sure BiocManager itself is installed and current
+# if (!requireNamespace("BiocManager", quietly = TRUE))
+#     install.packages("BiocManager")
+# 
+# # update bioconductor manager
+# BiocManager::install(update = TRUE, ask = FALSE)
+# 
+# # 2. Install the two packages
+# BiocManager::install(c("clusterProfiler", "org.Hs.eg.db"))
+```
+
 
 ### Load libraries
 
@@ -26,6 +40,9 @@ editor: visual
 #| message: false
 library(tidyverse)
 library(cowplot)
+library(stringr)
+library(gprofiler2)
+library(enrichR)
 
 ```
 
@@ -55,6 +72,9 @@ pep_clean <- peptides |>
   
   # Take out anything in between parentheses including () using gsub()
   mutate(Peptide, Peptide = gsub("\\([^()]*\\)", "", Peptide)) |>
+  
+  # create a clean accession column
+  mutate(accession_clean = sapply(strsplit(Accession, "|", fixed = TRUE), `[`, 1)) |>
   
   # Remove duplicate peptides
   distinct(Peptide, .keep_all = TRUE) |>
@@ -174,22 +194,60 @@ pep_dist_frac |>
 ## Check for COVID-19 Peptides
 
 ```{r}
+# check for any accession value that does not contain human
+pep_clean |> filter(!str_detect(Accession, "HUMAN")) 
 ```
+- We weren't able to identify any COVID-19 peptides from our extraction.
 
-## Identify 10 Most Abundant Peptides Overall
+## Identify 10 Most Abundant Peptides Overall Based on Peak Area
 
 ```{r}
+# select for top genes based on sample area
+top_area_genes <- pep_clean |> 
+  select(Gene,accession_clean,Area.Sample.1) |>
+  arrange(desc(Area.Sample.1)) |>
+  head(11)
+
+genes <- top_area_genes$Gene
+
+# get pathway from API for Gene column using gprofiler
+gostres <- gost(query = genes,
+                organism = "hsapiens",
+                sources = c("GO:BP", "GO:MF", "GO:CC", "KEGG", "REAC"))
+# add pathways to df
+gostplot(gostres, capped = TRUE, interactive = TRUE)
+
+# use enrichR
+dbs <- c("GO_Biological_Process_2023", "KEGG_2021_Human", "Reactome_2022")
+enriched <- enrichr(top_area_genes$Gene, dbs)
+head(enriched$GO_Biological_Process_2023)
+
 ```
 
 ## Identify 10 Peptides with Highest Intensity Peaks
 
 ```{r}
+# select genes based on intensity
+top_intensity_genes <- pep_clean |> 
+  select(Gene, accession_clean,Intensity.Sample.1) |>
+  arrange(desc(Intensity.Sample.1)) |>
+  head(10)
+
+genes <- top_area_genes$Gene
+
+# get pathway from API for Gene column using gprofiler
+gostres <- gost(query = genes,
+                organism = "hsapiens",
+                sources = c("GO:BP", "GO:MF", "GO:CC", "KEGG", "REAC"))
+# add pathways to df
+gostplot(gostres, capped = TRUE, interactive = TRUE)
+
+# use enrichR
+dbs <- c("GO_Biological_Process_2023", "KEGG_2021_Human", "Reactome_2022")
+enriched <- enrichr(top_area_genes$Gene, dbs)
+head(enriched$GO_Biological_Process_2023)
 ```
 
-## Perform GO Pathway Analysis
-
-```{r}
-```
 
 ## Conclusions
 
