@@ -18,6 +18,7 @@ editor: visual
 ![Workflow Schematic](../photos/R_final_schematic.png "Workflow Schematic")
 
 ### Install Bioconductor
+
 ```{r}
 # # 1. Make sure BiocManager itself is installed and current
 # if (!requireNamespace("BiocManager", quietly = TRUE))
@@ -29,7 +30,6 @@ editor: visual
 # # 2. Install the two packages
 # BiocManager::install(c("clusterProfiler", "org.Hs.eg.db"))
 ```
-
 
 ### Load libraries
 
@@ -197,6 +197,7 @@ pep_dist_frac |>
 # check for any accession value that does not contain human
 pep_clean |> filter(!str_detect(Accession, "HUMAN")) 
 ```
+
 - We weren't able to identify any COVID-19 peptides from our extraction.
 
 ## Identify 10 Most Abundant Peptides Overall Based on Peak Area
@@ -247,7 +248,6 @@ dbs <- c("GO_Biological_Process_2023", "KEGG_2021_Human", "Reactome_2022")
 enriched <- enrichr(top_area_genes$Gene, dbs)
 head(enriched$GO_Biological_Process_2023)
 ```
-
 
 ## Conclusions
 

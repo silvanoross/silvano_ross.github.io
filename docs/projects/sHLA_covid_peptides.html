@@ -106,6 +106,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<link href="../site_libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
+<script src="../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="../site_libs/plotly-binding-4.12.1/plotly.js"></script>
+<script src="../site_libs/typedarray-0.1/typedarray.min.js"></script>
+<script src="../site_libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="../site_libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
+<script src="../site_libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="../site_libs/plotly-htmlwidgets-css-2.25.2/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="../site_libs/plotly-main-2.25.2/plotly-latest.min.js"></script>
 
 
 <link rel="stylesheet" href="../styles.css">
@@ -161,6 +170,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a>
   <ul class="collapse">
   <li><a href="#schematic" id="toc-schematic" class="nav-link" data-scroll-target="#schematic">Schematic</a></li>
+  <li><a href="#install-bioconductor" id="toc-install-bioconductor" class="nav-link" data-scroll-target="#install-bioconductor">Install Bioconductor</a></li>
   <li><a href="#load-libraries" id="toc-load-libraries" class="nav-link" data-scroll-target="#load-libraries">Load libraries</a></li>
   </ul></li>
   <li><a href="#get-csv-output-from-mass-spec" id="toc-get-csv-output-from-mass-spec" class="nav-link" data-scroll-target="#get-csv-output-from-mass-spec">Get CSV Output from Mass Spec</a></li>
@@ -168,9 +178,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#visualize-peptide-distribution-based-on-length" id="toc-visualize-peptide-distribution-based-on-length" class="nav-link" data-scroll-target="#visualize-peptide-distribution-based-on-length">Visualize Peptide Distribution Based on Length</a></li>
   <li><a href="#visualize-peptide-distribution-based-on-fraction" id="toc-visualize-peptide-distribution-based-on-fraction" class="nav-link" data-scroll-target="#visualize-peptide-distribution-based-on-fraction">Visualize Peptide Distribution based on Fraction</a></li>
   <li><a href="#check-for-covid-19-peptides" id="toc-check-for-covid-19-peptides" class="nav-link" data-scroll-target="#check-for-covid-19-peptides">Check for COVID-19 Peptides</a></li>
-  <li><a href="#identify-10-most-abundant-peptides-overall" id="toc-identify-10-most-abundant-peptides-overall" class="nav-link" data-scroll-target="#identify-10-most-abundant-peptides-overall">Identify 10 Most Abundant Peptides Overall</a></li>
+  <li><a href="#identify-10-most-abundant-peptides-overall-based-on-peak-area" id="toc-identify-10-most-abundant-peptides-overall-based-on-peak-area" class="nav-link" data-scroll-target="#identify-10-most-abundant-peptides-overall-based-on-peak-area">Identify 10 Most Abundant Peptides Overall Based on Peak Area</a></li>
   <li><a href="#identify-10-peptides-with-highest-intensity-peaks" id="toc-identify-10-peptides-with-highest-intensity-peaks" class="nav-link" data-scroll-target="#identify-10-peptides-with-highest-intensity-peaks">Identify 10 Peptides with Highest Intensity Peaks</a></li>
-  <li><a href="#perform-go-pathway-analysis" id="toc-perform-go-pathway-analysis" class="nav-link" data-scroll-target="#perform-go-pathway-analysis">Perform GO Pathway Analysis</a></li>
   <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
   </ul>
 </nav>
@@ -214,7 +223,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Use mass spec analysis software to obtain peptide sequences, source proteins, and genes</li>
 <li>Perform analysis</li>
 </ol>
-<p><a href="">INSERT BIORENDER IMAGE HERE</a></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../photos/R_final_schematic.png" title="Workflow Schematic" class="img-fluid figure-img"></p>
+<figcaption>Workflow Schematic</figcaption>
+</figure>
+</div>
+</section>
+<section id="install-bioconductor" class="level3">
+<h3 class="anchored" data-anchor-id="install-bioconductor">Install Bioconductor</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># # 1. Make sure BiocManager itself is installed and current</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># if (!requireNamespace("BiocManager", quietly = TRUE))</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#     install.packages("BiocManager")</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># # update bioconductor manager</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># BiocManager::install(update = TRUE, ask = FALSE)</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># # 2. Install the two packages</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># BiocManager::install(c("clusterProfiler", "org.Hs.eg.db"))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
 <section id="load-libraries" class="level3">
 <h3 class="anchored" data-anchor-id="load-libraries">Load libraries</h3>
@@ -223,11 +251,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="get-csv-output-from-mass-spec" class="level2">
 <h2 class="anchored" data-anchor-id="get-csv-output-from-mass-spec">Get CSV Output from Mass Spec</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read in df</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>peptides <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/peptideDb.peptides.csv"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># glimpse df</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(peptides)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read in df</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>peptides <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/peptideDb.peptides.csv"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># glimpse df</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(peptides)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 2,093
 Columns: 28
@@ -279,7 +307,14 @@ $ Found.By              &lt;chr&gt; "DeepNovo", "DB Search", "DB Search", "DeepN
 3 260717_1008_W632_070626_Fxn26.wiff P09601|HMOX1_HUMAN  HMOX1 DB Search
 4 260717_1008_W632_070626_Fxn17.wiff  Q9Y490|TLN1_HUMAN   TLN1 DB Search
 5 260717_1008_W632_070626_Fxn16.wiff  P53621|COPA_HUMAN   COPA DB Search
-6 260717_1008_W632_070626_Fxn18.wiff O94979|SC31A_HUMAN SEC31A DB Search</code></pre>
+6 260717_1008_W632_070626_Fxn18.wiff O94979|SC31A_HUMAN SEC31A DB Search
+  accession_clean
+1          Q86Y56
+2          Q9P2E9
+3          P09601
+4          Q9Y490
+5          P53621
+6          O94979</code></pre>
 </div>
 </div>
 </section>
@@ -289,7 +324,7 @@ $ Found.By              &lt;chr&gt; "DeepNovo", "DB Search", "DB Search", "DeepN
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -301,7 +336,7 @@ $ Found.By              &lt;chr&gt; "DeepNovo", "DB Search", "DB Search", "DeepN
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -309,15 +344,145 @@ $ Found.By              &lt;chr&gt; "DeepNovo", "DB Search", "DB Search", "DeepN
 </section>
 <section id="check-for-covid-19-peptides" class="level2">
 <h2 class="anchored" data-anchor-id="check-for-covid-19-peptides">Check for COVID-19 Peptides</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check for any accession value that does not contain human</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>pep_clean <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(Accession, <span class="st">"HUMAN"</span>)) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] Peptide            Length             Area.Sample.1      Intensity.Sample.1
+[5] Source.File        Accession          Gene               Found.By          
+[9] accession_clean   
+&lt;0 rows&gt; (or 0-length row.names)</code></pre>
+</div>
+</div>
+<ul>
+<li>We weren’t able to identify any COVID-19 peptides from our extraction.</li>
+</ul>
 </section>
-<section id="identify-10-most-abundant-peptides-overall" class="level2">
-<h2 class="anchored" data-anchor-id="identify-10-most-abundant-peptides-overall">Identify 10 Most Abundant Peptides Overall</h2>
+<section id="identify-10-most-abundant-peptides-overall-based-on-peak-area" class="level2">
+<h2 class="anchored" data-anchor-id="identify-10-most-abundant-peptides-overall-based-on-peak-area">Identify 10 Most Abundant Peptides Overall Based on Peak Area</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># select for top genes based on sample area</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>top_area_genes <span class="ot">&lt;-</span> pep_clean <span class="sc">|&gt;</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Gene,accession_clean,Area.Sample<span class="fl">.1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Area.Sample<span class="fl">.1</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">11</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>genes <span class="ot">&lt;-</span> top_area_genes<span class="sc">$</span>Gene</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># get pathway from API for Gene column using gprofiler</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>gostres <span class="ot">&lt;-</span> <span class="fu">gost</span>(<span class="at">query =</span> genes,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">organism =</span> <span class="st">"hsapiens"</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">sources =</span> <span class="fu">c</span>(<span class="st">"GO:BP"</span>, <span class="st">"GO:MF"</span>, <span class="st">"GO:CC"</span>, <span class="st">"KEGG"</span>, <span class="st">"REAC"</span>))</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># add pathways to df</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="fu">gostplot</span>(gostres, <span class="at">capped =</span> <span class="cn">TRUE</span>, <span class="at">interactive =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.
+ℹ Please use the `linewidth` argument instead.
+ℹ The deprecated feature was likely used in the gprofiler2 package.
+  Please report the issue at &lt;https://biit.cs.ut.ee/gprofiler/page/contact&gt;.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+ℹ Please use `linewidth` instead.
+ℹ The deprecated feature was likely used in the gprofiler2 package.
+  Please report the issue at &lt;https://biit.cs.ut.ee/gprofiler/page/contact&gt;.</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-2f1d1496ed55aad4b8b3" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-2f1d1496ed55aad4b8b3">{"x":{"data":[{"x":[66.942165462115881,55.854150678609187,55.330847853236733,55.858440046030275],"y":[1.9583429529659548,1.9583429529659548,1.8917197965510271,1.3021203335730331],"text":["GO:1990777 (38) <br> lipoprotein particle <br> 1.101e-02","GO:0034358 (38) <br> plasma lipoprotein particle <br> 1.101e-02","GO:0032994 (41) <br> protein-lipid complex <br> 1.283e-02","GO:0034359 (1) <br> mature chylomicron <br> 4.987e-02"],"key":["GO:1990777","GO:0034358","GO:0032994","GO:0034359"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(16,150,24,1)","opacity":0.80000000000000004,"size":[21.453159622519127,21.453159622519127,21.636798713381431,3.7795275590551185],"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(16,150,24,1)"}},"hoveron":"points","set":"SharedData99ea0f03","name":"GO:CC","legendgroup":"GO:CC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","_isNestedKey":false,"frame":null},{"x":[40.778759285722252,40.761604338017882,40.753026864165705],"y":[2.197926262870185,1.9801679073147382,1.3739120173196384],"text":["GO:0120020 (25) <br> cholesterol transfer activity <br> 6.340e-03","GO:0120015 (32) <br> sterol transfer activity <br> 1.047e-02","GO:0120013 (64) <br> lipid transfer activity <br> 4.228e-02"],"key":["GO:0120020","GO:0120015","GO:0120013"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(220,57,18,1)","opacity":0.80000000000000004,"size":[20.404895922527192,21.030631732446178,22.677165354330711],"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(220,57,18,1)"}},"hoveron":"points","set":"SharedData99ea0f03","name":"GO:MF","legendgroup":"GO:MF","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","_isNestedKey":false,"frame":null},{"x":[2,45.410595165901412],"y":[-1,-1],"text":"","type":"scatter","mode":"lines","line":{"width":11.338582677165356,"color":"rgba(220,57,18,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[49.698908429351121,67.148055098328001],"y":[-1,-1],"text":"","type":"scatter","mode":"lines","line":{"width":11.338582677165356,"color":"rgba(16,150,24,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[71.43636836177771,176.69730572641427],"y":[-1,-1],"text":"","type":"scatter","mode":"lines","line":{"width":11.338582677165356,"color":"rgba(255,153,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[180.98561898986398,183.49857056224553],"y":[-1,-1],"text":"","type":"scatter","mode":"lines","line":{"width":11.338582677165356,"color":"rgba(221,68,119,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[187.78688382569524,200.00428831326346],"y":[-1,-1],"text":"","type":"scatter","mode":"lines","line":{"width":11.338582677165356,"color":"rgba(51,102,204,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[180],"y":[16.199999999999999],"text":"values above this threshold are capped","hovertext":"","textfont":{"size":7.559055118110237,"color":"rgba(190,190,190,1)"},"type":"scatter","mode":"text","hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0,210],"y":[16,16],"text":"","type":"scatter","mode":"lines","line":{"width":0.75590551181102372,"color":"rgba(190,190,190,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":29.283520132835207,"r":6.6417600664176026,"b":45.25135003255204,"l":61.037775010377771},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0,210],"tickmode":"array","ticktext":["GO:MF","GO:CC","GO:BP","KEGG","REAC"],"tickvals":[23.705297582950706,58.423481763839554,124.066837044096,182.24209477605476,193.89558606947935],"categoryorder":"array","categoryarray":["GO:MF","GO:CC","GO:BP","KEGG","REAC"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(0,0,0,1)","family":"","size":10.62681610626816},"tickangle":-45,"showline":true,"linecolor":"rgba(190,190,190,1)","linewidth":0.13283520132835203,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"y","title":"","hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-1,18.5],"tickmode":"array","ticktext":["0","2","4","6","8","10","12","14",">16"],"tickvals":[0,2,4,6,8,10,12,14,16],"categoryorder":"array","categoryarray":["0","2","4","6","8","10","12","14",">16"],"nticks":null,"ticks":"outside","tickcolor":"rgba(190,190,190,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":true,"linecolor":"rgba(190,190,190,1)","linewidth":0.66417600664176002,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"x","title":"","hoverformat":".2f"},"annotations":[{"text":"-log10(p-adj)","x":0,"y":0.5,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":13.283520132835205},"xref":"paper","yref":"paper","textangle":-90,"xanchor":"right","yanchor":"center","annotationType":"axis","xshift":-37.393109173931101},{"text":"query_1","x":0.5,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(169,169,169,1)","family":"","size":13.283520132835205},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"bottom"}],"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","layer":"below","x0":0,"x1":1,"y0":0,"y1":24.973017849730184,"yanchor":1,"ysizemode":"pixel"}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.8897637795275593,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative","dragmode":"zoom"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"1444322e9d3c":{"x":{},"y":{},"text":{},"colour":{},"size":{},"alpha":{},"type":"scatter"},"14441254e7e1":{"x":{},"xend":{},"y":{},"yend":{}},"14444436e2e":{"x":{},"xend":{},"y":{},"yend":{}},"144466f69031":{"x":{},"xend":{},"y":{},"yend":{}},"14444574b5c6":{"x":{},"xend":{},"y":{},"yend":{}},"14447149fdc9":{"x":{},"xend":{},"y":{},"yend":{}},"144430b4d13a":{"x":{},"y":{}},"14442f144fd1":{"yintercept":{}}},"cur_data":"1444322e9d3c","visdat":{"1444322e9d3c":["function (y) ","x"],"14441254e7e1":["function (y) ","x"],"14444436e2e":["function (y) ","x"],"144466f69031":["function (y) ","x"],"14444574b5c6":["function (y) ","x"],"14447149fdc9":["function (y) ","x"],"144430b4d13a":["function (y) ","x"],"14442f144fd1":["function (y) ","x"]},"highlight":{"on":"plotly_click","off":"plotly_doubleclick","persistent":false,"dynamic":false,"color":null,"selectize":false,"defaultValues":null,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0,"ctGroups":["SharedData99ea0f03"]},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use enrichR</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>dbs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"GO_Biological_Process_2023"</span>, <span class="st">"KEGG_2021_Human"</span>, <span class="st">"Reactome_2022"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>enriched <span class="ot">&lt;-</span> <span class="fu">enrichr</span>(top_area_genes<span class="sc">$</span>Gene, dbs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Uploading data to Enrichr... Done.
+  Querying GO_Biological_Process_2023... Done.
+  Querying KEGG_2021_Human... Done.
+  Querying Reactome_2022... Done.
+Parsing results... Done.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(enriched<span class="sc">$</span>GO_Biological_Process_2023)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                                         Term Overlap
+1             Cellular Response To Magnesium Ion (GO:0071286)     1/5
+2                      Response To Manganese Ion (GO:0010042)     1/5
+3                      Response To Magnesium Ion (GO:0032026)     1/8
+4                              Neuron Remodeling (GO:0016322)     1/9
+5         Alpha-Linolenic Acid Metabolic Process (GO:0036109)     1/9
+6 Very-Low-Density Lipoprotein Particle Assembly (GO:0034379)    1/10
+      P.value Adjusted.P.value Old.P.value Old.Adjusted.P.value Odds.Ratio
+1 0.002497708       0.03695015           0                    0   555.1667
+2 0.002497708       0.03695015           0                    0   555.1667
+3 0.003993646       0.03695015           0                    0   317.1905
+4 0.004491844       0.03695015           0                    0   277.5278
+5 0.004491844       0.03695015           0                    0   277.5278
+6 0.004989818       0.03695015           0                    0   246.6790
+  Combined.Score  Genes
+1       3326.771 SLFN14
+2       3326.771 SLFN14
+3       1751.859 SLFN14
+4       1500.174   C1QA
+5       1500.174   SCP2
+6       1307.487   APOB</code></pre>
+</div>
+</div>
 </section>
 <section id="identify-10-peptides-with-highest-intensity-peaks" class="level2">
 <h2 class="anchored" data-anchor-id="identify-10-peptides-with-highest-intensity-peaks">Identify 10 Peptides with Highest Intensity Peaks</h2>
-</section>
-<section id="perform-go-pathway-analysis" class="level2">
-<h2 class="anchored" data-anchor-id="perform-go-pathway-analysis">Perform GO Pathway Analysis</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># select genes based on intensity</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>top_intensity_genes <span class="ot">&lt;-</span> pep_clean <span class="sc">|&gt;</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Gene, accession_clean,Intensity.Sample<span class="fl">.1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Intensity.Sample<span class="fl">.1</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>genes <span class="ot">&lt;-</span> top_area_genes<span class="sc">$</span>Gene</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co"># get pathway from API for Gene column using gprofiler</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>gostres <span class="ot">&lt;-</span> <span class="fu">gost</span>(<span class="at">query =</span> genes,</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">organism =</span> <span class="st">"hsapiens"</span>,</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">sources =</span> <span class="fu">c</span>(<span class="st">"GO:BP"</span>, <span class="st">"GO:MF"</span>, <span class="st">"GO:CC"</span>, <span class="st">"KEGG"</span>, <span class="st">"REAC"</span>))</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co"># add pathways to df</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="fu">gostplot</span>(gostres, <span class="at">capped =</span> <span class="cn">TRUE</span>, <span class="at">interactive =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-4650e91390dee4dac303" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-4650e91390dee4dac303">{"x":{"data":[{"x":[66.942165462115881,55.854150678609187,55.330847853236733,55.858440046030275],"y":[1.9583429529659548,1.9583429529659548,1.8917197965510271,1.3021203335730331],"text":["GO:1990777 (38) <br> lipoprotein particle <br> 1.101e-02","GO:0034358 (38) <br> plasma lipoprotein particle <br> 1.101e-02","GO:0032994 (41) <br> protein-lipid complex <br> 1.283e-02","GO:0034359 (1) <br> mature chylomicron <br> 4.987e-02"],"key":["GO:1990777","GO:0034358","GO:0032994","GO:0034359"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(16,150,24,1)","opacity":0.80000000000000004,"size":[21.453159622519127,21.453159622519127,21.636798713381431,3.7795275590551185],"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(16,150,24,1)"}},"hoveron":"points","set":"SharedData2f1d1496","name":"GO:CC","legendgroup":"GO:CC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","_isNestedKey":false,"frame":null},{"x":[40.778759285722252,40.761604338017882,40.753026864165705],"y":[2.197926262870185,1.9801679073147382,1.3739120173196384],"text":["GO:0120020 (25) <br> cholesterol transfer activity <br> 6.340e-03","GO:0120015 (32) <br> sterol transfer activity <br> 1.047e-02","GO:0120013 (64) <br> lipid transfer activity <br> 4.228e-02"],"key":["GO:0120020","GO:0120015","GO:0120013"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(220,57,18,1)","opacity":0.80000000000000004,"size":[20.404895922527192,21.030631732446178,22.677165354330711],"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(220,57,18,1)"}},"hoveron":"points","set":"SharedData2f1d1496","name":"GO:MF","legendgroup":"GO:MF","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","_isNestedKey":false,"frame":null},{"x":[2,45.410595165901412],"y":[-1,-1],"text":"","type":"scatter","mode":"lines","line":{"width":11.338582677165356,"color":"rgba(220,57,18,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[49.698908429351121,67.148055098328001],"y":[-1,-1],"text":"","type":"scatter","mode":"lines","line":{"width":11.338582677165356,"color":"rgba(16,150,24,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[71.43636836177771,176.69730572641427],"y":[-1,-1],"text":"","type":"scatter","mode":"lines","line":{"width":11.338582677165356,"color":"rgba(255,153,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[180.98561898986398,183.49857056224553],"y":[-1,-1],"text":"","type":"scatter","mode":"lines","line":{"width":11.338582677165356,"color":"rgba(221,68,119,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[187.78688382569524,200.00428831326346],"y":[-1,-1],"text":"","type":"scatter","mode":"lines","line":{"width":11.338582677165356,"color":"rgba(51,102,204,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[180],"y":[16.199999999999999],"text":"values above this threshold are capped","hovertext":"","textfont":{"size":7.559055118110237,"color":"rgba(190,190,190,1)"},"type":"scatter","mode":"text","hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0,210],"y":[16,16],"text":"","type":"scatter","mode":"lines","line":{"width":0.75590551181102372,"color":"rgba(190,190,190,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":29.283520132835207,"r":6.6417600664176026,"b":45.25135003255204,"l":61.037775010377771},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0,210],"tickmode":"array","ticktext":["GO:MF","GO:CC","GO:BP","KEGG","REAC"],"tickvals":[23.705297582950706,58.423481763839554,124.066837044096,182.24209477605476,193.89558606947935],"categoryorder":"array","categoryarray":["GO:MF","GO:CC","GO:BP","KEGG","REAC"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(0,0,0,1)","family":"","size":10.62681610626816},"tickangle":-45,"showline":true,"linecolor":"rgba(190,190,190,1)","linewidth":0.13283520132835203,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"y","title":"","hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-1,18.5],"tickmode":"array","ticktext":["0","2","4","6","8","10","12","14",">16"],"tickvals":[0,2,4,6,8,10,12,14,16],"categoryorder":"array","categoryarray":["0","2","4","6","8","10","12","14",">16"],"nticks":null,"ticks":"outside","tickcolor":"rgba(190,190,190,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":true,"linecolor":"rgba(190,190,190,1)","linewidth":0.66417600664176002,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"x","title":"","hoverformat":".2f"},"annotations":[{"text":"-log10(p-adj)","x":0,"y":0.5,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":13.283520132835205},"xref":"paper","yref":"paper","textangle":-90,"xanchor":"right","yanchor":"center","annotationType":"axis","xshift":-37.393109173931101},{"text":"query_1","x":0.5,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(169,169,169,1)","family":"","size":13.283520132835205},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"bottom"}],"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","layer":"below","x0":0,"x1":1,"y0":0,"y1":24.973017849730184,"yanchor":1,"ysizemode":"pixel"}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.8897637795275593,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative","dragmode":"zoom"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"1444823a76b":{"x":{},"y":{},"text":{},"colour":{},"size":{},"alpha":{},"type":"scatter"},"14445cc465f9":{"x":{},"xend":{},"y":{},"yend":{}},"14446202ee03":{"x":{},"xend":{},"y":{},"yend":{}},"14442e58393a":{"x":{},"xend":{},"y":{},"yend":{}},"14442215269b":{"x":{},"xend":{},"y":{},"yend":{}},"14441a999b98":{"x":{},"xend":{},"y":{},"yend":{}},"14445ab625cc":{"x":{},"y":{}},"14446c6ba29a":{"yintercept":{}}},"cur_data":"1444823a76b","visdat":{"1444823a76b":["function (y) ","x"],"14445cc465f9":["function (y) ","x"],"14446202ee03":["function (y) ","x"],"14442e58393a":["function (y) ","x"],"14442215269b":["function (y) ","x"],"14441a999b98":["function (y) ","x"],"14445ab625cc":["function (y) ","x"],"14446c6ba29a":["function (y) ","x"]},"highlight":{"on":"plotly_click","off":"plotly_doubleclick","persistent":false,"dynamic":false,"color":null,"selectize":false,"defaultValues":null,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0,"ctGroups":["SharedData2f1d1496"]},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use enrichR</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>dbs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"GO_Biological_Process_2023"</span>, <span class="st">"KEGG_2021_Human"</span>, <span class="st">"Reactome_2022"</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>enriched <span class="ot">&lt;-</span> <span class="fu">enrichr</span>(top_area_genes<span class="sc">$</span>Gene, dbs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Uploading data to Enrichr... Done.
+  Querying GO_Biological_Process_2023... Done.
+  Querying KEGG_2021_Human... Done.
+  Querying Reactome_2022... Done.
+Parsing results... Done.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(enriched<span class="sc">$</span>GO_Biological_Process_2023)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                                         Term Overlap
+1             Cellular Response To Magnesium Ion (GO:0071286)     1/5
+2                      Response To Manganese Ion (GO:0010042)     1/5
+3                      Response To Magnesium Ion (GO:0032026)     1/8
+4                              Neuron Remodeling (GO:0016322)     1/9
+5         Alpha-Linolenic Acid Metabolic Process (GO:0036109)     1/9
+6 Very-Low-Density Lipoprotein Particle Assembly (GO:0034379)    1/10
+      P.value Adjusted.P.value Old.P.value Old.Adjusted.P.value Odds.Ratio
+1 0.002497708       0.03695015           0                    0   555.1667
+2 0.002497708       0.03695015           0                    0   555.1667
+3 0.003993646       0.03695015           0                    0   317.1905
+4 0.004491844       0.03695015           0                    0   277.5278
+5 0.004491844       0.03695015           0                    0   277.5278
+6 0.004989818       0.03695015           0                    0   246.6790
+  Combined.Score  Genes
+1       3326.771 SLFN14
+2       3326.771 SLFN14
+3       1751.859 SLFN14
+4       1500.174   C1QA
+5       1500.174   SCP2
+6       1307.487   APOB</code></pre>
+</div>
+</div>
 </section>
 <section id="conclusions" class="level2">
 <h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
