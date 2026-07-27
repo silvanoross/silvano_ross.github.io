@@ -218,7 +218,7 @@ gostres <- gost(query = genes,
 # use enrichR
 dbs <- c("GO_Biological_Process_2023", "KEGG_2021_Human", "Reactome_2022")
 enriched <- enrichr(top_area_genes$Gene, dbs)
-enriched$GO_Biological_Process_2023[1:10,]
+enriched$GO_Biological_Process_2023$Term[1:10]
 
 ```
 
@@ -240,7 +240,7 @@ gostres <- gost(query = genes,
 # use enrichR
 dbs <- c("GO_Biological_Process_2023", "KEGG_2021_Human", "Reactome_2022")
 enriched <- enrichr(top_area_genes$Gene, dbs)
-enriched$GO_Biological_Process_2023[1:10,]
+enriched$GO_Biological_Process_2023$Term[1:10]
 ```
 
 ## Conclusions

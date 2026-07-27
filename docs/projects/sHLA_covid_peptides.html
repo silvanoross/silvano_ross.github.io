@@ -409,52 +409,18 @@ $ Found.By              &lt;chr&gt; "DeepNovo", "DB Search", "DB Search", "DeepN
   Querying Reactome_2022... Done.
 Parsing results... Done.</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>enriched<span class="sc">$</span>GO_Biological_Process_2023[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>enriched<span class="sc">$</span>GO_Biological_Process_2023<span class="sc">$</span>Term[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>                                                           Term Overlap
-1                      Cellular Component Assembly (GO:0022607)  17/260
-2  Regulation Of Transcription By RNA Polymerase I (GO:0006356)    6/32
-3     Negative Regulation Of Cholesterol Transport (GO:0032375)    4/10
-4                                Protein Transport (GO:0015031)  17/313
-5   Negative Regulation Of Lipid Metabolic Process (GO:0045833)    5/26
-6                          Response To Calcium Ion (GO:0051592)   9/106
-7       Endoplasmic Reticulum To Cytosol Transport (GO:1903513)    4/15
-8                            Response To Metal Ion (GO:0010038)    7/64
-9                Supramolecular Fiber Organization (GO:0097435)  16/316
-10   Negative Regulation Of Amyloid-Beta Formation (GO:1902430)    4/16
-        P.value Adjusted.P.value Old.P.value Old.Adjusted.P.value Odds.Ratio
-1  2.473905e-06      0.005039345           0                    0   4.205545
-2  1.440936e-05      0.010791445           0                    0  13.565638
-3  1.589314e-05      0.010791445           0                    0  38.996032
-4  2.820649e-05      0.014364155           0                    0   3.443101
-5  6.760069e-05      0.021460595           0                    0  13.958067
-6  8.241523e-05      0.021460595           0                    0   5.483757
-7  9.657579e-05      0.021460595           0                    0  21.265152
-8  1.043461e-04      0.021460595           0                    0   7.229387
-9  1.103232e-04      0.021460595           0                    0   3.186831
-10 1.270472e-04      0.021460595           0                    0  19.492063
-   Combined.Score
-1        54.29237
-2       151.22475
-3       430.89144
-4        36.06978
-5       134.02386
-6        51.56783
-7       196.60021
-8        66.27756
-9        29.03871
-10      174.86236
-                                                                                              Genes
-1   FGB;RTN3;YTHDF2;RTN1;ELN;FGG;RANBP9;DNAJB14;AIF1;RTN4;ADD1;JCHAIN;LIMA1;EPRS1;KRT14;HES1;SPTBN1
-2                                                              UBTF;SMARCA5;DDX21;FLNA;WDR43;POLR2L
-3                                                                          APOC2;APOC1;APOC3;SREBF2
-4   RAMP2;COPA;TMED10;CLTC;SEL1L;FGG;LAPTM5;CLU;PDIA4;DNM2;SNX1;RAB20;ERP29;MYH9;APOB;SPTBN1;SEC31A
-5                                                                     NCOR1;APOC2;APOC1;APOC3;CIDEC
-6                                                     FGB;FGG;ANXA11;ITPR3;CLU;ADD1;SEC31A;LGMN;TTN
-7                                                                           OS9;SEL1L;DERL1;HERPUD1
-8                                                              FGB;HAAO;FGG;ANXA11;ITPR3;TTN;SEC31A
-9  DYNC1H1;CRTAP;HSP90AB1;USP9X;KRT2;KRT1;TBCB;KRT10;KRT9;MYO1C;KRT14;CYP1B1;TAGLN2;MYH11;VIM;MYO1F
-10                                                                               RTN3;RTN1;CLU;RTN4</code></pre>
+<pre><code> [1] "Cellular Component Assembly (GO:0022607)"                    
+ [2] "Regulation Of Transcription By RNA Polymerase I (GO:0006356)"
+ [3] "Negative Regulation Of Cholesterol Transport (GO:0032375)"   
+ [4] "Protein Transport (GO:0015031)"                              
+ [5] "Negative Regulation Of Lipid Metabolic Process (GO:0045833)" 
+ [6] "Response To Calcium Ion (GO:0051592)"                        
+ [7] "Endoplasmic Reticulum To Cytosol Transport (GO:1903513)"     
+ [8] "Response To Metal Ion (GO:0010038)"                          
+ [9] "Supramolecular Fiber Organization (GO:0097435)"              
+[10] "Negative Regulation Of Amyloid-Beta Formation (GO:1902430)"  </code></pre>
 </div>
 </div>
 </section>
@@ -483,52 +449,18 @@ Parsing results... Done.</code></pre>
   Querying Reactome_2022... Done.
 Parsing results... Done.</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>enriched<span class="sc">$</span>GO_Biological_Process_2023[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>enriched<span class="sc">$</span>GO_Biological_Process_2023<span class="sc">$</span>Term[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>                                                           Term Overlap
-1                      Cellular Component Assembly (GO:0022607)  17/260
-2  Regulation Of Transcription By RNA Polymerase I (GO:0006356)    6/32
-3     Negative Regulation Of Cholesterol Transport (GO:0032375)    4/10
-4                                Protein Transport (GO:0015031)  17/313
-5   Negative Regulation Of Lipid Metabolic Process (GO:0045833)    5/26
-6                          Response To Calcium Ion (GO:0051592)   9/106
-7       Endoplasmic Reticulum To Cytosol Transport (GO:1903513)    4/15
-8                            Response To Metal Ion (GO:0010038)    7/64
-9                Supramolecular Fiber Organization (GO:0097435)  16/316
-10   Negative Regulation Of Amyloid-Beta Formation (GO:1902430)    4/16
-        P.value Adjusted.P.value Old.P.value Old.Adjusted.P.value Odds.Ratio
-1  2.473905e-06      0.005039345           0                    0   4.205545
-2  1.440936e-05      0.010791445           0                    0  13.565638
-3  1.589314e-05      0.010791445           0                    0  38.996032
-4  2.820649e-05      0.014364155           0                    0   3.443101
-5  6.760069e-05      0.021460595           0                    0  13.958067
-6  8.241523e-05      0.021460595           0                    0   5.483757
-7  9.657579e-05      0.021460595           0                    0  21.265152
-8  1.043461e-04      0.021460595           0                    0   7.229387
-9  1.103232e-04      0.021460595           0                    0   3.186831
-10 1.270472e-04      0.021460595           0                    0  19.492063
-   Combined.Score
-1        54.29237
-2       151.22475
-3       430.89144
-4        36.06978
-5       134.02386
-6        51.56783
-7       196.60021
-8        66.27756
-9        29.03871
-10      174.86236
-                                                                                              Genes
-1   FGB;RTN3;YTHDF2;RTN1;ELN;FGG;RANBP9;DNAJB14;AIF1;RTN4;ADD1;JCHAIN;LIMA1;EPRS1;KRT14;HES1;SPTBN1
-2                                                              UBTF;SMARCA5;DDX21;FLNA;WDR43;POLR2L
-3                                                                          APOC2;APOC1;APOC3;SREBF2
-4   RAMP2;COPA;TMED10;CLTC;SEL1L;FGG;LAPTM5;CLU;PDIA4;DNM2;SNX1;RAB20;ERP29;MYH9;APOB;SPTBN1;SEC31A
-5                                                                     NCOR1;APOC2;APOC1;APOC3;CIDEC
-6                                                     FGB;FGG;ANXA11;ITPR3;CLU;ADD1;SEC31A;LGMN;TTN
-7                                                                           OS9;SEL1L;DERL1;HERPUD1
-8                                                              FGB;HAAO;FGG;ANXA11;ITPR3;TTN;SEC31A
-9  DYNC1H1;CRTAP;HSP90AB1;USP9X;KRT2;KRT1;TBCB;KRT10;KRT9;MYO1C;KRT14;CYP1B1;TAGLN2;MYH11;VIM;MYO1F
-10                                                                               RTN3;RTN1;CLU;RTN4</code></pre>
+<pre><code> [1] "Cellular Component Assembly (GO:0022607)"                    
+ [2] "Regulation Of Transcription By RNA Polymerase I (GO:0006356)"
+ [3] "Negative Regulation Of Cholesterol Transport (GO:0032375)"   
+ [4] "Protein Transport (GO:0015031)"                              
+ [5] "Negative Regulation Of Lipid Metabolic Process (GO:0045833)" 
+ [6] "Response To Calcium Ion (GO:0051592)"                        
+ [7] "Endoplasmic Reticulum To Cytosol Transport (GO:1903513)"     
+ [8] "Response To Metal Ion (GO:0010038)"                          
+ [9] "Supramolecular Fiber Organization (GO:0097435)"              
+[10] "Negative Regulation Of Amyloid-Beta Formation (GO:1902430)"  </code></pre>
 </div>
 </div>
 </section>
