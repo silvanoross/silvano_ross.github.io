@@ -195,7 +195,8 @@ pep_dist_frac |>
 
 ```{r}
 # check for any accession value that does not contain human
-pep_clean |> filter(!str_detect(Accession, "HUMAN")) 
+non_human <- pep_clean |> filter(!str_detect(Accession, "HUMAN")) 
+non_human
 ```
 
 - We weren't able to identify any COVID-19 peptides from our extraction.
@@ -240,7 +241,58 @@ gostres <- gost(query = genes,
 # use enrichR
 dbs <- c("GO_Biological_Process_2023", "KEGG_2021_Human", "Reactome_2022")
 enriched <- enrichr(top_area_genes$Gene, dbs)
-enriched$GO_Biological_Process_2023$Term[1:10]
+enriched$GO_Biological_Process_2023$Term[1:30]
+```
+## Try with clusterProfiler
+```{r}
+# load libraries
+library(clusterProfiler)
+library(org.Hs.eg.db) 
+library(AnnotationDbi)
+library(ReactomePA)
+library(enrichplot)
+
+uniprot_ids <- top_area_genes$accession_clean
+
+# convert to entrez ids
+id_map <- bitr(uniprot_ids,
+               fromType = "UNIPROT",
+               toType   = c("SYMBOL", "ENTREZID"),
+               OrgDb    = org.Hs.eg.db)
+
+
+# run enrichmnet analysis
+go_enrich <- enrichGO(gene          = id_map$ENTREZID,
+                       OrgDb         = org.Hs.eg.db,
+                       keyType       = "ENTREZID",
+                       ont           = "BP",   # "BP", "MF", "CC", or "ALL"
+                       pAdjustMethod = "BH",
+                       pvalueCutoff  = 0.05,
+                       qvalueCutoff  = 0.2,
+                       readable      = TRUE)   # converts back to symbols in output
+
+head(as.data.frame(go_enrich))
+
+# run KEGG pathway analysis
+kegg_enrich <- enrichKEGG(gene         = id_map$ENTREZID,
+                           organism     = "hsa",
+                           pvalueCutoff = 0.05)
+
+head(as.data.frame(kegg_enrich))
+
+# run reactome analysis
+reactome_enrich <- enrichPathway(gene         = id_map$ENTREZID,
+                                  organism     = "human",
+                                  pvalueCutoff = 0.05,
+                                  readable     = TRUE)
+
+
+dotplot(go_enrich, showCategory = 15)
+barplot(kegg_enrich, showCategory = 15)
+cnetplot(go_enrich, showCategory = 5)
+
 ```
 
+
 ## Conclusions
+- Originally ~2000 peptides were identified, but upon filtering them down 

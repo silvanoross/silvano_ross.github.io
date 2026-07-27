@@ -169,6 +169,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#check-for-covid-19-peptides" id="toc-check-for-covid-19-peptides" class="nav-link" data-scroll-target="#check-for-covid-19-peptides">Check for COVID-19 Peptides</a></li>
   <li><a href="#identify-10-most-abundant-peptides-overall-based-on-peak-area" id="toc-identify-10-most-abundant-peptides-overall-based-on-peak-area" class="nav-link" data-scroll-target="#identify-10-most-abundant-peptides-overall-based-on-peak-area">Identify 10 Most Abundant Peptides Overall Based on Peak Area</a></li>
   <li><a href="#identify-10-peptides-with-highest-intensity-peaks" id="toc-identify-10-peptides-with-highest-intensity-peaks" class="nav-link" data-scroll-target="#identify-10-peptides-with-highest-intensity-peaks">Identify 10 Peptides with Highest Intensity Peaks</a></li>
+  <li><a href="#try-with-clusterprofiler" id="toc-try-with-clusterprofiler" class="nav-link" data-scroll-target="#try-with-clusterprofiler">Try with clusterProfiler</a></li>
   <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
   </ul>
 </nav>
@@ -372,7 +373,8 @@ $ Found.By              &lt;chr&gt; "DeepNovo", "DB Search", "DB Search", "DeepN
 <h2 class="anchored" data-anchor-id="check-for-covid-19-peptides">Check for COVID-19 Peptides</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check for any accession value that does not contain human</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>pep_clean <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(Accession, <span class="st">"HUMAN"</span>)) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>non_human <span class="ot">&lt;-</span> pep_clean <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(Accession, <span class="st">"HUMAN"</span>)) </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>non_human</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] Peptide            Length             Area.Sample.1      Intensity.Sample.1
 [5] Source.File        Accession          Gene               Found.By          
@@ -449,23 +451,397 @@ Parsing results... Done.</code></pre>
   Querying Reactome_2022... Done.
 Parsing results... Done.</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>enriched<span class="sc">$</span>GO_Biological_Process_2023<span class="sc">$</span>Term[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>enriched<span class="sc">$</span>GO_Biological_Process_2023<span class="sc">$</span>Term[<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] "Cellular Component Assembly (GO:0022607)"                    
- [2] "Regulation Of Transcription By RNA Polymerase I (GO:0006356)"
- [3] "Negative Regulation Of Cholesterol Transport (GO:0032375)"   
- [4] "Protein Transport (GO:0015031)"                              
- [5] "Negative Regulation Of Lipid Metabolic Process (GO:0045833)" 
- [6] "Response To Calcium Ion (GO:0051592)"                        
- [7] "Endoplasmic Reticulum To Cytosol Transport (GO:1903513)"     
- [8] "Response To Metal Ion (GO:0010038)"                          
- [9] "Supramolecular Fiber Organization (GO:0097435)"              
-[10] "Negative Regulation Of Amyloid-Beta Formation (GO:1902430)"  </code></pre>
+<pre><code> [1] "Cellular Component Assembly (GO:0022607)"                                       
+ [2] "Regulation Of Transcription By RNA Polymerase I (GO:0006356)"                   
+ [3] "Negative Regulation Of Cholesterol Transport (GO:0032375)"                      
+ [4] "Protein Transport (GO:0015031)"                                                 
+ [5] "Negative Regulation Of Lipid Metabolic Process (GO:0045833)"                    
+ [6] "Response To Calcium Ion (GO:0051592)"                                           
+ [7] "Endoplasmic Reticulum To Cytosol Transport (GO:1903513)"                        
+ [8] "Response To Metal Ion (GO:0010038)"                                             
+ [9] "Supramolecular Fiber Organization (GO:0097435)"                                 
+[10] "Negative Regulation Of Amyloid-Beta Formation (GO:1902430)"                     
+[11] "Regulation Of Vasculature Development (GO:1901342)"                             
+[12] "Response To Endoplasmic Reticulum Stress (GO:0034976)"                          
+[13] "Retrograde Protein Transport, ER To Cytosol (GO:0030970)"                       
+[14] "Epoxygenase P450 Pathway (GO:0019373)"                                          
+[15] "Muscle Cell Development (GO:0055001)"                                           
+[16] "Ubiquitin-Dependent Protein Catabolic Process (GO:0006511)"                     
+[17] "Negative Regulation Of Amyloid Precursor Protein Catabolic Process (GO:1902992)"
+[18] "Regulation Of Substrate Adhesion-Dependent Cell Spreading (GO:1900024)"         
+[19] "Cholesterol Transport (GO:0030301)"                                             
+[20] "Receptor Internalization (GO:0031623)"                                          
+[21] "Regulation Of Amyloid-Beta Formation (GO:1902003)"                              
+[22] "Macrophage Activation (GO:0042116)"                                             
+[23] "Platelet Aggregation (GO:0070527)"                                              
+[24] "Long-Chain Fatty Acid Metabolic Process (GO:0001676)"                           
+[25] "Chaperone-Mediated Protein Complex Assembly (GO:0051131)"                       
+[26] "Regulation Of Receptor-Mediated Endocytosis (GO:0048259)"                       
+[27] "Very-Low-Density Lipoprotein Particle Assembly (GO:0034379)"                    
+[28] "Omega-Hydroxylase P450 Pathway (GO:0097267)"                                    
+[29] "Stress Granule Assembly (GO:0034063)"                                           
+[30] "Protein Exit From Endoplasmic Reticulum (GO:0032527)"                           </code></pre>
+</div>
+</div>
+</section>
+<section id="try-with-clusterprofiler" class="level2">
+<h2 class="anchored" data-anchor-id="try-with-clusterprofiler">Try with clusterProfiler</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load libraries</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(clusterProfiler)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>clusterProfiler v4.20.0 Learn more at https://yulab-smu.top/contribution-knowledge-mining/
+
+Please cite:
+
+Guangchuang Yu, Li-Gen Wang, Yanyan Han and Qing-Yu He.
+clusterProfiler: an R package for comparing biological themes among
+gene clusters. OMICS: A Journal of Integrative Biology. 2012,
+16(5):284-287</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'clusterProfiler'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:purrr':
+
+    simplify</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:stats':
+
+    filter</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(org.Hs.eg.db) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: AnnotationDbi</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: stats4</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: BiocGenerics</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: generics</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'generics'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:lubridate':
+
+    as.difftime</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:dplyr':
+
+    explain</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    as.difftime, as.factor, as.ordered, intersect, is.element, setdiff,
+    setequal, union</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'BiocGenerics'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:dplyr':
+
+    combine</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    IQR, mad, sd, var, xtabs</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    anyDuplicated, aperm, append, as.data.frame, basename, cbind,
+    colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,
+    get, grep, grepl, is.unsorted, lapply, Map, mapply, match, mget,
+    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+    rbind, Reduce, rownames, sapply, saveRDS, table, tapply, unique,
+    unsplit, which.max, which.min</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: Biobase</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    'browseVignettes()'. To cite Bioconductor, see
+    'citation("Biobase")', and for packages 'citation("pkgname")'.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: IRanges</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: S4Vectors</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'S4Vectors'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:clusterProfiler':
+
+    rename</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:lubridate':
+
+    second, second&lt;-</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:dplyr':
+
+    first, rename</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:tidyr':
+
+    expand</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:utils':
+
+    findMatches</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    expand.grid, I, unname</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'IRanges'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:clusterProfiler':
+
+    slice</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:lubridate':
+
+    %within%</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:dplyr':
+
+    collapse, desc, slice</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:purrr':
+
+    reduce</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'AnnotationDbi'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:clusterProfiler':
+
+    select</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:dplyr':
+
+    select</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AnnotationDbi)</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ReactomePA)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ReactomePA v1.56.0 Learn more at https://yulab-smu.top/contribution-knowledge-mining/
+
+Please cite:
+
+Guangchuang Yu, Qing-Yu He. ReactomePA: an R/Bioconductor package for
+reactome pathway analysis and visualization. Molecular BioSystems.
+2016, 12(2):477-479</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(enrichplot)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>enrichplot v1.32.0 Learn more at https://yulab-smu.top/contribution-knowledge-mining/
+
+Please cite:
+
+Guangchuang Yu. Using meshes for MeSH term enrichment and semantic
+analyses. Bioinformatics. 2018, 34(21):3766-3767,
+doi:10.1093/bioinformatics/bty410</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>uniprot_ids <span class="ot">&lt;-</span> top_area_genes<span class="sc">$</span>accession_clean</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="co"># convert to entrez ids</span></span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>id_map <span class="ot">&lt;-</span> <span class="fu">bitr</span>(uniprot_ids,</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">fromType =</span> <span class="st">"UNIPROT"</span>,</span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">toType   =</span> <span class="fu">c</span>(<span class="st">"SYMBOL"</span>, <span class="st">"ENTREZID"</span>),</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">OrgDb    =</span> org.Hs.eg.db)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>'select()' returned 1:many mapping between keys and columns</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in bitr(uniprot_ids, fromType = "UNIPROT", toType = c("SYMBOL", : 2.7%
+of input gene IDs are fail to map...</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run enrichmnet analysis</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>go_enrich <span class="ot">&lt;-</span> <span class="fu">enrichGO</span>(<span class="at">gene          =</span> id_map<span class="sc">$</span>ENTREZID,</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">OrgDb         =</span> org.Hs.eg.db,</span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">keyType       =</span> <span class="st">"ENTREZID"</span>,</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">ont           =</span> <span class="st">"BP"</span>,   <span class="co"># "BP", "MF", "CC", or "ALL"</span></span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">pAdjustMethod =</span> <span class="st">"BH"</span>,</span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">pvalueCutoff  =</span> <span class="fl">0.05</span>,</span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">qvalueCutoff  =</span> <span class="fl">0.2</span>,</span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">readable      =</span> <span class="cn">TRUE</span>)   <span class="co"># converts back to symbols in output</span></span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">as.data.frame</span>(go_enrich))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   ID
+GO:0035966 GO:0035966
+GO:0034976 GO:0034976
+GO:0042178 GO:0042178
+GO:0045104 GO:0045104
+GO:0045103 GO:0045103
+GO:0002478 GO:0002478
+                                                                Description
+GO:0035966                      response to topologically incorrect protein
+GO:0034976                         response to endoplasmic reticulum stress
+GO:0042178                                     xenobiotic catabolic process
+GO:0045104                  intermediate filament cytoskeleton organization
+GO:0045103                              intermediate filament-based process
+GO:0002478 antigen processing and presentation of exogenous peptide antigen
+           GeneRatio   BgRatio RichFactor FoldEnrichment   zScore       pvalue
+GO:0035966    15/316 161/18842 0.09316770       5.555272 7.581093 9.151749e-08
+GO:0034976    19/316 269/18842 0.07063197       4.211543 6.928728 1.538684e-07
+GO:0042178     7/316  30/18842 0.23333333      13.912869 9.244227 5.104498e-07
+GO:0045104    10/316  89/18842 0.11235955       6.699616 7.038983 2.407436e-06
+GO:0045103    10/316  90/18842 0.11111111       6.625176 6.986155 2.668638e-06
+GO:0002478     7/316  39/18842 0.17948718      10.702207 7.921254 3.388299e-06
+               p.adjust       qvalue
+GO:0035966 0.0002738857 2.403688e-05
+GO:0034976 0.0002738857 2.403688e-05
+GO:0042178 0.0006057337 5.316067e-05
+GO:0045104 0.0019000701 1.667548e-04
+GO:0045103 0.0019000701 1.667548e-04
+GO:0002478 0.0020103904 1.764368e-04
+                                                                                                                     geneID
+GO:0035966                    THBS4/RTCB/CLU/HSP90AB1/MBTPS1/DERL1/ATF6B/AGR2/STAT3/ATXN3/CREB3L3/HSPA4/DNAJB14/OS9/HERPUD1
+GO:0034976 THBS4/RTCB/CLU/ERP29/PDIA4/UBAC2/MBTPS1/DERL1/SEL1L/ATF6B/AGR2/STAT3/ATXN3/CREB3L3/ITPR1/OS9/EEF2/TRIM25/HERPUD1
+GO:0042178                                                                 CYP3A4/CYP1B1/CYP2C8/CYP2C19/DPYD/CYP2B6/CYP2C18
+GO:0045104                                                            KRT1/KRT14/KRT6B/KRT73/KRT2/ATXN3/VIM/KRT9/KRT10/PLEC
+GO:0045103                                                            KRT1/KRT14/KRT6B/KRT73/KRT2/ATXN3/VIM/KRT9/KRT10/PLEC
+GO:0002478                                                                    HLA-DRB5/HLA-B/DNM2/HLA-A/HLA-C/LGMN/HLA-DPB1
+           Count
+GO:0035966    15
+GO:0034976    19
+GO:0042178     7
+GO:0045104    10
+GO:0045103    10
+GO:0002478     7</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run KEGG pathway analysis</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>kegg_enrich <span class="ot">&lt;-</span> <span class="fu">enrichKEGG</span>(<span class="at">gene         =</span> id_map<span class="sc">$</span>ENTREZID,</span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">organism     =</span> <span class="st">"hsa"</span>,</span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Reading KEGG annotation online: "https://rest.kegg.jp/link/hsa/pathway"...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Reading KEGG annotation online: "https://rest.kegg.jp/list/pathway/hsa"...</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">as.data.frame</span>(kegg_enrich))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   category                   subcategory       ID
+hsa04820 Cellular Processes                 Cell motility hsa04820
+hsa05150     Human Diseases Infectious disease: bacterial hsa05150
+hsa05169     Human Diseases     Infectious disease: viral hsa05169
+hsa05203     Human Diseases              Cancer: overview hsa05203
+hsa04612 Organismal Systems                 Immune system hsa04612
+hsa04145 Cellular Processes      Transport and catabolism hsa04145
+                                 Description GeneRatio  BgRatio RichFactor
+hsa04820        Cytoskeleton in muscle cells    21/226 233/9420 0.09012876
+hsa05150     Staphylococcus aureus infection    11/226  99/9420 0.11111111
+hsa05169        Epstein-Barr virus infection    16/226 205/9420 0.07804878
+hsa05203                Viral carcinogenesis    16/226 205/9420 0.07804878
+hsa04612 Antigen processing and presentation     9/226  82/9420 0.10975610
+hsa04145                        Phagocytosis    17/226 260/9420 0.06538462
+         FoldEnrichment   zScore       pvalue     p.adjust       qvalue
+hsa04820       3.756694 6.680117 1.696835e-07 4.886885e-05 2.592281e-05
+hsa05150       4.631268 5.694414 2.342564e-05 2.337286e-03 1.239829e-03
+hsa05169       3.253184 5.113641 3.246230e-05 2.337286e-03 1.239829e-03
+hsa05203       3.253184 5.113641 3.246230e-05 2.337286e-03 1.239829e-03
+hsa04612       4.574790 5.097237 1.437256e-04 8.085900e-03 4.289220e-03
+hsa04145       2.725323 4.422968 1.684562e-04 8.085900e-03 4.289220e-03
+                                                                                                              geneID
+hsa04820 7060/25777/79784/7094/6385/7273/4627/6709/23345/4629/6711/1287/23002/4633/2006/3675/2023/6645/633/7431/5339
+hsa05150                                                          3127/712/714/3861/720/718/2266/6404/3857/3858/3115
+hsa05169                              1021/3661/3127/3280/3065/6772/3106/6774/6890/3105/9612/3107/7431/3115/896/5710
+hsa05203                              10014/81/1021/3661/3065/3106/718/1388/8345/6774/23513/3105/84699/3107/8348/896
+hsa04612                                                                3127/3326/3106/6890/3105/3107/3308/5641/3115
+hsa04145                         7060/3127/9146/213/3106/1785/10383/718/527/83658/81027/526/1778/6890/3105/3107/3115
+         Count
+hsa04820    21
+hsa05150    11
+hsa05169    16
+hsa05203    16
+hsa04612     9
+hsa04145    17</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run reactome analysis</span></span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>reactome_enrich <span class="ot">&lt;-</span> <span class="fu">enrichPathway</span>(<span class="at">gene         =</span> id_map<span class="sc">$</span>ENTREZID,</span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">organism     =</span> <span class="st">"human"</span>,</span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>,</span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">readable     =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a><span class="fu">dotplot</span>(go_enrich, <span class="at">showCategory =</span> <span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(kegg_enrich, <span class="at">showCategory =</span> <span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cnetplot</span>(go_enrich, <span class="at">showCategory =</span> <span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-10-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
 <section id="conclusions" class="level2">
 <h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
+<ul>
+<li>Originally ~2000 peptides were identified, but upon filtering them down</li>
+</ul>
 
 
 </section>
