@@ -210,9 +210,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="schematic" class="level3">
 <h3 class="anchored" data-anchor-id="schematic">Schematic</h3>
 <ol type="1">
-<li>Process and purify soluble HLA class I using immunoaffinity purification</li>
-<li>Fractionate using HP/LC</li>
-<li>Run on TOF Mass Spec</li>
+<li>Obtain serum sample of plasma</li>
+<li>Spin out debris</li>
+<li>Run over IP column with anti-class I antibody</li>
+<li>Fractionate to purify peptides and exclude large proteins</li>
 <li>Use mass spec analysis software to obtain peptide sequences, source proteins, and genes</li>
 <li>Perform analysis</li>
 </ol>
@@ -672,8 +673,9 @@ Parsing results... Done.</code></pre>
 
 Please cite:
 
-G Yu. Thirteen years of clusterProfiler. The Innovation. 2024,
-5(6):100722</code></pre>
+S Xu, E Hu, Y Cai, Z Xie, X Luo, L Zhan, W Tang, Q Wang, B Liu, R Wang,
+W Xie, T Wu, L Xie, G Yu. Using clusterProfiler to characterize
+multiomics data. Nature Protocols. 2024, 19(11):3292-3320</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
@@ -854,9 +856,9 @@ reactome pathway analysis and visualization. Molecular BioSystems.
 
 Please cite:
 
-Guangchuang Yu, Fei Li, Yide Qin, Xiaochen Bo, Yibo Wu and Shengqi
-Wang. GOSemSim: an R package for measuring semantic similarity among GO
-terms and gene products. Bioinformatics. 2010, 26(7):976-978</code></pre>
+Guangchuang Yu, Li-Gen Wang, and Qing-Yu He. ChIPseeker: an
+R/Bioconductor package for ChIP peak annotation, comparison and
+visualization. Bioinformatics. 2015, 31(14):2382-2383</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>genes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1610,12 +1612,12 @@ GO:0006986 1.971029e-03 1.521714e-04
 GO:0002455 2.518499e-03 1.944383e-04
 GO:0006356 2.518499e-03 1.944383e-04
                                                                                                                geneID
-GO:0035966              HSPA4/HERPUD1/ATXN3/MBTPS1/CLU/OS9/ATF6B/HSP90AB1/RTCB/DERL1/DNAJB14/AGR2/THBS4/STAT3/CREB3L3
-GO:0034976 HERPUD1/ATXN3/TRIM25/MBTPS1/CLU/EEF2/ERP29/OS9/ATF6B/PDIA4/RTCB/SEL1L/DERL1/AGR2/THBS4/UBAC2/STAT3/CREB3L3
-GO:0006958                                                                         C3/C1QC/CLU/IGHG2/IGHG3/IGHG1/C1QA
-GO:0006986                                HSPA4/HERPUD1/MBTPS1/OS9/ATF6B/HSP90AB1/RTCB/DERL1/AGR2/THBS4/STAT3/CREB3L3
-GO:0002455                                                                         C3/C1QC/CLU/IGHG2/IGHG3/IGHG1/C1QA
-GO:0006356                                                                 UBTF/SMARCA5/DDX21/POLR2L/MYO1C/FLNA/WDR43
+GO:0035966              THBS4/HSP90AB1/OS9/STAT3/CLU/ATXN3/MBTPS1/CREB3L3/HSPA4/RTCB/AGR2/HERPUD1/ATF6B/DERL1/DNAJB14
+GO:0034976 THBS4/ERP29/OS9/STAT3/CLU/ATXN3/MBTPS1/PDIA4/EEF2/TRIM25/CREB3L3/RTCB/AGR2/HERPUD1/ATF6B/SEL1L/DERL1/UBAC2
+GO:0006958                                                                         C3/C1QC/CLU/C1QA/IGHG3/IGHG2/IGHG1
+GO:0006986                                THBS4/HSP90AB1/OS9/STAT3/MBTPS1/CREB3L3/HSPA4/RTCB/AGR2/HERPUD1/ATF6B/DERL1
+GO:0002455                                                                         C3/C1QC/CLU/C1QA/IGHG3/IGHG2/IGHG1
+GO:0006356                                                                 SMARCA5/DDX21/UBTF/WDR43/POLR2L/MYO1C/FLNA
            Count
 GO:0035966    15
 GO:0034976    18
@@ -1672,12 +1674,12 @@ hsa04518 4.105670e-03
 hsa04612 9.524213e-03
 hsa03273 9.524213e-03
                                                                                                               geneID
-hsa04820 633/23002/3675/23345/7431/2023/4633/6385/5339/79784/2006/6711/7273/7060/4629/6709/7094/4627/25777/6645/1287
-hsa05150                                                              718/714/3861/3858/3115/3127/6404/3857/712/2266
-hsa04141                                        6238/5887/22872/9709/4287/8720/10961/10956/1388/9601/3326/6400/79139
-hsa04518                                                     718/3675/896/2244/7060/1499/7094/2316/3914/81/1287/2266
-hsa04612                                                                     3308/3115/3127/3107/3326/5641/6890/3106
-hsa03273                                                                                        8828/79784/4629/4627
+hsa04820 7060/7273/79784/6385/4633/2023/7431/1287/6711/4627/5339/2006/23002/4629/7094/6645/23345/3675/633/25777/6709
+hsa05150                                                              2266/3858/718/3115/714/6404/712/3861/3127/3857
+hsa04141                                        5887/6238/3326/22872/10961/10956/4287/8720/9601/9709/1388/6400/79139
+hsa04518                                                     7060/2266/896/718/1499/3914/1287/2244/7094/3675/81/2316
+hsa04612                                                                     3326/3107/3115/3106/3308/6890/3127/5641
+hsa03273                                                                                        79784/4627/4629/8828
          Count
 hsa04820    21
 hsa05150    10
