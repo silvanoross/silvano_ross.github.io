@@ -11,7 +11,7 @@ website: # website navigation bar, on top bar of profile
       - icon: house-fill
         text: "Home"
         href: index.qmd
-      - icon: briefcase-fill # where your projects are
+      - icon: bi-flask-florence-fill # where your projects are
         text: "Projects"
         href: projects.qmd
       - icon: github
@@ -24,7 +24,7 @@ website: # website navigation bar, on top bar of profile
 
 format: # output and styling section, aesthetics
   html:
-    theme: cosmo
+    theme: sandstone
     toc: true
     css: styles.css
     code-overflow: wrap
