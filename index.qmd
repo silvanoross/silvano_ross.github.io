@@ -7,7 +7,7 @@ about:
   links:
   - text: GitHub
     href: https://github.com/silvanoross
-  - text: email
+  - text: Email: silvano-ross@ou.edu
     href: silvano-ross@ou.edu
 ---
 
