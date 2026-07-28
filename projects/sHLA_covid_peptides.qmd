@@ -500,5 +500,13 @@ cnet_cluster |> ggsave(filename = "plots/cnet_cluster.png", width = 10, height =
 ## Conclusions
 
 - Originally \~2000 peptides were identified, but upon filtering them down there were really only 395 confidently identified peptides that matched documented human database genes/proteins
-- No well-documented COVID-19 peptides were able to be identified
-- 
+- No well-documented COVID-19 peptides were identified 😔 (there are only 17 well documented proteins for SARS CoV-2 which are all from the Wuhan strain and don't take into account variants or mutations to proteins)
+- Pathway analysis revealed other viral response related proteins to be over-represented in sHLA Class I
+  - maybe the COVID response related proteins are not as well characterized as others
+  - sHLA does not slough off into the plasma as well for COVID infected cells or COVID prevents this
+  - COVID may interfere with class I processing or presentation
+
+### Future Direction
+
+- Currently have another sHLA Class I sample from a COVID infected patient being run on the mass spec set to finish 07/29/2026 @10PM
+- Could potentially be a diagnostic of some sort

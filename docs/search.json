@@ -214,7 +214,7 @@
     "href": "projects/sHLA_covid_peptides.html#conclusions",
     "title": "Final Report: Looking for COVID Pieces in Plasma",
     "section": "Conclusions",
-    "text": "Conclusions\n\nOriginally ~2000 peptides were identified, but upon filtering them down there were really only 395 confidently identified peptides that matched documented human database genes/proteins\nNo well-documented COVID-19 peptides were able to be identified"
+    "text": "Conclusions\n\nOriginally ~2000 peptides were identified, but upon filtering them down there were really only 395 confidently identified peptides that matched documented human database genes/proteins\nNo well-documented COVID-19 peptides were identified 😔 (there are only 17 well documented proteins for SARS CoV-2 which are all from the Wuhan strain and don’t take into account variants or mutations to proteins)\nPathway analysis revealed other viral response related proteins to be over-represented in sHLA Class I\n\nmaybe the COVID response related proteins are not as well characterized as others\nsHLA does not slough off into the plasma as well for COVID infected cells or COVID prevents this\nCOVID may interfere with class I processing or presentation\n\n\n\nFuture Direction\n\nCurrently have another sHLA Class I sample from a COVID infected patient being run on the mass spec set to finish 07/29/2026 @10PM\nCould potentially be a diagnostic of some sort"
   },
   {
     "objectID": "projects/publications.html",
@@ -242,14 +242,14 @@
     "href": "projects.html",
     "title": "Projects",
     "section": "",
-    "text": "Here are my research projects and work:\n\n\n\n\nTaking COVID-19 infected plasma, immunoaffinity purification using pan class I antibody. Eluting the peptides, running them over HP/LC and LC-MS. Looking for any C…\nAdd project summary here\nView Final Report →\n\n\n\n\n\nView Publications\n\n\n\n\nView Posters"
+    "text": "Here are my research projects and work:\n\n\n\n\nOur lab has obtained plasma samples from patients who were infected with COVID-19 between the months of May and November 2020. We ran the plasma over an immunoaffinity purification column with a pan-class I antibody to extract soluble HLA (sHLA), and we eluted the sHLA in acid to denature the MHC molecules and obtain peptides presented by class I sHLA. The eluate was then run through high-performance liquid chromatography (HPLC) to fractionate based on hydrophobicity and separate peptides from full proteins. Next, the peptide fractions were run on a time-of-flight (TOF) mass spectrometer to identify peptide sequences and their associated proteins and genes with high-resolution mass accuracy. I plan on doing our typical data cleanup pipeline in R, showing the distribution of peptide lengths, source proteins, and genes to see if we can identify any COVID-19 peptides. Next, I will perform a more thorough mining of the data by 1) Identifying the peptides with the largest overall intensity across all fractions and 2) individual peptides with the highest intensity peaks. From these peptides I will look at their source proteins and genes. I will perform a GO Term analysis, KEGG pathway analysis and Reactome analysis on the top 15 most abundant and highest intensity peptides for viral protein or response signatures.\nView Final Report →\n\n\n\n\n\nView Publications\n\n\n\n\nView Posters"
   },
   {
     "objectID": "projects.html#final-report",
     "href": "projects.html#final-report",
     "title": "Projects",
     "section": "",
-    "text": "Taking COVID-19 infected plasma, immunoaffinity purification using pan class I antibody. Eluting the peptides, running them over HP/LC and LC-MS. Looking for any C…\nAdd project summary here\nView Final Report →"
+    "text": "Our lab has obtained plasma samples from patients who were infected with COVID-19 between the months of May and November 2020. We ran the plasma over an immunoaffinity purification column with a pan-class I antibody to extract soluble HLA (sHLA), and we eluted the sHLA in acid to denature the MHC molecules and obtain peptides presented by class I sHLA. The eluate was then run through high-performance liquid chromatography (HPLC) to fractionate based on hydrophobicity and separate peptides from full proteins. Next, the peptide fractions were run on a time-of-flight (TOF) mass spectrometer to identify peptide sequences and their associated proteins and genes with high-resolution mass accuracy. I plan on doing our typical data cleanup pipeline in R, showing the distribution of peptide lengths, source proteins, and genes to see if we can identify any COVID-19 peptides. Next, I will perform a more thorough mining of the data by 1) Identifying the peptides with the largest overall intensity across all fractions and 2) individual peptides with the highest intensity peaks. From these peptides I will look at their source proteins and genes. I will perform a GO Term analysis, KEGG pathway analysis and Reactome analysis on the top 15 most abundant and highest intensity peptides for viral protein or response signatures.\nView Final Report →"
   },
   {
     "objectID": "projects.html#publications",

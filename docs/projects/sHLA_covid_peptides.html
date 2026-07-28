@@ -175,7 +175,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#top-15-peptides-with-the-highest-intensity-peaks" id="toc-top-15-peptides-with-the-highest-intensity-peaks" class="nav-link" data-scroll-target="#top-15-peptides-with-the-highest-intensity-peaks">Top 15 Peptides with the Highest Intensity Peaks</a></li>
   </ul></li>
   <li><a href="#use-cluster-profiler-on-for-most-intense-peptides" id="toc-use-cluster-profiler-on-for-most-intense-peptides" class="nav-link" data-scroll-target="#use-cluster-profiler-on-for-most-intense-peptides">Use Cluster Profiler on for Most Intense Peptides</a></li>
-  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a>
+  <ul class="collapse">
+  <li><a href="#future-direction" id="toc-future-direction" class="nav-link" data-scroll-target="#future-direction">Future Direction</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -776,11 +779,23 @@ Parsing results... Done.</code></pre>
 <h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
 <ul>
 <li>Originally ~2000 peptides were identified, but upon filtering them down there were really only 395 confidently identified peptides that matched documented human database genes/proteins</li>
-<li>No well-documented COVID-19 peptides were able to be identified</li>
-<li></li>
+<li>No well-documented COVID-19 peptides were identified 😔 (there are only 17 well documented proteins for SARS CoV-2 which are all from the Wuhan strain and don’t take into account variants or mutations to proteins)</li>
+<li>Pathway analysis revealed other viral response related proteins to be over-represented in sHLA Class I
+<ul>
+<li>maybe the COVID response related proteins are not as well characterized as others</li>
+<li>sHLA does not slough off into the plasma as well for COVID infected cells or COVID prevents this</li>
+<li>COVID may interfere with class I processing or presentation</li>
+</ul></li>
+</ul>
+<section id="future-direction" class="level3">
+<h3 class="anchored" data-anchor-id="future-direction">Future Direction</h3>
+<ul>
+<li>Currently have another sHLA Class I sample from a COVID infected patient being run on the mass spec set to finish 07/29/2026 <span class="citation" data-cites="10PM">@10PM</span></li>
+<li>Could potentially be a diagnostic of some sort</li>
 </ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
