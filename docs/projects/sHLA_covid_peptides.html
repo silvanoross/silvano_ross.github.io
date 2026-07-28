@@ -161,6 +161,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a>
   <ul class="collapse">
   <li><a href="#schematic" id="toc-schematic" class="nav-link" data-scroll-target="#schematic">Schematic</a></li>
+  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a></li>
+  <li><a href="#pathway-and-gene-ontology-anylsis-packages-used" id="toc-pathway-and-gene-ontology-anylsis-packages-used" class="nav-link" data-scroll-target="#pathway-and-gene-ontology-anylsis-packages-used">Pathway and Gene Ontology Anylsis Packages Used</a></li>
   </ul></li>
   <li><a href="#get-csv-output-from-mass-spec" id="toc-get-csv-output-from-mass-spec" class="nav-link" data-scroll-target="#get-csv-output-from-mass-spec">Get CSV Output from Mass Spec</a></li>
   <li><a href="#clean-the-data" id="toc-clean-the-data" class="nav-link" data-scroll-target="#clean-the-data">Clean the Data</a></li>
@@ -170,9 +172,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#identify-15-most-abundant-peptides-overall-based-on-peak-area" id="toc-identify-15-most-abundant-peptides-overall-based-on-peak-area" class="nav-link" data-scroll-target="#identify-15-most-abundant-peptides-overall-based-on-peak-area">Identify 15 Most Abundant Peptides Overall Based on Peak Area</a>
   <ul class="collapse">
   <li><a href="#top-15-most-abundant-peptides-in-covid-sample" id="toc-top-15-most-abundant-peptides-in-covid-sample" class="nav-link" data-scroll-target="#top-15-most-abundant-peptides-in-covid-sample">Top 15 Most Abundant Peptides in COVID Sample</a></li>
-  <li><a href="#top-10-peptides-with-thea-highest-intensity-peaks" id="toc-top-10-peptides-with-thea-highest-intensity-peaks" class="nav-link" data-scroll-target="#top-10-peptides-with-thea-highest-intensity-peaks">Top 10 Peptides with thea Highest Intensity Peaks</a></li>
+  <li><a href="#top-15-peptides-with-the-highest-intensity-peaks" id="toc-top-15-peptides-with-the-highest-intensity-peaks" class="nav-link" data-scroll-target="#top-15-peptides-with-the-highest-intensity-peaks">Top 15 Peptides with the Highest Intensity Peaks</a></li>
   </ul></li>
-  <li><a href="#use-cluster-profiler-on-top-intensity-peaks" id="toc-use-cluster-profiler-on-top-intensity-peaks" class="nav-link" data-scroll-target="#use-cluster-profiler-on-top-intensity-peaks">Use Cluster Profiler on Top Intensity Peaks</a></li>
+  <li><a href="#use-cluster-profiler-on-for-most-intense-peptides" id="toc-use-cluster-profiler-on-for-most-intense-peptides" class="nav-link" data-scroll-target="#use-cluster-profiler-on-for-most-intense-peptides">Use Cluster Profiler on for Most Intense Peptides</a></li>
   <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
   </ul>
 </nav>
@@ -217,61 +219,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Use mass spec analysis software to obtain peptide sequences, source proteins, and genes</li>
 <li>Perform analysis</li>
 </ol>
+</section>
+<section id="analysis" class="level3">
+<h3 class="anchored" data-anchor-id="analysis">Analysis</h3>
+<p>Our lab is interested in looking at peak area and peak intensity to see if there are any COVID peptides or disease pathways present and detectable. Peak area is the total abundance throughout the entire sample and peak intensity is a relative abundance as a single ion hits the mass detector.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../photos/R_final_schematic.png" title="Workflow Schematic" class="img-fluid figure-img"></p>
 <figcaption>Workflow Schematic</figcaption>
 </figure>
 </div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load libraries</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.2.1     ✔ readr     2.2.0
-✔ forcats   1.0.1     ✔ stringr   1.6.0
-✔ ggplot2   4.0.3     ✔ tibble    3.3.1
-✔ lubridate 1.9.5     ✔ tidyr     1.3.2
-✔ purrr     1.2.2     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cowplot)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'cowplot'
-
-The following object is masked from 'package:lubridate':
-
-    stamp</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gprofiler2)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(enrichR)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Welcome to enrichR
-Checking connections ... 
-Enrichr ... Connection is Live!
-FlyEnrichr ... Connection is Live!
-WormEnrichr ... Connection is Live!
-YeastEnrichr ... Connection is Live!
-FishEnrichr ... Connection is Live!
-OxEnrichr ... Connection is Live!</code></pre>
-</div>
-</div>
+<p>Cool GIF [Link](<a href="https://warwick.ac.uk/fac/sci/lifesci/research/sigtraf/animations/" class="uri">https://warwick.ac.uk/fac/sci/lifesci/research/sigtraf/animations/</a>): <img src="../photos/ms_animation.gif" class="img-fluid"></p>
+</section>
+<section id="pathway-and-gene-ontology-anylsis-packages-used" class="level3">
+<h3 class="anchored" data-anchor-id="pathway-and-gene-ontology-anylsis-packages-used">Pathway and Gene Ontology Anylsis Packages Used</h3>
+<ul>
+<li>gprofiler2 <a href="https://biit.cs.ut.ee/gprofiler/gost">Link</a>
+<ul>
+<li>R package for g:Profiler tools g:GOst: Performs functional enrichment analysis <img src="../photos/gprofiler.png" class="img-fluid"></li>
+</ul></li>
+<li>enrichR <a href="https://maayanlab.cloud/Enrichr/">Link</a>
+<ul>
+<li>Bioconductor package that gives you access to a suite of gene set enrichment analysis tools <img src="../photos/enrichr.png" class="img-fluid"></li>
+</ul></li>
+<li>clusterProfiler <a href="https://bioconductor.org/packages/release/bioc/html/clusterProfiler.html">Link</a>
+<ul>
+<li>Bioconductor package for any kind of “Omics” data interpretation: Annotation, Clustering, GO, GeneSetEnrichment, KEGG, MultipleComparison, Pathways, Reactome, Software, Visualization</li>
+</ul></li>
+<li>enrichplot <a href="https://www.bioconductor.org/packages/devel/bioc/html/enrichplot.html">Link</a>
+<ul>
+<li>Bioconductor package for visualization methods for interpreting functional enrichment results from ORA or GSEA analyses, for use with clusterProfiler and is based on ggplot</li>
+</ul></li>
+</ul>
 </section>
 </section>
 <section id="get-csv-output-from-mass-spec" class="level2">
 <h2 class="anchored" data-anchor-id="get-csv-output-from-mass-spec">Get CSV Output from Mass Spec</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read in df</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>peptides <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/peptideDb.peptides.csv"</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># glimpse df</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(peptides)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read in df</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>peptides <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/peptideDb.peptides.csv"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># glimpse df</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(peptides)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 2,093
 Columns: 28
@@ -309,22 +298,22 @@ $ Found.By              &lt;chr&gt; "DeepNovo", "DB Search", "DB Search", "DeepN
 <section id="clean-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="clean-the-data">Clean the Data</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pep_clean <span class="ot">&lt;-</span> peptides <span class="sc">|&gt;</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Peptide, Length, Area.Sample<span class="fl">.1</span>, Intensity.Sample<span class="fl">.1</span>, Source.File, Accession, Gene, Found.By) <span class="sc">|&gt;</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Peptide =</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">([^()]*</span><span class="sc">\\</span><span class="st">)"</span>, <span class="st">""</span>, Peptide)) <span class="sc">|&gt;</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">accession_clean =</span> <span class="fu">sub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">|.*"</span>, <span class="st">""</span>, Accession)) <span class="sc">|&gt;</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">str_detect</span>(Accession, <span class="st">"Biognosys"</span>) <span class="sc">&amp;</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    Found.By <span class="sc">==</span> <span class="st">"DB Search"</span> <span class="sc">&amp;</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    Length <span class="sc">&lt;=</span> <span class="dv">14</span> <span class="sc">&amp;</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    Length <span class="sc">&gt;=</span> <span class="dv">8</span> <span class="sc">&amp;</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">str_detect</span>(Peptide, <span class="st">"^[IL]+$"</span>)</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(Peptide, <span class="at">.keep_all =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Length)</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Look at new cleaned df</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pep_clean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>pep_clean <span class="ot">&lt;-</span> peptides <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Peptide, Length, Area.Sample<span class="fl">.1</span>, Intensity.Sample<span class="fl">.1</span>, Source.File, Accession, Gene, Found.By) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Peptide =</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">([^()]*</span><span class="sc">\\</span><span class="st">)"</span>, <span class="st">""</span>, Peptide)) <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">accession_clean =</span> <span class="fu">sub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">|.*"</span>, <span class="st">""</span>, Accession)) <span class="sc">|&gt;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">str_detect</span>(Accession, <span class="st">"Biognosys"</span>) <span class="sc">&amp;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    Found.By <span class="sc">==</span> <span class="st">"DB Search"</span> <span class="sc">&amp;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    Length <span class="sc">&lt;=</span> <span class="dv">14</span> <span class="sc">&amp;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    Length <span class="sc">&gt;=</span> <span class="dv">8</span> <span class="sc">&amp;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">str_detect</span>(Peptide, <span class="st">"^[IL]+$"</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(Peptide, <span class="at">.keep_all =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Length)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Look at new cleaned df</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pep_clean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Peptide Length Area.Sample.1 Intensity.Sample.1
 1 AARPRDAL      8            NA                 NA
@@ -348,8 +337,8 @@ $ Found.By              &lt;chr&gt; "DeepNovo", "DB Search", "DB Search", "DeepN
 5          P53621
 6          O94979</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># export csv to writes filepath</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(pep_clean, <span class="st">"writes/clean_peptide_df.csv"</span>, <span class="at">row.names=</span><span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># export csv to writes filepath</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(pep_clean, <span class="st">"writes/clean_peptide_df.csv"</span>, <span class="at">row.names=</span><span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="visualize-peptide-distribution-based-on-length" class="level2">
@@ -357,34 +346,34 @@ $ Found.By              &lt;chr&gt; "DeepNovo", "DB Search", "DB Search", "DeepN
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get total for annotation</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>total <span class="ot">&lt;-</span> <span class="fu">dim</span>(pep_clean)[<span class="dv">1</span>]</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create x, y coordinates for annotation</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>annotations <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="dv">7</span>,</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="dv">200</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co"># create label for annotation</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>label <span class="ot">&lt;-</span> <span class="st">"Total: "</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Make length a factor variable for even distribution</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>pep_clean<span class="sc">$</span>Length <span class="ot">&lt;-</span> <span class="fu">factor</span>(pep_clean<span class="sc">$</span>Length)</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>pep_dist_length <span class="ot">&lt;-</span> pep_clean <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Length)) <span class="sc">+</span> </span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span> annotations, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">label =</span> <span class="fu">paste</span>(label, total)), </span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>            <span class="at">size =</span> <span class="dv">4</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>) <span class="sc">+</span></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_count</span>(<span class="at">geom =</span> <span class="st">"text"</span>, <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">after_stat</span>(count)), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Peptide Distribution by Length"</span>,</span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Peptide Count"</span>) <span class="sc">+</span></span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">300</span>) <span class="sc">+</span></span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_cowplot</span>()</span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="co"># visualize plot</span></span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>pep_dist_length</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get total for annotation</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>total <span class="ot">&lt;-</span> <span class="fu">dim</span>(pep_clean)[<span class="dv">1</span>]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create x, y coordinates for annotation</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>annotations <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="dv">7</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="dv">200</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># create label for annotation</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>label <span class="ot">&lt;-</span> <span class="st">"Total: "</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Make length a factor variable for even distribution</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>pep_clean<span class="sc">$</span>Length <span class="ot">&lt;-</span> <span class="fu">factor</span>(pep_clean<span class="sc">$</span>Length)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>pep_dist_length <span class="ot">&lt;-</span> pep_clean <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Length)) <span class="sc">+</span> </span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span> annotations, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">label =</span> <span class="fu">paste</span>(label, total)), </span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>            <span class="at">size =</span> <span class="dv">4</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>) <span class="sc">+</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_count</span>(<span class="at">geom =</span> <span class="st">"text"</span>, <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">after_stat</span>(count)), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Peptide Distribution by Length"</span>,</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Peptide Count"</span>) <span class="sc">+</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">300</span>) <span class="sc">+</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_cowplot</span>()</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="co"># visualize plot</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>pep_dist_length</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -395,9 +384,9 @@ $ Found.By              &lt;chr&gt; "DeepNovo", "DB Search", "DB Search", "DeepN
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save plot </span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>pep_dist_length <span class="sc">|&gt;</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/dist_len.png"</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save plot </span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>pep_dist_length <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/dist_len.png"</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -416,9 +405,9 @@ $ Found.By              &lt;chr&gt; "DeepNovo", "DB Search", "DB Search", "DeepN
 <section id="check-for-covid-19-peptides" class="level2">
 <h2 class="anchored" data-anchor-id="check-for-covid-19-peptides">Check for COVID-19 Peptides</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check for any accession value that does not contain human</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>non_human <span class="ot">&lt;-</span> pep_clean <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(Accession, <span class="st">"HUMAN"</span>)) </span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>non_human</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check for any accession value that does not contain human</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>non_human <span class="ot">&lt;-</span> pep_clean <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(Accession, <span class="st">"HUMAN"</span>)) </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>non_human</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] Peptide            Length             Area.Sample.1      Intensity.Sample.1
 [5] Source.File        Accession          Gene               Found.By          
@@ -432,22 +421,25 @@ $ Found.By              &lt;chr&gt; "DeepNovo", "DB Search", "DB Search", "DeepN
 </section>
 <section id="identify-15-most-abundant-peptides-overall-based-on-peak-area" class="level2">
 <h2 class="anchored" data-anchor-id="identify-15-most-abundant-peptides-overall-based-on-peak-area">Identify 15 Most Abundant Peptides Overall Based on Peak Area</h2>
+<p><strong>Using gprofiler2</strong></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># select for top genes based on sample area</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>top_area_genes <span class="ot">&lt;-</span> pep_clean <span class="sc">|&gt;</span> </span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Gene,accession_clean,Area.Sample<span class="fl">.1</span>) <span class="sc">|&gt;</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Area.Sample<span class="fl">.1</span>))</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>genes <span class="ot">&lt;-</span> top_area_genes<span class="sc">$</span>Gene</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co"># get pathway from API for Gene column using gprofiler</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>gostres <span class="ot">&lt;-</span> <span class="fu">gost</span>(<span class="at">query =</span> genes,</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">organism =</span> <span class="st">"hsapiens"</span>,</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">sources =</span> <span class="fu">c</span>(<span class="st">"GO:BP"</span>, <span class="st">"GO:MF"</span>, <span class="st">"GO:CC"</span>, <span class="st">"KEGG"</span>, <span class="st">"REAC"</span>))</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co"># use enrichR</span></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>dbs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"GO_Biological_Process_2023"</span>, <span class="st">"KEGG_2021_Human"</span>, <span class="st">"Reactome_2022"</span>)</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>enriched <span class="ot">&lt;-</span> <span class="fu">enrichr</span>(top_area_genes<span class="sc">$</span>Gene, dbs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># select for top genes based on sample area</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>top_area_genes <span class="ot">&lt;-</span> pep_clean <span class="sc">|&gt;</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Gene,accession_clean,Area.Sample<span class="fl">.1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Area.Sample<span class="fl">.1</span>))</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>genes <span class="ot">&lt;-</span> top_area_genes<span class="sc">$</span>Gene</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># get pathway from API for Gene column using gprofiler</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>gostres <span class="ot">&lt;-</span> <span class="fu">gost</span>(<span class="at">query =</span> genes,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">organism =</span> <span class="st">"hsapiens"</span>,</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">sources =</span> <span class="fu">c</span>(<span class="st">"GO:BP"</span>, <span class="st">"GO:MF"</span>, <span class="st">"GO:CC"</span>, <span class="st">"KEGG"</span>, <span class="st">"REAC"</span>))</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co"># use enrichR</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>dbs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"GO_Biological_Process_2023"</span>, <span class="st">"KEGG_2021_Human"</span>, <span class="st">"Reactome_2022"</span>)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co"># use gene term to identify terms</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>enriched <span class="ot">&lt;-</span> <span class="fu">enrichr</span>(top_area_genes<span class="sc">$</span>Gene, dbs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Uploading data to Enrichr... Done.
   Querying GO_Biological_Process_2023... Done.
@@ -459,113 +451,158 @@ Parsing results... Done.</code></pre>
 <section id="top-15-most-abundant-peptides-in-covid-sample" class="level3">
 <h3 class="anchored" data-anchor-id="top-15-most-abundant-peptides-in-covid-sample">Top 15 Most Abundant Peptides in COVID Sample</h3>
 <ol type="1">
-<li>Kegg Pathways</li>
+<li>Kegg Pathways for Abundant Peptides</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view kegg pathways of enriched df</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming your enrichR result for KEGG is called enrichr_kegg</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> enriched<span class="sc">$</span>KEGG_2021_Human <span class="sc">|&gt;</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># split "Overlap" (e.g. "5/120") into numeric gene count and pathway size</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Overlap, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Count"</span>, <span class="st">"Pathway.Size"</span>), <span class="at">sep =</span> <span class="st">"/"</span>, <span class="at">convert =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Adjusted.P.value) <span class="sc">|&gt;</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">15</span>)   <span class="co"># top 15 most significant pathways</span></span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Term, <span class="sc">-</span>Adjusted.P.value), </span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> Count, </span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fill =</span> Adjusted.P.value)) <span class="sc">+</span></span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"red"</span>, <span class="at">high =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  <span class="co"># low p-adj = red = more significant</span></span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pathway"</span>, <span class="at">y =</span> <span class="st">"Gene Count"</span>, <span class="at">fill =</span> <span class="st">"Adj. P-value"</span>,</span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"KEGG Pathway Enrichment"</span>) <span class="sc">+</span></span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view kegg pathways of enriched df</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming your enrichR result for KEGG is called enrichr_kegg</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> enriched<span class="sc">$</span>KEGG_2021_Human <span class="sc">|&gt;</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># split "Overlap" (e.g. "5/120") into numeric gene count and pathway size</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Overlap, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Count"</span>, <span class="st">"Pathway.Size"</span>), <span class="at">sep =</span> <span class="st">"/"</span>, <span class="at">convert =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Adjusted.P.value) <span class="sc">|&gt;</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">15</span>)   <span class="co"># top 15 most significant pathways</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>kegg_abundant <span class="ot">&lt;-</span>  <span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Term, Count), </span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> Count, </span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fill =</span> Adjusted.P.value)) <span class="sc">+</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"red"</span>, <span class="at">high =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  <span class="co"># low p-adj = red = more significant</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pathway"</span>, <span class="at">y =</span> <span class="st">"Gene Count"</span>, <span class="at">fill =</span> <span class="st">"Adj. P-value"</span>,</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"KEGG Pathway Enrichment for Most Abundant Peptides"</span>) <span class="sc">+</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>kegg_abundant</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>kegg_abundant <span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/kegg_abundant.png"</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="2" type="1">
 <li>Reactomes</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming your enrichR result for KEGG is called enrichr_kegg</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> enriched<span class="sc">$</span>Reactome_2022 <span class="sc">|&gt;</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># split "Overlap" (e.g. "5/120") into numeric gene count and pathway size</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Overlap, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Count"</span>, <span class="st">"Pathway.Size"</span>), <span class="at">sep =</span> <span class="st">"/"</span>, <span class="at">convert =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Adjusted.P.value) <span class="sc">|&gt;</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">15</span>)   <span class="co"># top 15 most significant pathways</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Term, <span class="sc">-</span>Adjusted.P.value), </span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> Count, </span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fill =</span> Adjusted.P.value)) <span class="sc">+</span></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"red"</span>, <span class="at">high =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  <span class="co"># low p-adj = red = more significant</span></span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pathway"</span>, <span class="at">y =</span> <span class="st">"Gene Count"</span>, <span class="at">fill =</span> <span class="st">"Adj. P-value"</span>,</span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"KEGG Pathway Enrichment"</span>) <span class="sc">+</span></span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming your enrichR result for KEGG is called enrichr_kegg</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> enriched<span class="sc">$</span>Reactome_2022 <span class="sc">|&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># split "Overlap" (e.g. "5/120") into numeric gene count and pathway size</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Overlap, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Count"</span>, <span class="st">"Pathway.Size"</span>), <span class="at">sep =</span> <span class="st">"/"</span>, <span class="at">convert =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Adjusted.P.value) <span class="sc">|&gt;</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">15</span>)   <span class="co"># top 15 most significant pathways</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>reactome_abundant <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Term, Count), </span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> Count, </span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fill =</span> Adjusted.P.value)) <span class="sc">+</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"red"</span>, <span class="at">high =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  <span class="co"># low p-adj = red = more significant</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pathway"</span>, <span class="at">y =</span> <span class="st">"Gene Count"</span>, <span class="at">fill =</span> <span class="st">"Adj. P-value"</span>,</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Reactome Terms Most Abundant Peptides"</span>) <span class="sc">+</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>reactome_abundant</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>reactome_abundant <span class="sc">|&gt;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/reactome_abundant.png"</span>, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="3" type="1">
-<li>Gene Ontology Terms</li>
+<li>Gene Ontology Terms for Abundant Peptides</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming your enrichR result for KEGG is called enrichr_kegg</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> enriched<span class="sc">$</span>GO_Biological_Process_2023 <span class="sc">|&gt;</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># split "Overlap" (e.g. "5/120") into numeric gene count and pathway size</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Overlap, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Count"</span>, <span class="st">"Pathway.Size"</span>), <span class="at">sep =</span> <span class="st">"/"</span>, <span class="at">convert =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Adjusted.P.value) <span class="sc">|&gt;</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">15</span>)   <span class="co"># top 15 most significant pathways</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Term, <span class="sc">-</span>Adjusted.P.value), </span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> Count, </span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fill =</span> Adjusted.P.value)) <span class="sc">+</span></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"red"</span>, <span class="at">high =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  <span class="co"># low p-adj = red = more significant</span></span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pathway"</span>, <span class="at">y =</span> <span class="st">"Gene Count"</span>, <span class="at">fill =</span> <span class="st">"Adj. P-value"</span>,</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"KEGG Pathway Enrichment"</span>) <span class="sc">+</span></span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(plot_df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                                                                            Term
+1                                                        RHO GTPases Activate PAKs R-HSA-5627123
+2                                                                          Disease R-HSA-1643685
+3                                                              Innate Immune System R-HSA-168249
+4 Diseases Of Signal Transduction By Growth Factor Receptors And Second Messengers R-HSA-5663202
+5                                                    Plasma Lipoprotein Remodeling R-HSA-8963899
+6                            Plasma Lipoprotein Assembly, Remodeling, And Clearance R-HSA-174824
+  Count Pathway.Size      P.value Adjusted.P.value Old.P.value
+1     7           21 3.655065e-08     1.835952e-05           0
+2    61         1736 3.735406e-08     1.835952e-05           0
+3    43         1035 5.806420e-08     1.902570e-05           0
+4    24          424 3.044094e-07     7.480861e-05           0
+5     7           33 1.126762e-06     2.215215e-04           0
+6     9           71 3.144730e-06     5.152116e-04           0
+  Old.Adjusted.P.value Odds.Ratio Combined.Score
+1                    0  29.498498      505.14901
+2                    0   2.347585       40.15033
+3                    0   2.724571       45.39603
+4                    0   3.656962       54.87232
+5                    0  15.874105      217.41432
+6                    0   8.594776      108.89395
+                                                                                                                                                                                                                                                                                                                                                                 Genes
+1                                                                                                                                                                                                                                                                                                                            PPP1CB;MYL6;FLNA;MYH14;MYH9;MYH11;ARHGEF7
+2 CDKN1C;HSP90AB1;GBE1;CLTC;PEBP1;ENO1;PPP1CB;CCND3;TRIM25;CYP1B1;FGB;FGG;HLA-B;BGN;HLA-C;NCOR2;PSMA4;NCOR1;IRF3;HGS;MYH9;TLN1;S100A8;HBEGF;HDAC5;RAMP2;DNMT1;SDC4;SEL1L;SUPT4H1;DERL1;HSD17B4;ITPR3;RRBP1;C3;RNF213;OS9;RBBP4;G3BP2;HMOX1;SPTBN1;SEC31A;POLR2L;DYNC1H1;XRCC5;STAT1;MUC17;STAT3;GFPT1;ERBIN;FMO3;PARP14;EEF2;MUC5B;CP;QKI;ARPC2;PAH;TBXAS1;CTNNB1;GNB5
+3                                                                                                        C1QA;HSP90AB1;ITPR3;CLU;HERC5;C3;STK10;PCBP2;TRIM25;HMOX1;APOB;TRIM21;SPTAN1;POLR2L;FGB;DYNC1H1;MANBA;CD93;DCD;XRCC5;MUC17;KRT1;FGG;HLA-B;HLA-C;NDUFC2;PPBP;EEF2;MUC5B;DNM2;PSMA4;ARPC2;IRF3;ATP6V1B2;CTNNB1;MYH9;DEGS1;MNDA;ARHGEF7;ATP6V0C;S100A8;LGMN;C1QC
+4                                                                                                                                                                                                                           FGB;HDAC5;STAT1;CLTC;STAT3;SEL1L;FGG;ERBIN;PEBP1;RRBP1;QKI;NCOR2;PPP1CB;RNF213;PSMA4;NCOR1;OS9;CTNNB1;MYH9;TLN1;SPTBN1;SEC31A;HBEGF;POLR2L
+5                                                                                                                                                                                                                                                                                                                            MBTPS1;CREB3L3;APOC2;ALB;APOC3;APOB;CIDEC
+6                                                                                                                                                                                                                                                                                                                 MBTPS1;CREB3L3;APOC2;CLTC;ALB;APOC1;APOC3;APOB;CIDEC</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> enriched<span class="sc">$</span>GO_Biological_Process_2023 <span class="sc">|&gt;</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># split "Overlap" into numeric gene count and pathway size</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Overlap, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Count"</span>, <span class="st">"Pathway.Size"</span>), <span class="at">sep =</span> <span class="st">"/"</span>, <span class="at">convert =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Adjusted.P.value) <span class="sc">|&gt;</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">15</span>)   <span class="co"># top 15 most significant pathways</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>GO_abundant <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Term, Count), </span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> Count, </span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fill =</span> Adjusted.P.value)) <span class="sc">+</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"red"</span>, <span class="at">high =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  <span class="co"># low p-adj = red = more significant</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pathway"</span>, <span class="at">y =</span> <span class="st">"Gene Count"</span>, <span class="at">fill =</span> <span class="st">"Adj. P-value"</span>,</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"GO Terms Most Abundant Peptides"</span>) <span class="sc">+</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="co"># show plot</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>GO_abundant</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save plot</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>GO_abundant <span class="sc">|&gt;</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/GO_abundant.png"</span>, <span class="at">width =</span> <span class="dv">9</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="top-10-peptides-with-thea-highest-intensity-peaks" class="level3">
-<h3 class="anchored" data-anchor-id="top-10-peptides-with-thea-highest-intensity-peaks">Top 10 Peptides with thea Highest Intensity Peaks</h3>
+<section id="top-15-peptides-with-the-highest-intensity-peaks" class="level3">
+<h3 class="anchored" data-anchor-id="top-15-peptides-with-the-highest-intensity-peaks">Top 15 Peptides with the Highest Intensity Peaks</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># select genes based on intensity</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>top_intensity_genes <span class="ot">&lt;-</span> pep_clean <span class="sc">|&gt;</span> </span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Gene, accession_clean,Intensity.Sample<span class="fl">.1</span>) <span class="sc">|&gt;</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Intensity.Sample<span class="fl">.1</span>))</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>genes <span class="ot">&lt;-</span> top_area_genes<span class="sc">$</span>Gene</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="co"># get pathway from API for Gene column using gprofiler</span></span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>gostres <span class="ot">&lt;-</span> <span class="fu">gost</span>(<span class="at">query =</span> genes,</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">organism =</span> <span class="st">"hsapiens"</span>,</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">sources =</span> <span class="fu">c</span>(<span class="st">"GO:BP"</span>, <span class="st">"GO:MF"</span>, <span class="st">"GO:CC"</span>, <span class="st">"KEGG"</span>, <span class="st">"REAC"</span>))</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="co"># use enrichR</span></span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>dbs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"GO_Biological_Process_2023"</span>, <span class="st">"KEGG_2021_Human"</span>, <span class="st">"Reactome_2022"</span>)</span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>enriched <span class="ot">&lt;-</span> <span class="fu">enrichr</span>(top_area_genes<span class="sc">$</span>Gene, dbs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># select genes based on intensity</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>top_intensity_genes <span class="ot">&lt;-</span> pep_clean <span class="sc">|&gt;</span> </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Gene, accession_clean,Intensity.Sample<span class="fl">.1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Intensity.Sample<span class="fl">.1</span>))</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>genes <span class="ot">&lt;-</span> top_area_genes<span class="sc">$</span>Gene</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co"># get pathway from API for Gene column using gprofiler</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>gostres <span class="ot">&lt;-</span> <span class="fu">gost</span>(<span class="at">query =</span> genes,</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">organism =</span> <span class="st">"hsapiens"</span>,</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">sources =</span> <span class="fu">c</span>(<span class="st">"GO:BP"</span>, <span class="st">"GO:MF"</span>, <span class="st">"GO:CC"</span>, <span class="st">"KEGG"</span>, <span class="st">"REAC"</span>))</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="co"># use enrichR</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>dbs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"GO_Biological_Process_2023"</span>, <span class="st">"KEGG_2021_Human"</span>, <span class="st">"Reactome_2022"</span>)</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>enriched <span class="ot">&lt;-</span> <span class="fu">enrichr</span>(top_area_genes<span class="sc">$</span>Gene, dbs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Uploading data to Enrichr... Done.
   Querying GO_Biological_Process_2023... Done.
@@ -575,25 +612,28 @@ Parsing results... Done.</code></pre>
 </div>
 </div>
 <ol type="1">
-<li>KEGG</li>
+<li>KEGG Pathways for Most Intense Peptides</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming your enrichR result for KEGG is called enrichr_kegg</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> enriched<span class="sc">$</span>KEGG_2021_Human <span class="sc">|&gt;</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># split "Overlap" (e.g. "5/120") into numeric gene count and pathway size</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Overlap, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Count"</span>, <span class="st">"Pathway.Size"</span>), <span class="at">sep =</span> <span class="st">"/"</span>, <span class="at">convert =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Adjusted.P.value) <span class="sc">|&gt;</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">15</span>)   <span class="co"># top 15 most significant pathways</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Term, <span class="sc">-</span>Adjusted.P.value), </span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> Count, </span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fill =</span> Adjusted.P.value)) <span class="sc">+</span></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"red"</span>, <span class="at">high =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  <span class="co"># low p-adj = red = more significant</span></span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pathway"</span>, <span class="at">y =</span> <span class="st">"Gene Count"</span>, <span class="at">fill =</span> <span class="st">"Adj. P-value"</span>,</span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"KEGG Pathway Enrichment"</span>) <span class="sc">+</span></span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make plot variable</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> enriched<span class="sc">$</span>KEGG_2021_Human <span class="sc">|&gt;</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># split "Overlap" nto numeric gene count and pathway size</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Overlap, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Count"</span>, <span class="st">"Pathway.Size"</span>), <span class="at">sep =</span> <span class="st">"/"</span>, <span class="at">convert =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Adjusted.P.value) <span class="sc">|&gt;</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">15</span>)   <span class="co"># top 15 most significant pathways</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>kegg_intense <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Term, Count), </span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> Count, </span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fill =</span> Adjusted.P.value)) <span class="sc">+</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"red"</span>, <span class="at">high =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  <span class="co"># low p-adj = red = more significant</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pathway"</span>, <span class="at">y =</span> <span class="st">"Gene Count"</span>, <span class="at">fill =</span> <span class="st">"Adj. P-value"</span>,</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"KEGG Pathways Most Intense"</span>) <span class="sc">+</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="co"># show plot</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>kegg_intense</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -601,55 +641,71 @@ Parsing results... Done.</code></pre>
 </figure>
 </div>
 </div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save plot</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>kegg_intense <span class="sc">|&gt;</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/kegg_intense.png"</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="2" type="1">
-<li>Reactome</li>
+<li>Reactome for Most Intense Peptides</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming your enrichR result for KEGG is called enrichr_kegg</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create the reactome df</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> enriched<span class="sc">$</span>Reactome_2022 <span class="sc">|&gt;</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># split "Overlap" (e.g. "5/120") into numeric gene count and pathway size</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># split "Overlap" into numeric gene count and pathway size</span></span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Overlap, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Count"</span>, <span class="st">"Pathway.Size"</span>), <span class="at">sep =</span> <span class="st">"/"</span>, <span class="at">convert =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
 <span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Adjusted.P.value) <span class="sc">|&gt;</span></span>
 <span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">15</span>)   <span class="co"># top 15 most significant pathways</span></span>
 <span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Term, <span class="sc">-</span>Adjusted.P.value), </span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> Count, </span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fill =</span> Adjusted.P.value)) <span class="sc">+</span></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"red"</span>, <span class="at">high =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  <span class="co"># low p-adj = red = more significant</span></span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pathway"</span>, <span class="at">y =</span> <span class="st">"Gene Count"</span>, <span class="at">fill =</span> <span class="st">"Adj. P-value"</span>,</span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"KEGG Pathway Enrichment"</span>) <span class="sc">+</span></span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="co"># create the plot</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>reactome_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Term,Count), </span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> Count, </span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fill =</span> Adjusted.P.value)) <span class="sc">+</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"red"</span>, <span class="at">high =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  <span class="co"># low p-adj = red = more significant</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pathway"</span>, <span class="at">y =</span> <span class="st">"Gene Count"</span>, <span class="at">fill =</span> <span class="st">"Adj. P-value"</span>,</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Reactome Most Intense"</span>) <span class="sc">+</span></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a><span class="co"># show plot</span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>reactome_plot</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save the plot into plots folder</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>reactome_plot <span class="sc">|&gt;</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/reactome_intense.png"</span>, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="3" type="1">
-<li>Gene Ontology Terms</li>
+<li>Gene Ontology Terms for Most Intense Peptides</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming your enrichR result for KEGG is called enrichr_kegg</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> enriched<span class="sc">$</span>GO_Biological_Process_2023 <span class="sc">|&gt;</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># split "Overlap" (e.g. "5/120") into numeric gene count and pathway size</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Overlap, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Count"</span>, <span class="st">"Pathway.Size"</span>), <span class="at">sep =</span> <span class="st">"/"</span>, <span class="at">convert =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Adjusted.P.value) <span class="sc">|&gt;</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">15</span>)   <span class="co"># top 15 most significant pathways</span></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Term, <span class="sc">-</span>Adjusted.P.value), </span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> Count, </span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fill =</span> Adjusted.P.value)) <span class="sc">+</span></span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"red"</span>, <span class="at">high =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  <span class="co"># low p-adj = red = more significant</span></span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pathway"</span>, <span class="at">y =</span> <span class="st">"Gene Count"</span>, <span class="at">fill =</span> <span class="st">"Adj. P-value"</span>,</span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"KEGG Pathway Enrichment"</span>) <span class="sc">+</span></span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create GO df </span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> enriched<span class="sc">$</span>GO_Biological_Process_2023 <span class="sc">|&gt;</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># split "Overlap" into numeric gene count and pathway size</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Overlap, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Count"</span>, <span class="st">"Pathway.Size"</span>), <span class="at">sep =</span> <span class="st">"/"</span>, <span class="at">convert =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Adjusted.P.value) <span class="sc">|&gt;</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">15</span>)   <span class="co"># top 15 most significant pathways</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="co"># create plot into variable</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>GO_intense <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Term, Count), </span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> Count, </span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fill =</span> Adjusted.P.value)) <span class="sc">+</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"red"</span>, <span class="at">high =</span> <span class="st">"blue"</span>) <span class="sc">+</span> </span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pathway"</span>, <span class="at">y =</span> <span class="st">"Gene Count"</span>, <span class="at">fill =</span> <span class="st">"Adj. P-value"</span>,</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"GO Terms Intense"</span>) <span class="sc">+</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a><span class="co"># display the plot</span></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>GO_intense</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -657,1074 +713,71 @@ Parsing results... Done.</code></pre>
 </figure>
 </div>
 </div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save the plot</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>GO_intense <span class="sc">|&gt;</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/GO_intense.png"</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
-<section id="use-cluster-profiler-on-top-intensity-peaks" class="level2">
-<h2 class="anchored" data-anchor-id="use-cluster-profiler-on-top-intensity-peaks">Use Cluster Profiler on Top Intensity Peaks</h2>
+<section id="use-cluster-profiler-on-for-most-intense-peptides" class="level2">
+<h2 class="anchored" data-anchor-id="use-cluster-profiler-on-for-most-intense-peptides">Use Cluster Profiler on for Most Intense Peptides</h2>
+<p>Kegg Pathways From Cluster Profiler for Most Intense Peptides</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load libraries</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(clusterProfiler)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code></code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>clusterProfiler v4.20.0 Learn more at https://yulab-smu.top/contribution-knowledge-mining/
-
-Please cite:
-
-S Xu, E Hu, Y Cai, Z Xie, X Luo, L Zhan, W Tang, Q Wang, B Liu, R Wang,
-W Xie, T Wu, L Xie, G Yu. Using clusterProfiler to characterize
-multiomics data. Nature Protocols. 2024, 19(11):3292-3320</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'clusterProfiler'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:purrr':
-
-    simplify</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:stats':
-
-    filter</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(org.Hs.eg.db) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: AnnotationDbi</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: stats4</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: BiocGenerics</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: generics</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'generics'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:lubridate':
-
-    as.difftime</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:dplyr':
-
-    explain</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:base':
-
-    as.difftime, as.factor, as.ordered, intersect, is.element, setdiff,
-    setequal, union</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'BiocGenerics'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:dplyr':
-
-    combine</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:stats':
-
-    IQR, mad, sd, var, xtabs</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:base':
-
-    anyDuplicated, aperm, append, as.data.frame, basename, cbind,
-    colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,
-    get, grep, grepl, is.unsorted, lapply, Map, mapply, match, mget,
-    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-    rbind, Reduce, rownames, sapply, saveRDS, table, tapply, unique,
-    unsplit, which.max, which.min</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: Biobase</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Welcome to Bioconductor
-
-    Vignettes contain introductory material; view with
-    'browseVignettes()'. To cite Bioconductor, see
-    'citation("Biobase")', and for packages 'citation("pkgname")'.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: IRanges</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: S4Vectors</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'S4Vectors'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:clusterProfiler':
-
-    rename</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:lubridate':
-
-    second, second&lt;-</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:dplyr':
-
-    first, rename</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:tidyr':
-
-    expand</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:utils':
-
-    findMatches</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:base':
-
-    expand.grid, I, unname</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'IRanges'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:clusterProfiler':
-
-    slice</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:lubridate':
-
-    %within%</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:dplyr':
-
-    collapse, desc, slice</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:purrr':
-
-    reduce</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'AnnotationDbi'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:clusterProfiler':
-
-    select</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:dplyr':
-
-    select</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code></code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AnnotationDbi)</span>
-<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ReactomePA)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>ReactomePA v1.56.0 Learn more at https://yulab-smu.top/contribution-knowledge-mining/
-
-Please cite:
-
-Guangchuang Yu, Qing-Yu He. ReactomePA: an R/Bioconductor package for
-reactome pathway analysis and visualization. Molecular BioSystems.
-2016, 12(2):477-479</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(enrichplot)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>enrichplot v1.32.0 Learn more at https://yulab-smu.top/contribution-knowledge-mining/
-
-Please cite:
-
-Guangchuang Yu, Li-Gen Wang, and Qing-Yu He. ChIPseeker: an
-R/Bioconductor package for ChIP peak annotation, comparison and
-visualization. Bioinformatics. 2015, 31(14):2382-2383</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>genes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  [1] "APOB"                                                                                                      
-  [2] "SLFN14"                                                                                                    
-  [3] "SAA4"                                                                                                      
-  [4] "RPSA2:RPSA"                                                                                                
-  [5] "C1QA"                                                                                                      
-  [6] "IGKV6D-21:IGKV6-21"                                                                                        
-  [7] "IGHG1"                                                                                                     
-  [8] "HLA-C"                                                                                                     
-  [9] "HLA-C"                                                                                                     
- [10] "SCP2"                                                                                                      
- [11] "RNF213"                                                                                                    
- [12] "TMED10"                                                                                                    
- [13] "TTN"                                                                                                       
- [14] "HP"                                                                                                        
- [15] "SYNCRIP:HNRNPR"                                                                                            
- [16] "PPP1R26"                                                                                                   
- [17] "C1QC"                                                                                                      
- [18] "ACTN4"                                                                                                     
- [19] "MYH9"                                                                                                      
- [20] "LMO4"                                                                                                      
- [21] "ADD1"                                                                                                      
- [22] "AKR1C2:AKR1C1:AKR1C3"                                                                                      
- [23] "CRYBG1"                                                                                                    
- [24] "PIGT"                                                                                                      
- [25] "SEPTIN2"                                                                                                   
- [26] "PJA2:PJA1"                                                                                                 
- [27] "THBS4"                                                                                                     
- [28] "HLA-DPB1"                                                                                                  
- [29] "HLA-B"                                                                                                     
- [30] "MYH9"                                                                                                      
- [31] "ERGIC3"                                                                                                    
- [32] "MNDA"                                                                                                      
- [33] "SRP72"                                                                                                     
- [34] "TRIM21"                                                                                                    
- [35] "CSDE1"                                                                                                     
- [36] "CDKN1C"                                                                                                    
- [37] "ANXA11"                                                                                                    
- [38] "ERP29"                                                                                                     
- [39] "CLU"                                                                                                       
- [40] "JCHAIN"                                                                                                    
- [41] "CLTC"                                                                                                      
- [42] "G3BP2"                                                                                                     
- [43] "IGKV4-1"                                                                                                   
- [44] "SELPLG"                                                                                                    
- [45] "SYNE1"                                                                                                     
- [46] "BST1:SYNE2"                                                                                                
- [47] "MYO16"                                                                                                     
- [48] "LIMA1"                                                                                                     
- [49] "SRP68"                                                                                                     
- [50] "UBAC2"                                                                                                     
- [51] "C4A:C4B"                                                                                                   
- [52] "LAS1L"                                                                                                     
- [53] "TCF3:TCF12:TCF4"                                                                                           
- [54] "CYP2B6:CYP2C19:CYP2C8:CYP2E1:CYP2C18:CYP2C9"                                                               
- [55] "PLRG1"                                                                                                     
- [56] "IGKV3-20"                                                                                                  
- [57] "DHRS3"                                                                                                     
- [58] "TRIM25"                                                                                                    
- [59] "ELN"                                                                                                       
- [60] "HES1"                                                                                                      
- [61] "JCHAIN"                                                                                                    
- [62] "VIM"                                                                                                       
- [63] "GNB5"                                                                                                      
- [64] "POLR2L"                                                                                                    
- [65] "TRPC4AP"                                                                                                   
- [66] "UBC:UBB:RPS27A:UBA52"                                                                                      
- [67] "HMOX1"                                                                                                     
- [68] "RLIM"                                                                                                      
- [69] "UBC:UBB:RPS27A:UBA52"                                                                                      
- [70] "PAH"                                                                                                       
- [71] "FAM32A"                                                                                                    
- [72] "SUN2"                                                                                                      
- [73] "IGFBP7"                                                                                                    
- [74] "HBEGF"                                                                                                     
- [75] "STAT3"                                                                                                     
- [76] "C3"                                                                                                        
- [77] "OS9"                                                                                                       
- [78] "SCAND1"                                                                                                    
- [79] "HBA1"                                                                                                      
- [80] "HTRA1"                                                                                                     
- [81] "HAAO"                                                                                                      
- [82] "MMRN2"                                                                                                     
- [83] "FLNA"                                                                                                      
- [84] "SDC4"                                                                                                      
- [85] "MS4A1"                                                                                                     
- [86] "HLA-A:HLA-B:HLA-H"                                                                                         
- [87] "ACSL4"                                                                                                     
- [88] "LRRC8C"                                                                                                    
- [89] "HLA-B"                                                                                                     
- [90] "H1-3:H1-2:H1-4:H1-5"                                                                                       
- [91] "FBL"                                                                                                       
- [92] "SEC11C"                                                                                                    
- [93] "RAMP2"                                                                                                     
- [94] "GFPT1"                                                                                                     
- [95] "RNF213"                                                                                                    
- [96] "MYH9"                                                                                                      
- [97] "HSP90AB1"                                                                                                  
- [98] "LAPTM5"                                                                                                    
- [99] "APOB"                                                                                                      
-[100] "WDR43"                                                                                                     
-[101] "SNTB2"                                                                                                     
-[102] "BCLAF1"                                                                                                    
-[103] "DEGS1"                                                                                                     
-[104] "TBL3"                                                                                                      
-[105] "SAA1:SAA2"                                                                                                 
-[106] "GSTK1"                                                                                                     
-[107] "PTBP1"                                                                                                     
-[108] "SASH1"                                                                                                     
-[109] "RTCB"                                                                                                      
-[110] "DYNLRB1"                                                                                                   
-[111] "KRT14"                                                                                                     
-[112] "DEPP1"                                                                                                     
-[113] "PRPF40A"                                                                                                   
-[114] "DNMT1"                                                                                                     
-[115] "JCHAIN"                                                                                                    
-[116] "SPTBN1"                                                                                                    
-[117] "CYP3A4"                                                                                                    
-[118] "MYO1F"                                                                                                     
-[119] "CYP2C8"                                                                                                    
-[120] "CTNNB1"                                                                                                    
-[121] "PSMG2"                                                                                                     
-[122] "RCC2"                                                                                                      
-[123] "EFTUD2"                                                                                                    
-[124] "MT-CO2"                                                                                                    
-[125] "PLEC"                                                                                                      
-[126] "SNX1"                                                                                                      
-[127] "SIGLEC1"                                                                                                   
-[128] "HDAC5"                                                                                                     
-[129] "MYL2"                                                                                                      
-[130] "PPP1CB"                                                                                                    
-[131] "CP"                                                                                                        
-[132] "TAP1"                                                                                                      
-[133] "TBXAS1"                                                                                                    
-[134] "EPRS1"                                                                                                     
-[135] "ERBIN"                                                                                                     
-[136] "HSD17B4"                                                                                                   
-[137] "CALML4"                                                                                                    
-[138] "PIGS"                                                                                                      
-[139] "GPR155"                                                                                                    
-[140] "BZW1"                                                                                                      
-[141] "HLA-DPB1"                                                                                                  
-[142] "SREBF2"                                                                                                    
-[143] "MT-CO1"                                                                                                    
-[144] "DPYD"                                                                                                      
-[145] "SEC31A"                                                                                                    
-[146] "ATP6V0C"                                                                                                   
-[147] "RDX:MSN"                                                                                                   
-[148] "SRP68"                                                                                                     
-[149] "MYL6"                                                                                                      
-[150] "PDIA4"                                                                                                     
-[151] "FMO3"                                                                                                      
-[152] "GRK2"                                                                                                      
-[153] "CYP1B1"                                                                                                    
-[154] "ANKRD17"                                                                                                   
-[155] "NT5C3A"                                                                                                    
-[156] "AIF1"                                                                                                      
-[157] "PARP14"                                                                                                    
-[158] "MRPS17"                                                                                                    
-[159] "USP9X"                                                                                                     
-[160] "RPL7L1"                                                                                                    
-[161] "H2BC9:H2BC12L:H2BC14:H2BC4:H2BC5:H2BC12:H2BC15:H2BC18:H2BC13"                                              
-[162] "CLTCL1:CLTC"                                                                                               
-[163] "AKR1D1"                                                                                                    
-[164] "SIGLEC1"                                                                                                   
-[165] "APOC3"                                                                                                     
-[166] "DERL1"                                                                                                     
-[167] "BGN"                                                                                                       
-[168] "SELPLG"                                                                                                    
-[169] "BST1:SYNE2"                                                                                                
-[170] "FHIP2A"                                                                                                    
-[171] "NAIF1"                                                                                                     
-[172] "STAT1"                                                                                                     
-[173] "AKAP13"                                                                                                    
-[174] "KRT1"                                                                                                      
-[175] "KRT73:KRT71:KRT74"                                                                                         
-[176] "NRP2"                                                                                                      
-[177] "PPIL2"                                                                                                     
-[178] "MYH9"                                                                                                      
-[179] "RNF114"                                                                                                    
-[180] ""                                                                                                          
-[181] "C4A:C4B"                                                                                                   
-[182] "MYH9:MYH10:MYH11:MYH14"                                                                                    
-[183] "DNAJB14"                                                                                                   
-[184] "KBTBD7:KBTBD6"                                                                                             
-[185] "TAGLN2"                                                                                                    
-[186] "CAD"                                                                                                       
-[187] "ZNF526"                                                                                                    
-[188] "CCND3"                                                                                                     
-[189] "TLN1"                                                                                                      
-[190] ""                                                                                                          
-[191] "DNM2"                                                                                                      
-[192] "WIZ"                                                                                                       
-[193] "PLIN2"                                                                                                     
-[194] "HERPUD1"                                                                                                   
-[195] "IGLC2:IGLC3:IGLL5:IGLC1"                                                                                   
-[196] "FGFR2:FGR:MAK:CILK1:LCK:YES1:FYN:FGFR3:BLK:LYN:CDK20:FGFR4:HCK:FGFR1"                                      
-[197] "CDK6:CDK15:CDK4:CDK9:CDK13:CDK17:CDK12:CDK2:CDK3:CDK18:CDK14:CDK1:CDK16:CDK5"                              
-[198] "FGG"                                                                                                       
-[199] "PALM2AKAP2"                                                                                                
-[200] "CYP2C8:CYP2C18"                                                                                            
-[201] "SCP2"                                                                                                      
-[202] "FGB"                                                                                                       
-[203] "PLXND1"                                                                                                    
-[204] "VIM"                                                                                                       
-[205] "CEBPA"                                                                                                     
-[206] "EEF2"                                                                                                      
-[207] "TOMM5"                                                                                                     
-[208] "TRIP12"                                                                                                    
-[209] "CTNNA1:CTNNA2"                                                                                             
-[210] "NFE2"                                                                                                      
-[211] "SEPTIN2"                                                                                                   
-[212] "PPBP"                                                                                                      
-[213] "HP1BP3"                                                                                                    
-[214] "HLA-C"                                                                                                     
-[215] "IGHG3:IGHG1:IGHG2"                                                                                         
-[216] "RBBP4"                                                                                                     
-[217] "RAD23B"                                                                                                    
-[218] "H2AC1:H2AC11:H2AC14:H2AC21:H2AC4:H2AX:H2AC6:H2AC12:H2AJ:H2AC25:H2AC20:H2AC18:H2AC7"                        
-[219] "ARPC2"                                                                                                     
-[220] "NCOR2"                                                                                                     
-[221] "CRTAP"                                                                                                     
-[222] "LAMB3"                                                                                                     
-[223] "SPTBN1"                                                                                                    
-[224] "DPYD"                                                                                                      
-[225] "SERPINC1"                                                                                                  
-[226] "HMCES"                                                                                                     
-[227] "AOX1"                                                                                                      
-[228] "CPNE5:CPNE8:CPNE9"                                                                                         
-[229] "DAAM1"                                                                                                     
-[230] "KRT2"                                                                                                      
-[231] "PSMD4:PIPSL"                                                                                               
-[232] "PCBP2"                                                                                                     
-[233] "DNMT1"                                                                                                     
-[234] "MFSD12"                                                                                                    
-[235] "SERPINC1"                                                                                                  
-[236] "MPST"                                                                                                      
-[237] "IPO4"                                                                                                      
-[238] "ATXN3"                                                                                                     
-[239] "NUDT14"                                                                                                    
-[240] "API5"                                                                                                      
-[241] "YTHDF2"                                                                                                    
-[242] "RRBP1"                                                                                                     
-[243] "RTN4"                                                                                                      
-[244] "SIGLEC1"                                                                                                   
-[245] "SUPT4H1"                                                                                                   
-[246] "FHIP2A"                                                                                                    
-[247] "FHIP2B"                                                                                                    
-[248] "PSMA4"                                                                                                     
-[249] "ALB"                                                                                                       
-[250] "TUBB1"                                                                                                     
-[251] "TLN1"                                                                                                      
-[252] "FAM167B"                                                                                                   
-[253] "ITGA3"                                                                                                     
-[254] "HBA1"                                                                                                      
-[255] "KMT2C"                                                                                                     
-[256] "EEF2"                                                                                                      
-[257] "DYNC1H1"                                                                                                   
-[258] "TIMM23B:TIMM23"                                                                                            
-[259] "NCOR1"                                                                                                     
-[260] "CPT1A"                                                                                                     
-[261] "CYP2C18"                                                                                                   
-[262] "CYP2C19"                                                                                                   
-[263] "UBTF"                                                                                                      
-[264] "SMARCA5"                                                                                                   
-[265] "APOC2"                                                                                                     
-[266] "HDAC1:HDAC2"                                                                                               
-[267] "ITPR3"                                                                                                     
-[268] "HP:HPR"                                                                                                    
-[269] "ITIH4"                                                                                                     
-[270] "CDC5L"                                                                                                     
-[271] "HTRA1"                                                                                                     
-[272] "ACSL4"                                                                                                     
-[273] "PCNA"                                                                                                      
-[274] "KANK2"                                                                                                     
-[275] "TGOLN2"                                                                                                    
-[276] "PRAM1"                                                                                                     
-[277] "TIMCC"                                                                                                     
-[278] "SEC14L1"                                                                                                   
-[279] "MORF4L1"                                                                                                   
-[280] "ERH"                                                                                                       
-[281] "ATF6B"                                                                                                     
-[282] "UTP6"                                                                                                      
-[283] "SSPOP"                                                                                                     
-[284] "S100A8"                                                                                                    
-[285] "SRP9"                                                                                                      
-[286] "NBR1"                                                                                                      
-[287] "KRT10"                                                                                                     
-[288] "ARHGEF7"                                                                                                   
-[289] "H2BC17:H2BC1:H2BC14:H2BK1:H2BC5:H2BC12:H2BC26:H2BC9:H2BC3:H2BC12L:H2BC4:H2BC15:H2BC11:H2BC18:H2BC21:H2BC13"
-[290] "SH3D19"                                                                                                    
-[291] "XRCC5"                                                                                                     
-[292] "ACP5"                                                                                                      
-[293] "MANBA"                                                                                                     
-[294] "HLA-B"                                                                                                     
-[295] "HP1BP3"                                                                                                    
-[296] "ATP5MC2"                                                                                                   
-[297] "RPP38"                                                                                                     
-[298] "DDX21"                                                                                                     
-[299] "IRF3"                                                                                                      
-[300] "ERVK13-1"                                                                                                  
-[301] "GBE1"                                                                                                      
-[302] "IGHG2"                                                                                                     
-[303] "STK10"                                                                                                     
-[304] "NUMBL:NUMB"                                                                                                
-[305] "IPO8"                                                                                                      
-[306] "SMC4"                                                                                                      
-[307] "STAT1"                                                                                                     
-[308] "HTRA1"                                                                                                     
-[309] "ANXA11"                                                                                                    
-[310] "COL4A5"                                                                                                    
-[311] "HNRNPM"                                                                                                    
-[312] "AGR2"                                                                                                      
-[313] "CD93"                                                                                                      
-[314] "KRT2"                                                                                                      
-[315] "LGMN"                                                                                                      
-[316] "MBTPS1"                                                                                                    
-[317] "HLA-A:HLA-H"                                                                                               
-[318] "KRT14:KRT19:KRT28:KRT10:KRT17:KRT12:KRT16:KRT18"                                                           
-[319] "FLNA:FLNB"                                                                                                 
-[320] "APOC3"                                                                                                     
-[321] "APOC1"                                                                                                     
-[322] "HLA-B"                                                                                                     
-[323] "CIDEC"                                                                                                     
-[324] "ISG20"                                                                                                     
-[325] "KRT10"                                                                                                     
-[326] "KRT9"                                                                                                      
-[327] "TUBB4B:TUBB8:TUBB1:TUBB8B:TUBB4A"                                                                          
-[328] "EXOC1"                                                                                                     
-[329] "HLA-DRB5"                                                                                                  
-[330] ""                                                                                                          
-[331] "RAB20"                                                                                                     
-[332] "SPTAN1"                                                                                                    
-[333] "RTN3"                                                                                                      
-[334] "RTN1"                                                                                                      
-[335] "HSPA4"                                                                                                     
-[336] "CREB3L3"                                                                                                   
-[337] "RIN2"                                                                                                      
-[338] "SEPTIN11:SEPTIN6:SEPTIN8"                                                                                  
-[339] "SEPTIN14:SEPTIN7"                                                                                          
-[340] "HGS"                                                                                                       
-[341] ""                                                                                                          
-[342] ""                                                                                                          
-[343] "KRT1"                                                                                                      
-[344] "RANBP9"                                                                                                    
-[345] "KRT9"                                                                                                      
-[346] "CHD6"                                                                                                      
-[347] "PEBP1"                                                                                                     
-[348] "KRT6B:KRT1"                                                                                                
-[349] "TBCB"                                                                                                      
-[350] "GRIN2C"                                                                                                    
-[351] "IGFALS"                                                                                                    
-[352] "PFN3"                                                                                                      
-[353] "PFN1"                                                                                                      
-[354] "DNAAF5"                                                                                                    
-[355] "COPA"                                                                                                      
-[356] "HTRA1"                                                                                                     
-[357] "HERC5"                                                                                                     
-[358] "YES1:FYN:SRC"                                                                                              
-[359] "CNGB3"                                                                                                     
-[360] "ATP6V1B2"                                                                                                  
-[361] "NDUFC2"                                                                                                    
-[362] "SPG11"                                                                                                     
-[363] "CES2"                                                                                                      
-[364] "FYTTD1"                                                                                                    
-[365] "SEL1L"                                                                                                     
-[366] "FYTTD1"                                                                                                    
-[367] "MYO1C"                                                                                                     
-[368] "MUC17"                                                                                                     
-[369] "PCBP1"                                                                                                     
-[370] "ACVRL1"                                                                                                    
-[371] "ATG2A"                                                                                                     
-[372] "ENO1"                                                                                                      
-[373] "TNFAIP1"                                                                                                   
-[374] "CTNNB1"                                                                                                    
-[375] "MYH11"                                                                                                     
-[376] "MYH14"                                                                                                     
-[377] "ETS1"                                                                                                      
-[378] "SCRIB"                                                                                                     
-[379] "MYO16"                                                                                                     
-[380] "SLC45A1"                                                                                                   
-[381] "VPS13A"                                                                                                    
-[382] "CDK11A:CDK11B"                                                                                             
-[383] "IGHG3"                                                                                                     
-[384] "FBXO9"                                                                                                     
-[385] "IFI44"                                                                                                     
-[386] "STAU1"                                                                                                     
-[387] "ITPR1:ITPR2"                                                                                               
-[388] "WDR27"                                                                                                     
-[389] "TTN"                                                                                                       
-[390] "QKI"                                                                                                       
-[391] "DCD"                                                                                                       
-[392] "MUC5B"                                                                                                     
-[393] "HP"                                                                                                        
-[394] "TTN"                                                                                                       
-[395] "IGHG3:IGHG1:IGHG2"                                                                                         </code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert to entrez ids</span></span>
-<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>id_map <span class="ot">&lt;-</span> <span class="fu">bitr</span>(genes,</span>
-<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">fromType =</span> <span class="st">"SYMBOL"</span>,</span>
-<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">toType   =</span> <span class="st">"ENTREZID"</span>,</span>
-<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">OrgDb    =</span> org.Hs.eg.db)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>'select()' returned 1:1 mapping between keys and columns</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in bitr(genes, fromType = "SYMBOL", toType = "ENTREZID", OrgDb =
-org.Hs.eg.db): 12.9% of input gene IDs are fail to map...</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>id_map</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>        SYMBOL  ENTREZID
-1         APOB       338
-2       SLFN14    342618
-3         SAA4      6291
-5         C1QA       712
-7        IGHG1      3500
-8        HLA-C      3107
-9         SCP2      6342
-10      RNF213     57674
-11      TMED10     10972
-12         TTN      7273
-13          HP      3240
-15     PPP1R26      9858
-16        C1QC       714
-17       ACTN4        81
-18        MYH9      4627
-19        LMO4      8543
-20        ADD1       118
-22      CRYBG1       202
-23        PIGT     51604
-24     SEPTIN2      4735
-26       THBS4      7060
-27    HLA-DPB1      3115
-28       HLA-B      3106
-29      ERGIC3     51614
-30        MNDA      4332
-31       SRP72      6731
-32      TRIM21      6737
-33       CSDE1      7812
-34      CDKN1C      1028
-35      ANXA11       311
-36       ERP29     10961
-37         CLU      1191
-38      JCHAIN      3512
-39        CLTC      1213
-40       G3BP2      9908
-41     IGKV4-1     28908
-42      SELPLG      6404
-43       SYNE1     23345
-45       MYO16     23026
-46       LIMA1     51474
-47       SRP68      6730
-48       UBAC2    337867
-50       LAS1L     81887
-53       PLRG1      5356
-54    IGKV3-20     28912
-55       DHRS3      9249
-56      TRIM25      7706
-57         ELN      2006
-58        HES1      3280
-59         VIM      7431
-60        GNB5     10681
-61      POLR2L      5441
-62     TRPC4AP     26133
-64       HMOX1      3162
-65        RLIM     51132
-66         PAH      5053
-67      FAM32A     26017
-68        SUN2     25777
-69      IGFBP7      3490
-70       HBEGF      1839
-71       STAT3      6774
-72          C3       718
-73         OS9     10956
-74      SCAND1     51282
-75        HBA1      3039
-76       HTRA1      5654
-77        HAAO     23498
-78       MMRN2     79812
-79        FLNA      2316
-80        SDC4      6385
-81       MS4A1       931
-83       ACSL4      2182
-84      LRRC8C     84230
-86         FBL      2091
-87      SEC11C     90701
-88       RAMP2     10266
-89       GFPT1      2673
-90    HSP90AB1      3326
-91      LAPTM5      7805
-92       WDR43     23160
-93       SNTB2      6645
-94      BCLAF1      9774
-95       DEGS1      8560
-96        TBL3     10607
-98       GSTK1    373156
-99       PTBP1      5725
-100      SASH1     23328
-101       RTCB     51493
-102    DYNLRB1     83658
-103      KRT14      3861
-104      DEPP1     11067
-105    PRPF40A     55660
-106      DNMT1      1786
-107     SPTBN1      6711
-108     CYP3A4      1576
-109      MYO1F      4542
-110     CYP2C8      1558
-111     CTNNB1      1499
-112      PSMG2     56984
-113       RCC2     55920
-114     EFTUD2      9343
-115     MT-CO2      4513
-116       PLEC      5339
-117       SNX1      6642
-118    SIGLEC1      6614
-119      HDAC5     10014
-120       MYL2      4633
-121     PPP1CB      5500
-122         CP      1356
-123       TAP1      6890
-124     TBXAS1      6916
-125      EPRS1      2058
-126      ERBIN     55914
-127    HSD17B4      3295
-128     CALML4     91860
-129       PIGS     94005
-130     GPR155    151556
-131       BZW1      9689
-132     SREBF2      6721
-133     MT-CO1      4512
-134       DPYD      1806
-135     SEC31A     22872
-136    ATP6V0C       527
-138       MYL6      4637
-139      PDIA4      9601
-140       FMO3      2328
-141       GRK2       156
-142     CYP1B1      1545
-143    ANKRD17     26057
-144     NT5C3A     51251
-145       AIF1       199
-146     PARP14     54625
-147     MRPS17     51373
-148      USP9X      8239
-149     RPL7L1    285855
-152     AKR1D1      6718
-153      APOC3       345
-154      DERL1     79139
-155        BGN       633
-156     FHIP2A     57700
-157      NAIF1    203245
-158      STAT1      6772
-159     AKAP13     11214
-160       KRT1      3848
-162       NRP2      8828
-163      PPIL2     23759
-164     RNF114     55905
-167    DNAJB14     79982
-169     TAGLN2      8407
-170        CAD       790
-171     ZNF526    116115
-172      CCND3       896
-173       TLN1      7094
-174       DNM2      1785
-175        WIZ     58525
-176      PLIN2       123
-177    HERPUD1      9709
-181        FGG      2266
-182 PALM2AKAP2    445815
-184        FGB      2244
-185     PLXND1     23129
-186      CEBPA      1050
-187       EEF2      1938
-188      TOMM5    401505
-189     TRIP12      9320
-191       NFE2      4778
-192       PPBP      5473
-193     HP1BP3     50809
-195      RBBP4      5928
-196     RAD23B      5887
-198      ARPC2     10109
-199      NCOR2      9612
-200      CRTAP     10491
-201      LAMB3      3914
-202   SERPINC1       462
-203      HMCES     56941
-204       AOX1       316
-206      DAAM1     23002
-207       KRT2      3849
-209      PCBP2      5094
-210     MFSD12    126321
-211       MPST      4357
-212       IPO4     79711
-213      ATXN3      4287
-214     NUDT14    256281
-215       API5      8539
-216     YTHDF2     51441
-217      RRBP1      6238
-218       RTN4     57142
-219    SUPT4H1      6827
-220     FHIP2B     64760
-221      PSMA4      5685
-222        ALB       213
-223      TUBB1     81027
-224    FAM167B     84734
-225      ITGA3      3675
-226      KMT2C     58508
-227    DYNC1H1      1778
-229      NCOR1      9611
-230      CPT1A      1374
-231    CYP2C18      1562
-232    CYP2C19      1557
-233       UBTF      7343
-234    SMARCA5      8467
-235      APOC2       344
-237      ITPR3      3710
-239      ITIH4      3700
-240      CDC5L       988
-241       PCNA      5111
-242      KANK2     25959
-243     TGOLN2     10618
-244      PRAM1     84106
-245      TIMCC     84908
-246    SEC14L1      6397
-247    MORF4L1     10933
-248        ERH      2079
-249      ATF6B      1388
-250       UTP6     55813
-251      SSPOP     23145
-252     S100A8      6279
-253       SRP9      6726
-254       NBR1      4077
-255      KRT10      3858
-256    ARHGEF7      8874
-258     SH3D19    152503
-259      XRCC5      7520
-260       ACP5        54
-261      MANBA      4126
-262    ATP5MC2       517
-263      RPP38     10557
-264      DDX21      9188
-265       IRF3      3661
-266   ERVK13-1 100507321
-267       GBE1      2632
-268      IGHG2      3501
-269      STK10      6793
-271       IPO8     10526
-272       SMC4     10051
-273     COL4A5      1287
-274     HNRNPM      4670
-275       AGR2     10551
-276       CD93     22918
-277       LGMN      5641
-278     MBTPS1      8720
-282      APOC1       341
-283      CIDEC     63924
-284      ISG20      3669
-285       KRT9      3857
-287      EXOC1     55763
-288   HLA-DRB5      3127
-289      RAB20     55647
-290     SPTAN1      6709
-291       RTN3     10313
-292       RTN1      6252
-293      HSPA4      3308
-294    CREB3L3     84699
-295       RIN2     54453
-298        HGS      9146
-299     RANBP9     10048
-300       CHD6     84181
-301      PEBP1      5037
-303       TBCB      1155
-304     GRIN2C      2905
-305     IGFALS      3483
-306       PFN3    345456
-307       PFN1      5216
-308     DNAAF5     54919
-309       COPA      1314
-310      HERC5     51191
-312      CNGB3     54714
-313   ATP6V1B2       526
-314     NDUFC2      4718
-315      SPG11     80208
-316       CES2      8824
-317     FYTTD1     84248
-318      SEL1L      6400
-319      MYO1C      4641
-320      MUC17    140453
-321      PCBP1      5093
-322     ACVRL1        94
-323      ATG2A     23130
-324       ENO1      2023
-325    TNFAIP1      7126
-326      MYH11      4629
-327      MYH14     79784
-328       ETS1      2113
-329      SCRIB     23513
-330    SLC45A1     50651
-331     VPS13A     23230
-333      IGHG3      3502
-334      FBXO9     26268
-335      IFI44     10561
-336      STAU1      6780
-338      WDR27    253769
-339        QKI      9444
-340        DCD    117159
-341      MUC5B    727897</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run enrichmnet analysis</span></span>
-<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>go_enrich <span class="ot">&lt;-</span> <span class="fu">enrichGO</span>(<span class="at">gene          =</span> id_map<span class="sc">$</span>ENTREZID,</span>
-<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">OrgDb         =</span> org.Hs.eg.db,</span>
-<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">keyType       =</span> <span class="st">"ENTREZID"</span>,</span>
-<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">ont           =</span> <span class="st">"ALL"</span>,</span>
-<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">pAdjustMethod =</span> <span class="st">"BH"</span>,</span>
-<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">pvalueCutoff  =</span> <span class="fl">0.05</span>,</span>
-<span id="cb76-8"><a href="#cb76-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">qvalueCutoff  =</span> <span class="fl">0.2</span>,</span>
-<span id="cb76-9"><a href="#cb76-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">readable      =</span> <span class="cn">TRUE</span>)  </span>
-<span id="cb76-10"><a href="#cb76-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb76-11"><a href="#cb76-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">as.data.frame</span>(go_enrich))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>           ONTOLOGY         ID
-GO:0035966       BP GO:0035966
-GO:0034976       BP GO:0034976
-GO:0006958       BP GO:0006958
-GO:0006986       BP GO:0006986
-GO:0002455       BP GO:0002455
-GO:0006356       BP GO:0006356
-                                                              Description
-GO:0035966                    response to topologically incorrect protein
-GO:0034976                       response to endoplasmic reticulum stress
-GO:0006958                       complement activation, classical pathway
-GO:0006986                                   response to unfolded protein
-GO:0002455 humoral immune response mediated by circulating immunoglobulin
-GO:0006356                regulation of transcription by RNA polymerase I
-           GeneRatio   BgRatio RichFactor FoldEnrichment   zScore       pvalue
-GO:0035966    15/287 161/18842 0.09316770       6.116606 8.108813 2.580537e-08
-GO:0034976    18/287 269/18842 0.06691450       4.393042 6.970866 1.762684e-07
-GO:0006958     7/287  39/18842 0.17948718      11.783615 8.383889 1.791623e-06
-GO:0006986    12/287 145/18842 0.08275862       5.433233 6.664707 2.314093e-06
-GO:0002455     7/287  44/18842 0.15909091      10.444568 7.800367 4.182451e-06
-GO:0006356     7/287  45/18842 0.15555556      10.212466 7.694853 4.888886e-06
-               p.adjust       qvalue
-GO:0035966 8.791888e-05 6.787694e-06
-GO:0034976 3.002733e-04 2.318231e-05
-GO:0006958 1.971029e-03 1.521714e-04
-GO:0006986 1.971029e-03 1.521714e-04
-GO:0002455 2.518499e-03 1.944383e-04
-GO:0006356 2.518499e-03 1.944383e-04
-                                                                                                               geneID
-GO:0035966              THBS4/HSP90AB1/OS9/STAT3/CLU/ATXN3/MBTPS1/CREB3L3/HSPA4/RTCB/AGR2/HERPUD1/ATF6B/DERL1/DNAJB14
-GO:0034976 THBS4/ERP29/OS9/STAT3/CLU/ATXN3/MBTPS1/PDIA4/EEF2/TRIM25/CREB3L3/RTCB/AGR2/HERPUD1/ATF6B/SEL1L/DERL1/UBAC2
-GO:0006958                                                                         C3/C1QC/CLU/C1QA/IGHG3/IGHG2/IGHG1
-GO:0006986                                THBS4/HSP90AB1/OS9/STAT3/MBTPS1/CREB3L3/HSPA4/RTCB/AGR2/HERPUD1/ATF6B/DERL1
-GO:0002455                                                                         C3/C1QC/CLU/C1QA/IGHG3/IGHG2/IGHG1
-GO:0006356                                                                 SMARCA5/DDX21/UBTF/WDR43/POLR2L/MYO1C/FLNA
-           Count
-GO:0035966    15
-GO:0034976    18
-GO:0006958     7
-GO:0006986    12
-GO:0002455     7
-GO:0006356     7</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run KEGG pathway analysis</span></span>
-<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>kegg_enrich <span class="ot">&lt;-</span> <span class="fu">enrichKEGG</span>(<span class="at">gene =</span> id_map<span class="sc">$</span>ENTREZID, </span>
-<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">organism =</span> <span class="st">"hsa"</span>, </span>
-<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Reading KEGG annotation online: "https://rest.kegg.jp/link/hsa/pathway"...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Reading KEGG annotation online: "https://rest.kegg.jp/list/pathway/hsa"...</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">as.data.frame</span>(kegg_enrich))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>                                     category
-hsa04820                   Cellular Processes
-hsa05150                       Human Diseases
-hsa04141       Genetic Information Processing
-hsa04518 Environmental Information Processing
-hsa04612                   Organismal Systems
-hsa03273       Genetic Information Processing
-                                 subcategory       ID
-hsa04820                       Cell motility hsa04820
-hsa05150       Infectious disease: bacterial hsa05150
-hsa04141    Folding, sorting and degradation hsa04141
-hsa04518 Signaling molecules and interaction hsa04518
-hsa04612                       Immune system hsa04612
-hsa03273   Information processing in viruses hsa03273
-                                         Description GeneRatio  BgRatio
-hsa04820                Cytoskeleton in muscle cells    21/200 233/9420
-hsa05150             Staphylococcus aureus infection    10/200  99/9420
-hsa04141 Protein processing in endoplasmic reticulum    13/200 175/9420
-hsa04518                          Integrin signaling    12/200 154/9420
-hsa04612         Antigen processing and presentation     8/200  82/9420
-hsa03273         Virion - Lassa virus and SFTS virus     4/200  17/9420
-         RichFactor FoldEnrichment   zScore       pvalue     p.adjust
-hsa04820 0.09012876       4.245064 7.386970 2.026926e-08 5.756469e-06
-hsa05150 0.10101010       4.757576 5.535362 4.480865e-05 6.362829e-03
-hsa04141 0.07428571       3.498857 4.914269 8.682733e-05 7.329657e-03
-hsa04518 0.07792208       3.670130 4.920379 1.032346e-04 7.329657e-03
-hsa04612 0.09756098       4.595122 4.815546 3.332515e-04 1.700312e-02
-hsa03273 0.23529412      11.082353 6.127807 3.777600e-04 1.700312e-02
-               qvalue
-hsa04820 3.224457e-06
-hsa05150 3.564106e-03
-hsa04141 4.105670e-03
-hsa04518 4.105670e-03
-hsa04612 9.524213e-03
-hsa03273 9.524213e-03
-                                                                                                              geneID
-hsa04820 7060/7273/79784/6385/4633/2023/7431/1287/6711/4627/5339/2006/23002/4629/7094/6645/23345/3675/633/25777/6709
-hsa05150                                                              2266/3858/718/3115/714/6404/712/3861/3127/3857
-hsa04141                                        5887/6238/3326/22872/10961/10956/4287/8720/9601/9709/1388/6400/79139
-hsa04518                                                     7060/2266/896/718/1499/3914/1287/2244/7094/3675/81/2316
-hsa04612                                                                     3326/3107/3115/3106/3308/6890/3127/5641
-hsa03273                                                                                        79784/4627/4629/8828
-         Count
-hsa04820    21
-hsa05150    10
-hsa04141    13
-hsa04518    12
-hsa04612     8
-hsa03273     4</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run reactome analysis</span></span>
-<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>reactome_enrich <span class="ot">&lt;-</span> <span class="fu">enrichPathway</span>(<span class="at">gene         =</span> id_map<span class="sc">$</span>ENTREZID,</span>
-<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">organism     =</span> <span class="st">"human"</span>,</span>
-<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>,</span>
-<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">readable     =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-7"><a href="#cb83-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-8"><a href="#cb83-8" aria-hidden="true" tabindex="-1"></a><span class="fu">dotplot</span>(go_enrich, <span class="at">showCategory =</span> <span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use enrichplot barplot to show Kegg pathways with most significant </span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(kegg_enrich, <span class="at">showCategory =</span> <span class="dv">15</span>) <span class="sc">+</span> </span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Kegg Pathways from Cluster Profiler"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(kegg_enrich, <span class="at">showCategory =</span> <span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>GO Terms From Cluster Profiler for Most Intense Peptides</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># change fig size</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create plot variable</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>dot_cluster <span class="ot">&lt;-</span> <span class="fu">dotplot</span>(go_enrich, <span class="at">showCategory =</span> <span class="dv">15</span>, <span class="at">title=</span><span class="st">"Dot Plot GO Terms Most Intense From Cluster Profiler"</span>, <span class="at">font.size =</span> <span class="dv">12</span>) </span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co"># display dot plot of GO terms</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>dot_cluster </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-15-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cnetplot</span>(go_enrich, <span class="at">showCategory =</span> <span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save plot</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>dot_cluster <span class="sc">|&gt;</span>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/dot_cluster.png"</span>, <span class="at">width =</span> <span class="dv">7</span>, <span class="at">height =</span> <span class="dv">9</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>CNet Plot from Cluster Profiler for Most Intense Peptides</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create plot variable</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>cnet_cluster <span class="ot">&lt;-</span> <span class="fu">cnetplot</span>(go_enrich, <span class="at">showCategory =</span> <span class="dv">15</span>) <span class="sc">+</span> </span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"CNET Plot From Cluster Profiler"</span>)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="co"># display plot</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>cnet_cluster</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-15-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save plot</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>cnet_cluster <span class="sc">|&gt;</span> <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/cnet_cluster.png"</span>, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="conclusions" class="level2">
 <h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
 <ul>
-<li>Originally ~2000 peptides were identified, but upon filtering them down</li>
+<li>Originally ~2000 peptides were identified, but upon filtering them down there were really only 395 confidently identified peptides that matched documented human database genes/proteins</li>
+<li>No well-documented COVID-19 peptides were able to be identified</li>
+<li></li>
 </ul>
 
 
