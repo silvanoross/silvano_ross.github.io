@@ -20,7 +20,7 @@ website: # website navigation bar, on top bar of profile
         href: projects.qmd
       - icon: github
         text: "GitHub"
-        href: https://github.com/your-username # update to your actual GitHub profile
+        href: https://github.com/silvanoross # update to your actual GitHub profile
       # add more pages by copying these icon, called bootstrap icons
       # google bootstrap icons and add to icon holder, keep adding tabs
       # if you have publications tab, or posters
