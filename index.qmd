@@ -36,7 +36,7 @@ I'm interested in understanding how soluble HLA molecules present peptides in th
 
 Check out my **Projects** page to see my final report and other work!
 
-[Projects Link](projects.qmd)
+[Projects Link](/projects.qmd)
 
 ---
 

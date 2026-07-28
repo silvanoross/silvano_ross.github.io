@@ -5,19 +5,18 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
-  background-color: #faf5ea;
 }
 
 /* Headings — warm-to-cool gradient across the hierarchy for visual rhythm */
 h1 {
-  color: #4e3523; /* burnt terracotta */
+  color: #c1440e; /* burnt terracotta */
   margin-top: 1.5em;
   font-weight: 700;
   letter-spacing: -0.01em;
 }
 
 h2 {
-  color: #bc662d; /* warm amber */
+  color: #d4923a; /* warm amber */
   margin-top: 1.5em;
   font-weight: 600;
   border-bottom: 2px solid #f0d9b5;
@@ -25,7 +24,7 @@ h2 {
 }
 
 h3 {
-  color: #e9ba89; /* muted teal */
+  color: #2f8f8f; /* muted teal */
   margin-top: 1.5em;
   font-weight: 600;
 }
@@ -52,16 +51,16 @@ a:hover {
 
 /* Code blocks */
 code {
-  background-color: #d09d84;
-  color: #6e584e;
+  background-color: #f4ede1;
+  color: #7a4fb5;
   padding: 0.2em 0.45em;
   border-radius: 3px;
   font-size: 0.9em;
 }
 
 pre {
-  background-color: #ead4cc;
-  color: #784130;
+  background-color: #2b2420;
+  color: #f0e6d6;
   padding: 1em;
   border-radius: 6px;
   overflow-x: auto;

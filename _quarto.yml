@@ -5,6 +5,10 @@ project:
 
 website: # website navigation bar, on top bar of profile
   title: "My Research Profile"
+  site-url: "https://your-username.github.io/your-repo" # update to your actual site URL
+  description: "Research profile and project portfolio" # shows up in link previews / SEO
+  favicon: favicon.ico # optional: add a favicon.ico file to your project root
+  page-footer: "© 2026 My Research Profile | Built with Quarto"
   navbar: # navigation bar breakdown
     search: false
     right: # on right side of website, and leads to index which is landing page
@@ -16,7 +20,7 @@ website: # website navigation bar, on top bar of profile
         href: projects.qmd
       - icon: github
         text: "GitHub"
-        href: https://github.com
+        href: https://github.com/your-username # update to your actual GitHub profile
       # add more pages by copying these icon, called bootstrap icons
       # google bootstrap icons and add to icon holder, keep adding tabs
       # if you have publications tab, or posters
@@ -26,11 +30,10 @@ format: # output and styling section, aesthetics
   html:
     theme: sandstone
     toc: true
-    css: styles.css
+    css: styles.css # make sure your CSS file is named/saved as styles.css
     code-overflow: wrap
-    footer: "© 2026 My Research Profile | Built with Quarto"
+    open-graph: true # nicer link previews when shared on Slack/Twitter/LinkedIn
 
-editor: source # could be visual for default, 
-
+editor: source # could be visual for default,
 execute:
-  freeze: auto # only if codebocks that have changed from last render will be run
+  freeze: auto # only if codeblocks that have changed from last render will be run
