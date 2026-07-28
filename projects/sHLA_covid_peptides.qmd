@@ -209,7 +209,7 @@ enriched <- enrichr(top_area_genes$Gene, dbs)
 
 ### Top 15 Most Abundant Peptides in COVID Sample
 
-####Kegg Pathways for Abundant Peptides
+#### Kegg Pathways for Abundant Peptides
 
 ```{r, fig.width=8, fig.height=6}
 # view kegg pathways of enriched df
