@@ -30,7 +30,7 @@ format: # output and styling section, aesthetics
   html:
     theme: sandstone
     toc: true
-    css: profile_style.css # make sure your CSS file is named/saved as styles.css
+    css: styles.css # make sure your CSS file is named/saved as styles.css
     code-overflow: wrap
     open-graph: true # nicer link previews when shared on Slack/Twitter/LinkedIn
 
