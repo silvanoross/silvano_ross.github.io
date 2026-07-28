@@ -1,4 +1,5 @@
 /* Custom styles for student research profile */
+/* Chromatic palette layered on top of the Sandstone theme's warm neutrals */
 
 /* Main content styling */
 body {
@@ -6,43 +7,70 @@ body {
   line-height: 1.6;
 }
 
-/* Headings */
+/* Headings — warm-to-cool gradient across the hierarchy for visual rhythm */
 h1 {
-  color: #2c3e50, ;
+  color: #c1440e; /* burnt terracotta */
   margin-top: 1.5em;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
+
 h2 {
-  color: #4287f5, ;
+  color: #d4923a; /* warm amber */
   margin-top: 1.5em;
+  font-weight: 600;
+  border-bottom: 2px solid #f0d9b5;
+  padding-bottom: 0.2em;
 }
+
 h3 {
-  color: #7823d9, ;
+  color: #2f8f8f; /* muted teal */
   margin-top: 1.5em;
+  font-weight: 600;
+}
+
+h4, h5, h6 {
+  color: #7a4fb5; /* soft plum, closes out the gradient */
+  margin-top: 1.2em;
+  font-weight: 600;
 }
 
 /* Links */
 a {
-  color: #3498db;
+  color: #2f8f8f;
   text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s ease, color 0.15s ease;
 }
 
 a:hover {
-  text-decoration: underline;
-  color: #2980b9;
+  color: #c1440e;
+  border-bottom-color: currentColor;
+  text-decoration: none;
 }
 
 /* Code blocks */
 code {
-  background-color: #f4f4f4;
-  padding: 0.2em 0.4em;
+  background-color: #f4ede1;
+  color: #7a4fb5;
+  padding: 0.2em 0.45em;
   border-radius: 3px;
+  font-size: 0.9em;
 }
 
 pre {
-  background-color: #f7edba;
+  background-color: #2b2420;
+  color: #f0e6d6;
   padding: 1em;
-  border-radius: 5px;
+  border-radius: 6px;
   overflow-x: auto;
+  border-left: 4px solid #d4923a;
+}
+
+pre code {
+  background-color: transparent;
+  color: inherit;
+  padding: 0;
 }
 
 /* Tables */
@@ -54,25 +82,33 @@ table {
 
 table th,
 table td {
-  border: 1px solid #ddd;
+  border: 1px solid #e6dcc8;
   padding: 0.75em;
   text-align: left;
 }
 
 table th {
-  background-color: #ecf0f1;
+  background-color: #2f8f8f;
+  color: #ffffff;
   font-weight: bold;
 }
 
+table tr:nth-child(even) {
+  background-color: #faf5ea;
+}
+
 table tr:hover {
-  background-color: #f9f9f9;
+  background-color: #f0d9b5;
+  transition: background-color 0.15s ease;
 }
 
 /* Blockquotes */
 blockquote {
-  border-left: 4px solid #3498db;
-  padding-left: 1em;
-  color: #666;
+  border-left: 4px solid #c1440e;
+  background-color: #fdf6ec;
+  padding: 0.6em 1em;
+  color: #5a4a3a;
   font-style: italic;
   margin: 1em 0;
+  border-radius: 0 4px 4px 0;
 }

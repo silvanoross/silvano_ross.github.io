@@ -4,28 +4,28 @@
     "href": "index.html",
     "title": "Silvano Ross",
     "section": "",
-    "text": "Welcome to my research profile website. I’m a student in the Intro to Reproducible Data Analysis Using R course.\n\n\nReplace this section with information about yourself:\n\nName: Silvano Ross\nInstitution: The University of Oklahoma\nResearch Interests: Immunopeptidomics\nEmail: silvano-ross@ou.edu\n\n\n\n\nI’m interested in understanding how soluble HLA molecules present peptides in the context of disease. Through this course, I’ve learned how to:\n\nUse R for data analysis\nCreate reproducible research workflows\nBuild websites to share my work\nManage my research projects with Git and GitHub\n\n\n\n\nThis site showcases my research and projects. Check out my Projects page to see my final report and other work!\nProjects Link\nAs my research progresses, I’ll continue adding:\n\nPublications\nConference posters\nNew analyses and projects\nAdditional resources\n\n\nKeep exploring! Navigate using the menu above."
+    "text": "Welcome to my research profile website. I’m a student in the Intro to Reproducible Data Analysis Using R course. Lindsay and Eleana are awesome!\n\n\n\nName: Silvano Ross\nInstitution: The University of Oklahoma\nResearch Interests: Immunopeptidomics\nEmail: silvano-ross@ou.edu\n\n\n\n\nI’m interested in understanding how soluble HLA molecules present peptides in the context of different diseases ie cancer, autoimmunity, viral infection, and bacterial infection. Through this course, I’ve learned how to:\n\nUse R for data analysis\nCreate reproducible research workflows\nBuild websites to share my work\nManage my research projects with Git and GitHub\n\n\n\n\nCheck out my Projects page to see my final report and other work!\nProjects Link\n\nKeep exploring! Navigate using the menu above."
   },
   {
     "objectID": "index.html#about-me",
     "href": "index.html#about-me",
     "title": "Silvano Ross",
     "section": "",
-    "text": "Replace this section with information about yourself:\n\nName: Silvano Ross\nInstitution: The University of Oklahoma\nResearch Interests: Immunopeptidomics\nEmail: silvano-ross@ou.edu"
+    "text": "Name: Silvano Ross\nInstitution: The University of Oklahoma\nResearch Interests: Immunopeptidomics\nEmail: silvano-ross@ou.edu"
   },
   {
     "objectID": "index.html#my-research",
     "href": "index.html#my-research",
     "title": "Silvano Ross",
     "section": "",
-    "text": "I’m interested in understanding how soluble HLA molecules present peptides in the context of disease. Through this course, I’ve learned how to:\n\nUse R for data analysis\nCreate reproducible research workflows\nBuild websites to share my work\nManage my research projects with Git and GitHub"
+    "text": "I’m interested in understanding how soluble HLA molecules present peptides in the context of different diseases ie cancer, autoimmunity, viral infection, and bacterial infection. Through this course, I’ve learned how to:\n\nUse R for data analysis\nCreate reproducible research workflows\nBuild websites to share my work\nManage my research projects with Git and GitHub"
   },
   {
     "objectID": "index.html#this-website",
     "href": "index.html#this-website",
     "title": "Silvano Ross",
     "section": "",
-    "text": "This site showcases my research and projects. Check out my Projects page to see my final report and other work!\nProjects Link\nAs my research progresses, I’ll continue adding:\n\nPublications\nConference posters\nNew analyses and projects\nAdditional resources\n\n\nKeep exploring! Navigate using the menu above."
+    "text": "Check out my Projects page to see my final report and other work!\nProjects Link\n\nKeep exploring! Navigate using the menu above."
   },
   {
     "objectID": "projects/posters.html",

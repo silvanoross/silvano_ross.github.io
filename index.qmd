@@ -14,11 +14,9 @@ about:
 ::: columnpage
 # Greetings fellow scientists!
 
-Welcome to my research profile website. I'm a student in the Intro to Reproducible Data Analysis Using R course.
+Welcome to my research profile website. I'm a student in the Intro to Reproducible Data Analysis Using R course. Lindsay and Eleana are awesome!
 
 ## About Me
-
-Replace this section with information about yourself:
 
 - **Name:** Silvano Ross
 - **Institution:** The University of Oklahoma
@@ -27,7 +25,7 @@ Replace this section with information about yourself:
 
 ## My Research
 
-I'm interested in understanding how soluble HLA molecules present peptides in the context of disease. Through this course, I've learned how to:
+I'm interested in understanding how soluble HLA molecules present peptides in the context of different diseases ie cancer, autoimmunity, viral infection, and bacterial infection. Through this course, I've learned how to:
 
 - Use R for data analysis
 - Create reproducible research workflows
@@ -36,18 +34,11 @@ I'm interested in understanding how soluble HLA molecules present peptides in th
 
 ## This Website
 
-This site showcases my research and projects. Check out my **Projects** page to see my final report and other work!
+Check out my **Projects** page to see my final report and other work!
 
 [Projects Link](projects.qmd)
 
-As my research progresses, I'll continue adding:
-
-- Publications
-- Conference posters
-- New analyses and projects
-- Additional resources
-
-------------------------------------------------------------------------
+---
 
 **Keep exploring!** Navigate using the menu above.
 :::
