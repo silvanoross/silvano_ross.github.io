@@ -209,7 +209,7 @@ enriched <- enrichr(top_area_genes$Gene, dbs)
 
 ### Top 15 Most Abundant Peptides in COVID Sample
 
-1.  Kegg Pathways for Abundant Peptides
+####Kegg Pathways for Abundant Peptides
 
 ```{r, fig.width=8, fig.height=6}
 # view kegg pathways of enriched df
@@ -240,7 +240,7 @@ kegg_abundant |>
   ggsave(filename = "plots/kegg_abundant.png", width = 8, height = 6, dpi = 300)
 ```
 
-2.  Reactomes
+#### Reactomes for Most Abundant Peptides
 
 ```{r, fig.width=10, fig.height=8}
 # Assuming your enrichR result for KEGG is called enrichr_kegg
@@ -267,7 +267,7 @@ reactome_abundant |>
 
 ```
 
-3.  Gene Ontology Terms for Abundant Peptides
+#### Gene Ontology Terms for Abundant Peptides
 
 ```{r, fig.width=10, fig.height=8}
 head(plot_df)
@@ -317,7 +317,7 @@ dbs <- c("GO_Biological_Process_2023", "KEGG_2021_Human", "Reactome_2022")
 enriched <- enrichr(top_area_genes$Gene, dbs)
 ```
 
-1.  KEGG Pathways for Most Intense Peptides
+#### KEGG Pathways for Most Intense Peptides
 
 ```{r}
 # make plot variable
@@ -346,7 +346,7 @@ kegg_intense |>
   ggsave(filename = "plots/kegg_intense.png", width = 8, height = 6, dpi = 300)
 ```
 
-2.  Reactome for Most Intense Peptides
+#### Reactome for Most Intense Peptides
 
 ```{r, fig.width=10, fig.height=8}
 # create the reactome df
@@ -377,7 +377,7 @@ reactome_plot |>
 
 ```
 
-3.  Gene Ontology Terms for Most Intense Peptides
+#### Gene Ontology Terms for Most Intense Peptides
 
 ```{r}
 # create GO df 
@@ -456,7 +456,7 @@ reactome_enrich <- enrichPathway(gene         = id_map$ENTREZID,
 
 ```
 
-Kegg Pathways From Cluster Profiler for Most Intense Peptides
+#### Kegg Pathways From Cluster Profiler for Most Intense Peptides
 
 ```{r}
 # use enrichplot barplot to show Kegg pathways with most significant 
@@ -465,7 +465,7 @@ barplot(kegg_enrich, showCategory = 15) +
   
 ```
 
-GO Terms From Cluster Profiler for Most Intense Peptides
+#### GO Terms From Cluster Profiler for Most Intense Peptides
 
 ```{r, fig.width=7, fig.height=8}
 # change fig size
@@ -481,7 +481,7 @@ dot_cluster |>  ggsave(filename = "plots/dot_cluster.png", width = 7, height = 9
 
 ```
 
-CNet Plot from Cluster Profiler for Most Intense Peptides
+#### CNet Plot from Cluster Profiler for Most Intense Peptides
 
 ```{r, fig.width=10, fig.height=8}
 

@@ -5,7 +5,7 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
-  background-color: #faf5ea;
+  background-color: #f2eee3;
 }
 
 /* Headings — warm-to-cool gradient across the hierarchy for visual rhythm */
@@ -30,15 +30,21 @@ h3 {
   font-weight: 600;
 }
 
-h4, h5, h6 {
-  color: #7a4fb5; /* soft plum, closes out the gradient */
+h4{
+  color: #5f6f62; /* soft plum, closes out the gradient */
+  margin-top: 1.2em;
+  font-weight: 600;
+}
+
+h5, h6 {
+  color: #c9d7d8; /* soft plum, closes out the gradient */
   margin-top: 1.2em;
   font-weight: 600;
 }
 
 /* Links */
 a {
-  color: #2f8f8f;
+  color: #9b9a86;
   text-decoration: none;
   border-bottom: 1px solid transparent;
   transition: border-color 0.15s ease, color 0.15s ease;
@@ -89,7 +95,7 @@ table td {
 }
 
 table th {
-  background-color: #2f8f8f;
+  background-color: #54786f;
   color: #ffffff;
   font-weight: bold;
 }

@@ -460,9 +460,7 @@ Parsing results... Done.</code></pre>
 </div>
 <section id="top-15-most-abundant-peptides-in-covid-sample" class="level3">
 <h3 class="anchored" data-anchor-id="top-15-most-abundant-peptides-in-covid-sample">Top 15 Most Abundant Peptides in COVID Sample</h3>
-<ol type="1">
-<li>Kegg Pathways for Abundant Peptides</li>
-</ol>
+<p>####Kegg Pathways for Abundant Peptides</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view kegg pathways of enriched df</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
@@ -497,9 +495,8 @@ Parsing results... Done.</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>kegg_abundant <span class="sc">|&gt;</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/kegg_abundant.png"</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<ol start="2" type="1">
-<li>Reactomes</li>
-</ol>
+<section id="reactomes-for-most-abundant-peptides" class="level4">
+<h4 class="anchored" data-anchor-id="reactomes-for-most-abundant-peptides">Reactomes for Most Abundant Peptides</h4>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming your enrichR result for KEGG is called enrichr_kegg</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> enriched<span class="sc">$</span>Reactome_2022 <span class="sc">|&gt;</span></span>
@@ -529,9 +526,9 @@ Parsing results... Done.</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>reactome_abundant <span class="sc">|&gt;</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/reactome_abundant.png"</span>, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<ol start="3" type="1">
-<li>Gene Ontology Terms for Abundant Peptides</li>
-</ol>
+</section>
+<section id="gene-ontology-terms-for-abundant-peptides" class="level4">
+<h4 class="anchored" data-anchor-id="gene-ontology-terms-for-abundant-peptides">Gene Ontology Terms for Abundant Peptides</h4>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(plot_df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -595,6 +592,7 @@ Parsing results... Done.</code></pre>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/GO_abundant.png"</span>, <span class="at">width =</span> <span class="dv">9</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
+</section>
 <section id="top-15-peptides-with-the-highest-intensity-peaks" class="level3">
 <h3 class="anchored" data-anchor-id="top-15-peptides-with-the-highest-intensity-peaks">Top 15 Peptides with the Highest Intensity Peaks</h3>
 <div class="cell">
@@ -621,9 +619,8 @@ Parsing results... Done.</code></pre>
 Parsing results... Done.</code></pre>
 </div>
 </div>
-<ol type="1">
-<li>KEGG Pathways for Most Intense Peptides</li>
-</ol>
+<section id="kegg-pathways-for-most-intense-peptides" class="level4">
+<h4 class="anchored" data-anchor-id="kegg-pathways-for-most-intense-peptides">KEGG Pathways for Most Intense Peptides</h4>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make plot variable</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> enriched<span class="sc">$</span>KEGG_2021_Human <span class="sc">|&gt;</span></span>
@@ -656,9 +653,9 @@ Parsing results... Done.</code></pre>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>kegg_intense <span class="sc">|&gt;</span></span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/kegg_intense.png"</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<ol start="2" type="1">
-<li>Reactome for Most Intense Peptides</li>
-</ol>
+</section>
+<section id="reactome-for-most-intense-peptides" class="level4">
+<h4 class="anchored" data-anchor-id="reactome-for-most-intense-peptides">Reactome for Most Intense Peptides</h4>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create the reactome df</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> enriched<span class="sc">$</span>Reactome_2022 <span class="sc">|&gt;</span></span>
@@ -692,9 +689,9 @@ Parsing results... Done.</code></pre>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>reactome_plot <span class="sc">|&gt;</span></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/reactome_intense.png"</span>, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<ol start="3" type="1">
-<li>Gene Ontology Terms for Most Intense Peptides</li>
-</ol>
+</section>
+<section id="gene-ontology-terms-for-most-intense-peptides" class="level4">
+<h4 class="anchored" data-anchor-id="gene-ontology-terms-for-most-intense-peptides">Gene Ontology Terms for Most Intense Peptides</h4>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create GO df </span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> enriched<span class="sc">$</span>GO_Biological_Process_2023 <span class="sc">|&gt;</span></span>
@@ -729,9 +726,11 @@ Parsing results... Done.</code></pre>
 </div>
 </section>
 </section>
+</section>
 <section id="use-cluster-profiler-on-for-most-intense-peptides" class="level2">
 <h2 class="anchored" data-anchor-id="use-cluster-profiler-on-for-most-intense-peptides">Use Cluster Profiler on for Most Intense Peptides</h2>
-<p>Kegg Pathways From Cluster Profiler for Most Intense Peptides</p>
+<section id="kegg-pathways-from-cluster-profiler-for-most-intense-peptides" class="level4">
+<h4 class="anchored" data-anchor-id="kegg-pathways-from-cluster-profiler-for-most-intense-peptides">Kegg Pathways From Cluster Profiler for Most Intense Peptides</h4>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use enrichplot barplot to show Kegg pathways with most significant </span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(kegg_enrich, <span class="at">showCategory =</span> <span class="dv">15</span>) <span class="sc">+</span> </span>
@@ -744,7 +743,9 @@ Parsing results... Done.</code></pre>
 </div>
 </div>
 </div>
-<p>GO Terms From Cluster Profiler for Most Intense Peptides</p>
+</section>
+<section id="go-terms-from-cluster-profiler-for-most-intense-peptides" class="level4">
+<h4 class="anchored" data-anchor-id="go-terms-from-cluster-profiler-for-most-intense-peptides">GO Terms From Cluster Profiler for Most Intense Peptides</h4>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># change fig size</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -763,7 +764,9 @@ Parsing results... Done.</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save plot</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>dot_cluster <span class="sc">|&gt;</span>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/dot_cluster.png"</span>, <span class="at">width =</span> <span class="dv">7</span>, <span class="at">height =</span> <span class="dv">9</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>CNet Plot from Cluster Profiler for Most Intense Peptides</p>
+</section>
+<section id="cnet-plot-from-cluster-profiler-for-most-intense-peptides" class="level4">
+<h4 class="anchored" data-anchor-id="cnet-plot-from-cluster-profiler-for-most-intense-peptides">CNet Plot from Cluster Profiler for Most Intense Peptides</h4>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create plot variable</span></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>cnet_cluster <span class="ot">&lt;-</span> <span class="fu">cnetplot</span>(go_enrich, <span class="at">showCategory =</span> <span class="dv">15</span>) <span class="sc">+</span> </span>
@@ -781,6 +784,7 @@ Parsing results... Done.</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save plot</span></span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>cnet_cluster <span class="sc">|&gt;</span> <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/cnet_cluster.png"</span>, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+</section>
 </section>
 <section id="conclusions" class="level2">
 <h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
