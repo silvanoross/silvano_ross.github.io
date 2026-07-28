@@ -109,7 +109,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
 
-<link rel="stylesheet" href="profile_style.css">
+<link rel="stylesheet" href="../styles.css">
 <meta property="og:title" content="Final Report: Looking for COVID Pieces in Plasma – My Research Profile">
 <meta property="og:description" content="Research profile and project portfolio">
 <meta property="og:image" content="https://silvanoross.github.io/silvano_ross.github.io/photos/R_final_schematic.png">
@@ -460,7 +460,8 @@ Parsing results... Done.</code></pre>
 </div>
 <section id="top-15-most-abundant-peptides-in-covid-sample" class="level3">
 <h3 class="anchored" data-anchor-id="top-15-most-abundant-peptides-in-covid-sample">Top 15 Most Abundant Peptides in COVID Sample</h3>
-<p>####Kegg Pathways for Abundant Peptides</p>
+<section id="kegg-pathways-for-abundant-peptides" class="level4">
+<h4 class="anchored" data-anchor-id="kegg-pathways-for-abundant-peptides">Kegg Pathways for Abundant Peptides</h4>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view kegg pathways of enriched df</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
@@ -495,6 +496,7 @@ Parsing results... Done.</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>kegg_abundant <span class="sc">|&gt;</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/kegg_abundant.png"</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+</section>
 <section id="reactomes-for-most-abundant-peptides" class="level4">
 <h4 class="anchored" data-anchor-id="reactomes-for-most-abundant-peptides">Reactomes for Most Abundant Peptides</h4>
 <div class="cell">

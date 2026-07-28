@@ -7,12 +7,13 @@ about:
   links:
   - text: GitHub
     href: https://github.com/silvanoross
-  - text: Email: silvano-ross@ou.edu
-    href: silvano-ross@ou.edu
+  - text: Email
+    href: mailto:silvano-ross@ou.edu
+    icon: email
 ---
 
 ::: columnpage
-# Greetings fellow scientists!
+# Greetings fellow scientists 🧬
 
 Welcome to my research profile website. I'm a student in the Intro to Reproducible Data Analysis Using R course. Lindsay and Eleana are awesome!
 
