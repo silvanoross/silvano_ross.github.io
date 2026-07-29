@@ -185,9 +185,37 @@ non_human
 
 ## Identify 15 Most Abundant Peptides Overall Based on Peak Area
 
-**Using gprofiler2**
+```{r}
+# select for top genes based on sample area
+top_area_genes <- pep_clean |> 
+  dplyr::select(Gene,accession_clean,Area.Sample.1) |>
+  arrange(desc(Area.Sample.1))
+
+top_area_genes$Gene[1:15]
+
+```
+
+### Top 15 Most Abundant Peptides in COVID Sample
 
 ```{r}
+# select genes based on intensity
+top_intensity_genes <- pep_clean |> 
+  dplyr::select(Gene, accession_clean,Intensity.Sample.1) |>
+  arrange(desc(Intensity.Sample.1))
+
+top_intensity_genes$Gene[1:15]
+```
+
+## KEGG, Reactome, and GO Analysis
+
+#### KEGG (Kyoto Encyclopedia of Genes and Genomes) Pathways Using gProfiler2
+
+```{r, fig.width=12, fig.height=8}
+# view kegg pathways of enriched df
+library(dplyr)
+library(ggplot2)
+library(tidyr)  
+
 # select for top genes based on sample area
 top_area_genes <- pep_clean |> 
   dplyr::select(Gene,accession_clean,Area.Sample.1) |>
@@ -205,17 +233,6 @@ dbs <- c("GO_Biological_Process_2023", "KEGG_2021_Human", "Reactome_2022")
 
 # use gene term to identify terms
 enriched <- enrichr(top_area_genes$Gene, dbs)
-```
-
-### Top 15 Most Abundant Peptides in COVID Sample
-
-#### KEGG (Kyoto Encyclopedia of Genes and Genomes) Pathways for Abundant Peptides
-
-```{r, fig.width=12, fig.height=8}
-# view kegg pathways of enriched df
-library(dplyr)
-library(ggplot2)
-library(tidyr)
 
 # Assuming your enrichR result for KEGG is called enrichr_kegg
 plot_df <- enriched$KEGG_2021_Human |>
@@ -231,7 +248,7 @@ kegg_abundant <-  ggplot(plot_df, aes(x = reorder(Term, Count),
   coord_flip() +
   scale_fill_gradient(low = "red", high = "blue") +  # low p-adj = red = more significant
   labs(x = "Pathway", y = "Gene Count", fill = "Adj. P-value",
-       title = "KEGG Pathway Most Abundant") +
+       title = "KEGG Pathways") +
   theme_cowplot()
 
 kegg_abundant
@@ -240,7 +257,7 @@ kegg_abundant |>
   ggsave(filename = "plots/kegg_abundant.png", width = 8, height = 6, dpi = 300)
 ```
 
-#### Reactomes for Most Abundant Peptides
+#### Reactomes 
 
 ```{r, fig.width=10, fig.height=8}
 # Assuming your enrichR result for KEGG is called enrichr_kegg
@@ -257,7 +274,7 @@ reactome_abundant <- ggplot(plot_df, aes(x = reorder(Term, Count),
   coord_flip() +
   scale_fill_gradient(low = "red", high = "blue") +  # low p-adj = red = more significant
   labs(x = "Pathway", y = "Gene Count", fill = "Adj. P-value",
-       title = "Reactome Terms Most Abundant Peptides") +
+       title = "Reactomes") +
   theme_cowplot()
 
 reactome_abundant
@@ -267,11 +284,9 @@ reactome_abundant |>
 
 ```
 
-#### Gene Ontology Terms for Abundant Peptides
+#### Gene Ontology Terms
 
 ```{r, fig.width=10, fig.height=8}
-head(plot_df)
-
 plot_df <- enriched$GO_Biological_Process_2023 |>
   # split "Overlap" into numeric gene count and pathway size
   separate(Overlap, into = c("Count", "Pathway.Size"), sep = "/", convert = TRUE) |>
@@ -285,7 +300,7 @@ GO_abundant <- ggplot(plot_df, aes(x = reorder(Term, Count),
   coord_flip() +
   scale_fill_gradient(low = "red", high = "blue") +  # low p-adj = red = more significant
   labs(x = "Pathway", y = "Gene Count", fill = "Adj. P-value",
-       title = "GO Terms Most Abundant Peptides") +
+       title = "GO Terms") +
   theme_cowplot()
 
 # show plot
@@ -297,120 +312,6 @@ GO_abundant |>
   ggsave(filename = "plots/GO_abundant.png", width = 9, height = 8, dpi = 300)
 ```
 
-### Top 15 Peptides with the Highest Intensity Peaks
-
-```{r}
-# select genes based on intensity
-top_intensity_genes <- pep_clean |> 
-  dplyr::select(Gene, accession_clean,Intensity.Sample.1) |>
-  arrange(desc(Intensity.Sample.1))
-
-genes <- top_area_genes$Gene
-
-# get pathway from API for Gene column using gprofiler
-gostres <- gost(query = genes,
-                organism = "hsapiens",
-                sources = c("GO:BP", "GO:MF", "GO:CC", "KEGG", "REAC"))
-
-# use enrichR
-dbs <- c("GO_Biological_Process_2023", "KEGG_2021_Human", "Reactome_2022")
-enriched <- enrichr(top_area_genes$Gene, dbs)
-```
-
-#### KEGG Pathways for Most Intense Peptides
-
-```{r}
-# make plot variable
-plot_df <- enriched$KEGG_2021_Human |>
-  # split "Overlap" nto numeric gene count and pathway size
-  separate(Overlap, into = c("Count", "Pathway.Size"), sep = "/", convert = TRUE) |>
-  arrange(Adjusted.P.value) |>
-  slice_head(n = 15)   # top 15 most significant pathways
-
-kegg_intense <- ggplot(plot_df, aes(x = reorder(Term, Count), 
-                     y = Count, 
-                     fill = Adjusted.P.value)) +
-  geom_col() +
-  coord_flip() +
-  scale_fill_gradient(low = "red", high = "blue") +  # low p-adj = red = more significant
-  labs(x = "Pathway", y = "Gene Count", fill = "Adj. P-value",
-       title = "KEGG Pathways Most Intense") +
-  theme_cowplot()
-
-# show plot
-kegg_intense
-
-# save plot
-
-kegg_intense |>
-  ggsave(filename = "plots/kegg_intense.png", width = 8, height = 6, dpi = 300)
-```
-
-#### Reactome for Most Intense Peptides
-
-```{r, fig.width=12, fig.height=8}
-# create the reactome df
-plot_df <- enriched$Reactome_2022 |>
-  # split "Overlap" into numeric gene count and pathway size
-  separate(Overlap, into = c("Count", "Pathway.Size"), sep = "/", convert = TRUE) |>
-  arrange(Adjusted.P.value) |>
-  slice_head(n = 15)   # top 15 most significant pathways
-
-# create the plot
-
-reactome_plot <- ggplot(plot_df, aes(x = reorder(Term,Count), 
-                     y = Count, 
-                     fill = Adjusted.P.value)) +
-  geom_col() +
-  coord_flip() +
-  scale_fill_gradient(low = "red", high = "blue") +  # low p-adj = red = more significant
-  labs(x = "Pathway", y = "Gene Count", fill = "Adj. P-value",
-       title = "Reactome Most Intense") +
-  theme_cowplot()
-
-# show plot
-reactome_plot
-
-# save the plot into plots folder
-reactome_plot |>
-  ggsave(filename = "plots/reactome_intense.png", width = 12, height = 8, dpi = 300)
-
-```
-### Side by Side of KEGG Pathways: Most Abundant vs Most Intense
-```{r, fig.width=20, fig.height=8}
-plot_grid(kegg_abundant, kegg_intense)
-```
-
-
-#### Gene Ontology Terms for Most Intense Peptides
-
-```{r}
-# create GO df 
-plot_df <- enriched$GO_Biological_Process_2023 |>
-  # split "Overlap" into numeric gene count and pathway size
-  separate(Overlap, into = c("Count", "Pathway.Size"), sep = "/", convert = TRUE) |>
-  arrange(Adjusted.P.value) |>
-  slice_head(n = 15)   # top 15 most significant pathways
-
-# create plot into variable
-GO_intense <- ggplot(plot_df, aes(x = reorder(Term, Count), 
-                     y = Count, 
-                     fill = Adjusted.P.value)) +
-  geom_col() +
-  coord_flip() +
-  scale_fill_gradient(low = "red", high = "blue") + 
-  labs(x = "Pathway", y = "Gene Count", fill = "Adj. P-value",
-       title = "GO Terms Intense") +
-  theme_cowplot()
-
-# display the plot
-GO_intense
-
-# save the plot
-GO_intense |>
-  ggsave(filename = "plots/GO_intense.png", width = 8, height = 6, dpi = 300)
-
-```
 
 ## Use Cluster Profiler on for Most Intense Peptides
 
@@ -428,13 +329,12 @@ library(enrichplot)
 ```
 
 ```{r}
+#| code-fold: true
 # convert to entrez ids
 id_map <- bitr(genes,
                fromType = "SYMBOL",
                toType   = "ENTREZID",
                OrgDb    = org.Hs.eg.db)
-
-id_map
 
 # run enrichmnet analysis
 go_enrich <- enrichGO(gene          = id_map$ENTREZID,
@@ -467,9 +367,14 @@ reactome_enrich <- enrichPathway(gene         = id_map$ENTREZID,
 
 ```{r}
 # use enrichplot barplot to show Kegg pathways with most significant 
-barplot(kegg_enrich, showCategory = 15) + 
-  ggtitle("Kegg Pathways from Cluster Profiler") 
-  
+kegg_cluster <- barplot(kegg_enrich, showCategory = 15) + 
+  ggtitle("Kegg Pathways from Cluster Profiler") +
+  theme_cowplot()
+kegg_cluster
+```
+##### Side by Side gprofiler2 and clusterProfiler KEGG Pathways
+```{r, fig.width=20, fig.height=8}
+plot_grid(kegg_abundant, kegg_cluster)
 ```
 
 #### GO Terms From Cluster Profiler for Most Intense Peptides

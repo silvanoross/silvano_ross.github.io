@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://your-username.github.io/your-repo/projects.html</loc>
-    <lastmod>2026-07-28T22:23:20.612Z</lastmod>
+    <loc>https://silvanoross.github.io/silvano_ross.github.io/index.html</loc>
+    <lastmod>2026-07-28T23:33:39.011Z</lastmod>
   </url>
   <url>
-    <loc>https://your-username.github.io/your-repo/projects/sHLA_covid_peptides.html</loc>
-    <lastmod>2026-07-28T22:58:36.639Z</lastmod>
+    <loc>https://silvanoross.github.io/silvano_ross.github.io/projects/posters.html</loc>
+    <lastmod>2026-07-27T22:31:34.576Z</lastmod>
   </url>
   <url>
-    <loc>https://your-username.github.io/your-repo/index.html</loc>
-    <lastmod>2026-07-28T22:49:22.005Z</lastmod>
+    <loc>https://silvanoross.github.io/silvano_ross.github.io/projects/final-report.html</loc>
+    <lastmod>2026-07-24T15:49:59.984Z</lastmod>
+  </url>
+  <url>
+    <loc>https://silvanoross.github.io/silvano_ross.github.io/SETUP.html</loc>
+    <lastmod>2026-07-24T15:26:21.402Z</lastmod>
   </url>
   <url>
     <loc>https://silvanoross.github.io/silvano_ross.github.io/projects/sHLA_covid_peptides.html</loc>
-    <lastmod>2026-07-28T22:58:36.639Z</lastmod>
+    <lastmod>2026-07-29T14:36:12.976Z</lastmod>
   </url>
   <url>
-    <loc>https://silvanoross.github.io/silvano_ross.github.io/index.html</loc>
-    <lastmod>2026-07-28T23:33:39.011Z</lastmod>
+    <loc>https://silvanoross.github.io/silvano_ross.github.io/projects/publications.html</loc>
+    <lastmod>2026-07-27T22:31:43.513Z</lastmod>
+  </url>
+  <url>
+    <loc>https://silvanoross.github.io/silvano_ross.github.io/projects.html</loc>
+    <lastmod>2026-07-29T14:30:38.376Z</lastmod>
   </url>
 </urlset>

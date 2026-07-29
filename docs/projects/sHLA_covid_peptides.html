@@ -111,7 +111,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <link rel="stylesheet" href="../styles.css">
 <meta property="og:title" content="Final Report: Looking for COVID Pieces in Plasma – My Research Profile">
-<meta property="og:description" content="Research profile and project portfolio">
 <meta property="og:image" content="https://silvanoross.github.io/silvano_ross.github.io/photos/R_final_schematic.png">
 <meta property="og:site_name" content="My Research Profile">
 <meta property="og:image:height" content="2345">
@@ -179,8 +178,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#identify-15-most-abundant-peptides-overall-based-on-peak-area" id="toc-identify-15-most-abundant-peptides-overall-based-on-peak-area" class="nav-link" data-scroll-target="#identify-15-most-abundant-peptides-overall-based-on-peak-area">Identify 15 Most Abundant Peptides Overall Based on Peak Area</a>
   <ul class="collapse">
   <li><a href="#top-15-most-abundant-peptides-in-covid-sample" id="toc-top-15-most-abundant-peptides-in-covid-sample" class="nav-link" data-scroll-target="#top-15-most-abundant-peptides-in-covid-sample">Top 15 Most Abundant Peptides in COVID Sample</a></li>
-  <li><a href="#top-15-peptides-with-the-highest-intensity-peaks" id="toc-top-15-peptides-with-the-highest-intensity-peaks" class="nav-link" data-scroll-target="#top-15-peptides-with-the-highest-intensity-peaks">Top 15 Peptides with the Highest Intensity Peaks</a></li>
   </ul></li>
+  <li><a href="#kegg-reactome-and-go-analysis" id="toc-kegg-reactome-and-go-analysis" class="nav-link" data-scroll-target="#kegg-reactome-and-go-analysis">KEGG, Reactome, and GO Analysis</a></li>
   <li><a href="#use-cluster-profiler-on-for-most-intense-peptides" id="toc-use-cluster-profiler-on-for-most-intense-peptides" class="nav-link" data-scroll-target="#use-cluster-profiler-on-for-most-intense-peptides">Use Cluster Profiler on for Most Intense Peptides</a></li>
   <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a>
   <ul class="collapse">
@@ -431,25 +430,67 @@ $ Found.By              &lt;chr&gt; "DeepNovo", "DB Search", "DB Search", "DeepN
 </section>
 <section id="identify-15-most-abundant-peptides-overall-based-on-peak-area" class="level2">
 <h2 class="anchored" data-anchor-id="identify-15-most-abundant-peptides-overall-based-on-peak-area">Identify 15 Most Abundant Peptides Overall Based on Peak Area</h2>
-<p><strong>Using gprofiler2</strong></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># select for top genes based on sample area</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>top_area_genes <span class="ot">&lt;-</span> pep_clean <span class="sc">|&gt;</span> </span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Gene,accession_clean,Area.Sample<span class="fl">.1</span>) <span class="sc">|&gt;</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Area.Sample<span class="fl">.1</span>))</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>genes <span class="ot">&lt;-</span> top_area_genes<span class="sc">$</span>Gene</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># get pathway from API for Gene column using gprofiler</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>gostres <span class="ot">&lt;-</span> <span class="fu">gost</span>(<span class="at">query =</span> genes,</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">organism =</span> <span class="st">"hsapiens"</span>,</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">sources =</span> <span class="fu">c</span>(<span class="st">"GO:BP"</span>, <span class="st">"GO:MF"</span>, <span class="st">"GO:CC"</span>, <span class="st">"KEGG"</span>, <span class="st">"REAC"</span>))</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co"># use enrichR</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>dbs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"GO_Biological_Process_2023"</span>, <span class="st">"KEGG_2021_Human"</span>, <span class="st">"Reactome_2022"</span>)</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co"># use gene term to identify terms</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>enriched <span class="ot">&lt;-</span> <span class="fu">enrichr</span>(top_area_genes<span class="sc">$</span>Gene, dbs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>top_area_genes<span class="sc">$</span>Gene[<span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "APOB"               "SLFN14"             "SAA4"              
+ [4] "RPSA2:RPSA"         "C1QA"               "IGKV6D-21:IGKV6-21"
+ [7] "IGHG1"              "HLA-C"              "HLA-C"             
+[10] "SCP2"               "RNF213"             "TMED10"            
+[13] "TTN"                "HP"                 "SYNCRIP:HNRNPR"    </code></pre>
+</div>
+</div>
+<section id="top-15-most-abundant-peptides-in-covid-sample" class="level3">
+<h3 class="anchored" data-anchor-id="top-15-most-abundant-peptides-in-covid-sample">Top 15 Most Abundant Peptides in COVID Sample</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># select genes based on intensity</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>top_intensity_genes <span class="ot">&lt;-</span> pep_clean <span class="sc">|&gt;</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Gene, accession_clean,Intensity.Sample<span class="fl">.1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Intensity.Sample<span class="fl">.1</span>))</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>top_intensity_genes<span class="sc">$</span>Gene[<span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "APOB"               "SLFN14"             "SAA4"              
+ [4] "C1QA"               "HLA-C"              "RPSA2:RPSA"        
+ [7] "HLA-C"              "IGKV6D-21:IGKV6-21" "IGHG1"             
+[10] "SCP2"               "TMED10"             "RNF213"            
+[13] "SYNCRIP:HNRNPR"     "LMO4"               "C1QC"              </code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="kegg-reactome-and-go-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="kegg-reactome-and-go-analysis">KEGG, Reactome, and GO Analysis</h2>
+<section id="kegg-kyoto-encyclopedia-of-genes-and-genomes-pathways-using-gprofiler2" class="level4">
+<h4 class="anchored" data-anchor-id="kegg-kyoto-encyclopedia-of-genes-and-genomes-pathways-using-gprofiler2">KEGG (Kyoto Encyclopedia of Genes and Genomes) Pathways Using gProfiler2</h4>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view kegg pathways of enriched df</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)  </span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># select for top genes based on sample area</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>top_area_genes <span class="ot">&lt;-</span> pep_clean <span class="sc">|&gt;</span> </span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Gene,accession_clean,Area.Sample<span class="fl">.1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Area.Sample<span class="fl">.1</span>))</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>genes <span class="ot">&lt;-</span> top_area_genes<span class="sc">$</span>Gene</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co"># get pathway from API for Gene column using gprofiler</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>gostres <span class="ot">&lt;-</span> <span class="fu">gost</span>(<span class="at">query =</span> genes,</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">organism =</span> <span class="st">"hsapiens"</span>,</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">sources =</span> <span class="fu">c</span>(<span class="st">"GO:BP"</span>, <span class="st">"GO:MF"</span>, <span class="st">"GO:CC"</span>, <span class="st">"KEGG"</span>, <span class="st">"REAC"</span>))</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="co"># use enrichR</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>dbs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"GO_Biological_Process_2023"</span>, <span class="st">"KEGG_2021_Human"</span>, <span class="st">"Reactome_2022"</span>)</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="co"># use gene term to identify terms</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>enriched <span class="ot">&lt;-</span> <span class="fu">enrichr</span>(top_area_genes<span class="sc">$</span>Gene, dbs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Uploading data to Enrichr... Done.
   Querying GO_Biological_Process_2023... Done.
@@ -457,131 +498,56 @@ $ Found.By              &lt;chr&gt; "DeepNovo", "DB Search", "DB Search", "DeepN
   Querying Reactome_2022... Done.
 Parsing results... Done.</code></pre>
 </div>
-</div>
-<section id="top-15-most-abundant-peptides-in-covid-sample" class="level3">
-<h3 class="anchored" data-anchor-id="top-15-most-abundant-peptides-in-covid-sample">Top 15 Most Abundant Peptides in COVID Sample</h3>
-<section id="kegg-pathways-for-abundant-peptides" class="level4">
-<h4 class="anchored" data-anchor-id="kegg-pathways-for-abundant-peptides">Kegg Pathways for Abundant Peptides</h4>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view kegg pathways of enriched df</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming your enrichR result for KEGG is called enrichr_kegg</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> enriched<span class="sc">$</span>KEGG_2021_Human <span class="sc">|&gt;</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># split "Overlap" (e.g. "5/120") into numeric gene count and pathway size</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Overlap, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Count"</span>, <span class="st">"Pathway.Size"</span>), <span class="at">sep =</span> <span class="st">"/"</span>, <span class="at">convert =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Adjusted.P.value) <span class="sc">|&gt;</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">15</span>)   <span class="co"># top 15 most significant pathways</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>kegg_abundant <span class="ot">&lt;-</span>  <span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Term, Count), </span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> Count, </span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fill =</span> Adjusted.P.value)) <span class="sc">+</span></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"red"</span>, <span class="at">high =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  <span class="co"># low p-adj = red = more significant</span></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pathway"</span>, <span class="at">y =</span> <span class="st">"Gene Count"</span>, <span class="at">fill =</span> <span class="st">"Adj. P-value"</span>,</span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"KEGG Pathway Enrichment for Most Abundant Peptides"</span>) <span class="sc">+</span></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>kegg_abundant</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming your enrichR result for KEGG is called enrichr_kegg</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> enriched<span class="sc">$</span>KEGG_2021_Human <span class="sc">|&gt;</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># split "Overlap" (e.g. "5/120") into numeric gene count and pathway size</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Overlap, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Count"</span>, <span class="st">"Pathway.Size"</span>), <span class="at">sep =</span> <span class="st">"/"</span>, <span class="at">convert =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Adjusted.P.value) <span class="sc">|&gt;</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">15</span>)   <span class="co"># top 15 most significant pathways</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>kegg_abundant <span class="ot">&lt;-</span>  <span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Term, Count), </span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> Count, </span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fill =</span> Adjusted.P.value)) <span class="sc">+</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"red"</span>, <span class="at">high =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  <span class="co"># low p-adj = red = more significant</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pathway"</span>, <span class="at">y =</span> <span class="st">"Gene Count"</span>, <span class="at">fill =</span> <span class="st">"Adj. P-value"</span>,</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"KEGG Pathways"</span>) <span class="sc">+</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_cowplot</span>()</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>kegg_abundant</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="768"></p>
+<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="1152"></p>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>kegg_abundant <span class="sc">|&gt;</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/kegg_abundant.png"</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>kegg_abundant <span class="sc">|&gt;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/kegg_abundant.png"</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="reactomes-for-most-abundant-peptides" class="level4">
-<h4 class="anchored" data-anchor-id="reactomes-for-most-abundant-peptides">Reactomes for Most Abundant Peptides</h4>
+<section id="reactomes" class="level4">
+<h4 class="anchored" data-anchor-id="reactomes">Reactomes</h4>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming your enrichR result for KEGG is called enrichr_kegg</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> enriched<span class="sc">$</span>Reactome_2022 <span class="sc">|&gt;</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># split "Overlap" (e.g. "5/120") into numeric gene count and pathway size</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Overlap, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Count"</span>, <span class="st">"Pathway.Size"</span>), <span class="at">sep =</span> <span class="st">"/"</span>, <span class="at">convert =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Adjusted.P.value) <span class="sc">|&gt;</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">15</span>)   <span class="co"># top 15 most significant pathways</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>reactome_abundant <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Term, Count), </span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> Count, </span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fill =</span> Adjusted.P.value)) <span class="sc">+</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"red"</span>, <span class="at">high =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  <span class="co"># low p-adj = red = more significant</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pathway"</span>, <span class="at">y =</span> <span class="st">"Gene Count"</span>, <span class="at">fill =</span> <span class="st">"Adj. P-value"</span>,</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Reactome Terms Most Abundant Peptides"</span>) <span class="sc">+</span></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>reactome_abundant</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="960"></p>
-</figure>
-</div>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>reactome_abundant <span class="sc">|&gt;</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/reactome_abundant.png"</span>, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section>
-<section id="gene-ontology-terms-for-abundant-peptides" class="level4">
-<h4 class="anchored" data-anchor-id="gene-ontology-terms-for-abundant-peptides">Gene Ontology Terms for Abundant Peptides</h4>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(plot_df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>                                                                                            Term
-1                                                        RHO GTPases Activate PAKs R-HSA-5627123
-2                                                                          Disease R-HSA-1643685
-3                                                              Innate Immune System R-HSA-168249
-4 Diseases Of Signal Transduction By Growth Factor Receptors And Second Messengers R-HSA-5663202
-5                                                    Plasma Lipoprotein Remodeling R-HSA-8963899
-6                            Plasma Lipoprotein Assembly, Remodeling, And Clearance R-HSA-174824
-  Count Pathway.Size      P.value Adjusted.P.value Old.P.value
-1     7           21 3.655065e-08     1.835952e-05           0
-2    61         1736 3.735406e-08     1.835952e-05           0
-3    43         1035 5.806420e-08     1.902570e-05           0
-4    24          424 3.044094e-07     7.480861e-05           0
-5     7           33 1.126762e-06     2.215215e-04           0
-6     9           71 3.144730e-06     5.152116e-04           0
-  Old.Adjusted.P.value Odds.Ratio Combined.Score
-1                    0  29.498498      505.14901
-2                    0   2.347585       40.15033
-3                    0   2.724571       45.39603
-4                    0   3.656962       54.87232
-5                    0  15.874105      217.41432
-6                    0   8.594776      108.89395
-                                                                                                                                                                                                                                                                                                                                                                 Genes
-1                                                                                                                                                                                                                                                                                                                            PPP1CB;MYL6;FLNA;MYH14;MYH9;MYH11;ARHGEF7
-2 CDKN1C;HSP90AB1;GBE1;CLTC;PEBP1;ENO1;PPP1CB;CCND3;TRIM25;CYP1B1;FGB;FGG;HLA-B;BGN;HLA-C;NCOR2;PSMA4;NCOR1;IRF3;HGS;MYH9;TLN1;S100A8;HBEGF;HDAC5;RAMP2;DNMT1;SDC4;SEL1L;SUPT4H1;DERL1;HSD17B4;ITPR3;RRBP1;C3;RNF213;OS9;RBBP4;G3BP2;HMOX1;SPTBN1;SEC31A;POLR2L;DYNC1H1;XRCC5;STAT1;MUC17;STAT3;GFPT1;ERBIN;FMO3;PARP14;EEF2;MUC5B;CP;QKI;ARPC2;PAH;TBXAS1;CTNNB1;GNB5
-3                                                                                                        C1QA;HSP90AB1;ITPR3;CLU;HERC5;C3;STK10;PCBP2;TRIM25;HMOX1;APOB;TRIM21;SPTAN1;POLR2L;FGB;DYNC1H1;MANBA;CD93;DCD;XRCC5;MUC17;KRT1;FGG;HLA-B;HLA-C;NDUFC2;PPBP;EEF2;MUC5B;DNM2;PSMA4;ARPC2;IRF3;ATP6V1B2;CTNNB1;MYH9;DEGS1;MNDA;ARHGEF7;ATP6V0C;S100A8;LGMN;C1QC
-4                                                                                                                                                                                                                           FGB;HDAC5;STAT1;CLTC;STAT3;SEL1L;FGG;ERBIN;PEBP1;RRBP1;QKI;NCOR2;PPP1CB;RNF213;PSMA4;NCOR1;OS9;CTNNB1;MYH9;TLN1;SPTBN1;SEC31A;HBEGF;POLR2L
-5                                                                                                                                                                                                                                                                                                                            MBTPS1;CREB3L3;APOC2;ALB;APOC3;APOB;CIDEC
-6                                                                                                                                                                                                                                                                                                                 MBTPS1;CREB3L3;APOC2;CLTC;ALB;APOC1;APOC3;APOB;CIDEC</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> enriched<span class="sc">$</span>GO_Biological_Process_2023 <span class="sc">|&gt;</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># split "Overlap" into numeric gene count and pathway size</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Overlap, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Count"</span>, <span class="st">"Pathway.Size"</span>), <span class="at">sep =</span> <span class="st">"/"</span>, <span class="at">convert =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Adjusted.P.value) <span class="sc">|&gt;</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">15</span>)   <span class="co"># top 15 most significant pathways</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>GO_abundant <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Term, Count), </span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> Count, </span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fill =</span> Adjusted.P.value)) <span class="sc">+</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"red"</span>, <span class="at">high =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  <span class="co"># low p-adj = red = more significant</span></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pathway"</span>, <span class="at">y =</span> <span class="st">"Gene Count"</span>, <span class="at">fill =</span> <span class="st">"Adj. P-value"</span>,</span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"GO Terms Most Abundant Peptides"</span>) <span class="sc">+</span></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="co"># show plot</span></span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>GO_abundant</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming your enrichR result for KEGG is called enrichr_kegg</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> enriched<span class="sc">$</span>Reactome_2022 <span class="sc">|&gt;</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># split "Overlap" (e.g. "5/120") into numeric gene count and pathway size</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Overlap, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Count"</span>, <span class="st">"Pathway.Size"</span>), <span class="at">sep =</span> <span class="st">"/"</span>, <span class="at">convert =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Adjusted.P.value) <span class="sc">|&gt;</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">15</span>)   <span class="co"># top 15 most significant pathways</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>reactome_abundant <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Term, Count), </span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> Count, </span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fill =</span> Adjusted.P.value)) <span class="sc">+</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"red"</span>, <span class="at">high =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  <span class="co"># low p-adj = red = more significant</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pathway"</span>, <span class="at">y =</span> <span class="st">"Gene Count"</span>, <span class="at">fill =</span> <span class="st">"Adj. P-value"</span>,</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Reactomes"</span>) <span class="sc">+</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_cowplot</span>()</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>reactome_abundant</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -589,132 +555,206 @@ Parsing results... Done.</code></pre>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save plot</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>GO_abundant <span class="sc">|&gt;</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/GO_abundant.png"</span>, <span class="at">width =</span> <span class="dv">9</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>reactome_abundant <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/reactome_abundant.png"</span>, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="gene-ontology-terms" class="level4">
+<h4 class="anchored" data-anchor-id="gene-ontology-terms">Gene Ontology Terms</h4>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> enriched<span class="sc">$</span>GO_Biological_Process_2023 <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># split "Overlap" into numeric gene count and pathway size</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Overlap, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Count"</span>, <span class="st">"Pathway.Size"</span>), <span class="at">sep =</span> <span class="st">"/"</span>, <span class="at">convert =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Adjusted.P.value) <span class="sc">|&gt;</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">15</span>)   <span class="co"># top 15 most significant pathways</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>GO_abundant <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Term, Count), </span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> Count, </span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fill =</span> Adjusted.P.value)) <span class="sc">+</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"red"</span>, <span class="at">high =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  <span class="co"># low p-adj = red = more significant</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pathway"</span>, <span class="at">y =</span> <span class="st">"Gene Count"</span>, <span class="at">fill =</span> <span class="st">"Adj. P-value"</span>,</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"GO Terms"</span>) <span class="sc">+</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_cowplot</span>()</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="co"># show plot</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>GO_abundant</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save plot</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>GO_abundant <span class="sc">|&gt;</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/GO_abundant.png"</span>, <span class="at">width =</span> <span class="dv">9</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
-<section id="top-15-peptides-with-the-highest-intensity-peaks" class="level3">
-<h3 class="anchored" data-anchor-id="top-15-peptides-with-the-highest-intensity-peaks">Top 15 Peptides with the Highest Intensity Peaks</h3>
+<section id="use-cluster-profiler-on-for-most-intense-peptides" class="level2">
+<h2 class="anchored" data-anchor-id="use-cluster-profiler-on-for-most-intense-peptides">Use Cluster Profiler on for Most Intense Peptides</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># select genes based on intensity</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>top_intensity_genes <span class="ot">&lt;-</span> pep_clean <span class="sc">|&gt;</span> </span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Gene, accession_clean,Intensity.Sample<span class="fl">.1</span>) <span class="sc">|&gt;</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Intensity.Sample<span class="fl">.1</span>))</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>genes <span class="ot">&lt;-</span> top_area_genes<span class="sc">$</span>Gene</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co"># get pathway from API for Gene column using gprofiler</span></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>gostres <span class="ot">&lt;-</span> <span class="fu">gost</span>(<span class="at">query =</span> genes,</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">organism =</span> <span class="st">"hsapiens"</span>,</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">sources =</span> <span class="fu">c</span>(<span class="st">"GO:BP"</span>, <span class="st">"GO:MF"</span>, <span class="st">"GO:CC"</span>, <span class="st">"KEGG"</span>, <span class="st">"REAC"</span>))</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="co"># use enrichR</span></span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>dbs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"GO_Biological_Process_2023"</span>, <span class="st">"KEGG_2021_Human"</span>, <span class="st">"Reactome_2022"</span>)</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>enriched <span class="ot">&lt;-</span> <span class="fu">enrichr</span>(top_area_genes<span class="sc">$</span>Gene, dbs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert to entrez ids</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>id_map <span class="ot">&lt;-</span> <span class="fu">bitr</span>(genes,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">fromType =</span> <span class="st">"SYMBOL"</span>,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">toType   =</span> <span class="st">"ENTREZID"</span>,</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">OrgDb    =</span> org.Hs.eg.db)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>'select()' returned 1:1 mapping between keys and columns</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in bitr(genes, fromType = "SYMBOL", toType = "ENTREZID", OrgDb =
+org.Hs.eg.db): 12.9% of input gene IDs are fail to map...</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run enrichmnet analysis</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>go_enrich <span class="ot">&lt;-</span> <span class="fu">enrichGO</span>(<span class="at">gene          =</span> id_map<span class="sc">$</span>ENTREZID,</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">OrgDb         =</span> org.Hs.eg.db,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">keyType       =</span> <span class="st">"ENTREZID"</span>,</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">ont           =</span> <span class="st">"ALL"</span>,</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">pAdjustMethod =</span> <span class="st">"BH"</span>,</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">pvalueCutoff  =</span> <span class="fl">0.05</span>,</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">qvalueCutoff  =</span> <span class="fl">0.2</span>,</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">readable      =</span> <span class="cn">TRUE</span>)  </span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">as.data.frame</span>(go_enrich))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Uploading data to Enrichr... Done.
-  Querying GO_Biological_Process_2023... Done.
-  Querying KEGG_2021_Human... Done.
-  Querying Reactome_2022... Done.
-Parsing results... Done.</code></pre>
+<pre><code>           ONTOLOGY         ID
+GO:0035966       BP GO:0035966
+GO:0034976       BP GO:0034976
+GO:0006958       BP GO:0006958
+GO:0006986       BP GO:0006986
+GO:0002455       BP GO:0002455
+GO:0006356       BP GO:0006356
+                                                              Description
+GO:0035966                    response to topologically incorrect protein
+GO:0034976                       response to endoplasmic reticulum stress
+GO:0006958                       complement activation, classical pathway
+GO:0006986                                   response to unfolded protein
+GO:0002455 humoral immune response mediated by circulating immunoglobulin
+GO:0006356                regulation of transcription by RNA polymerase I
+           GeneRatio   BgRatio RichFactor FoldEnrichment   zScore       pvalue
+GO:0035966    15/287 161/18842 0.09316770       6.116606 8.108813 2.580537e-08
+GO:0034976    18/287 269/18842 0.06691450       4.393042 6.970866 1.762684e-07
+GO:0006958     7/287  39/18842 0.17948718      11.783615 8.383889 1.791623e-06
+GO:0006986    12/287 145/18842 0.08275862       5.433233 6.664707 2.314093e-06
+GO:0002455     7/287  44/18842 0.15909091      10.444568 7.800367 4.182451e-06
+GO:0006356     7/287  45/18842 0.15555556      10.212466 7.694853 4.888886e-06
+               p.adjust       qvalue
+GO:0035966 8.791888e-05 6.787694e-06
+GO:0034976 3.002733e-04 2.318231e-05
+GO:0006958 1.971029e-03 1.521714e-04
+GO:0006986 1.971029e-03 1.521714e-04
+GO:0002455 2.518499e-03 1.944383e-04
+GO:0006356 2.518499e-03 1.944383e-04
+                                                                                                               geneID
+GO:0035966              RTCB/HERPUD1/DERL1/STAT3/AGR2/MBTPS1/HSP90AB1/CREB3L3/DNAJB14/OS9/HSPA4/CLU/THBS4/ATF6B/ATXN3
+GO:0034976 RTCB/EEF2/UBAC2/HERPUD1/SEL1L/DERL1/ERP29/STAT3/TRIM25/AGR2/MBTPS1/PDIA4/CREB3L3/OS9/CLU/THBS4/ATF6B/ATXN3
+GO:0006958                                                                         C1QC/C3/IGHG2/IGHG1/C1QA/CLU/IGHG3
+GO:0006986                                RTCB/HERPUD1/DERL1/STAT3/AGR2/MBTPS1/HSP90AB1/CREB3L3/OS9/HSPA4/THBS4/ATF6B
+GO:0002455                                                                         C1QC/C3/IGHG2/IGHG1/C1QA/CLU/IGHG3
+GO:0006356                                                                 UBTF/FLNA/POLR2L/SMARCA5/WDR43/DDX21/MYO1C
+           Count
+GO:0035966    15
+GO:0034976    18
+GO:0006958     7
+GO:0006986    12
+GO:0002455     7
+GO:0006356     7</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run KEGG pathway analysis</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>kegg_enrich <span class="ot">&lt;-</span> <span class="fu">enrichKEGG</span>(<span class="at">gene =</span> id_map<span class="sc">$</span>ENTREZID, </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">organism =</span> <span class="st">"hsa"</span>, </span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Reading KEGG annotation online: "https://rest.kegg.jp/link/hsa/pathway"...</code></pre>
 </div>
-<section id="kegg-pathways-for-most-intense-peptides" class="level4">
-<h4 class="anchored" data-anchor-id="kegg-pathways-for-most-intense-peptides">KEGG Pathways for Most Intense Peptides</h4>
+<div class="cell-output cell-output-stderr">
+<pre><code>Reading KEGG annotation online: "https://rest.kegg.jp/list/pathway/hsa"...</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">as.data.frame</span>(kegg_enrich))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                     category
+hsa04820                   Cellular Processes
+hsa05150                       Human Diseases
+hsa04141       Genetic Information Processing
+hsa04518 Environmental Information Processing
+hsa04612                   Organismal Systems
+hsa03273       Genetic Information Processing
+                                 subcategory       ID
+hsa04820                       Cell motility hsa04820
+hsa05150       Infectious disease: bacterial hsa05150
+hsa04141    Folding, sorting and degradation hsa04141
+hsa04518 Signaling molecules and interaction hsa04518
+hsa04612                       Immune system hsa04612
+hsa03273   Information processing in viruses hsa03273
+                                         Description GeneRatio  BgRatio
+hsa04820                Cytoskeleton in muscle cells    21/200 233/9421
+hsa05150             Staphylococcus aureus infection    10/200  99/9421
+hsa04141 Protein processing in endoplasmic reticulum    13/200 175/9421
+hsa04518                          Integrin signaling    12/200 154/9421
+hsa04612         Antigen processing and presentation     8/200  82/9421
+hsa03273         Virion - Lassa virus and SFTS virus     4/200  17/9421
+         RichFactor FoldEnrichment   zScore       pvalue     p.adjust
+hsa04820 0.09012876       4.245515 7.387586 2.023262e-08 5.746065e-06
+hsa05150 0.10101010       4.758081 5.535803 4.476895e-05 6.357191e-03
+hsa04141 0.07428571       3.499229 4.914728 8.673550e-05 7.322386e-03
+hsa04518 0.07792208       3.670519 4.920826 1.031322e-04 7.322386e-03
+hsa04612 0.09756098       4.595610 4.815936 3.330163e-04 1.698436e-02
+hsa03273 0.23529412      11.083529 6.128189 3.776083e-04 1.698436e-02
+               qvalue
+hsa04820 3.218378e-06
+hsa05150 3.560670e-03
+hsa04141 4.101278e-03
+hsa04518 4.101278e-03
+hsa04612 9.512961e-03
+hsa03273 9.512961e-03
+                                                                                                              geneID
+hsa04820 7431/23345/2006/79784/4627/6385/633/25777/5339/23002/6709/1287/6645/3675/4629/7094/7273/4633/7060/2023/6711
+hsa05150                                                              2266/714/3115/718/3127/3857/3861/3858/712/6404
+hsa04141                                        22872/5887/6238/9709/6400/79139/10961/8720/9601/3326/10956/1388/4287
+hsa04518                                                     2266/2316/718/3914/1287/3675/1499/2244/81/7094/7060/896
+hsa04612                                                                     3115/3107/3127/5641/3106/3326/3308/6890
+hsa03273                                                                                        79784/4627/4629/8828
+         Count
+hsa04820    21
+hsa05150    10
+hsa04141    13
+hsa04518    12
+hsa04612     8
+hsa03273     4</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run reactome analysis</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>reactome_enrich <span class="ot">&lt;-</span> <span class="fu">enrichPathway</span>(<span class="at">gene         =</span> id_map<span class="sc">$</span>ENTREZID,</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">organism     =</span> <span class="st">"human"</span>,</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>,</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">readable     =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<section id="kegg-pathways-from-cluster-profiler-for-most-intense-peptides" class="level4">
+<h4 class="anchored" data-anchor-id="kegg-pathways-from-cluster-profiler-for-most-intense-peptides">Kegg Pathways From Cluster Profiler for Most Intense Peptides</h4>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make plot variable</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> enriched<span class="sc">$</span>KEGG_2021_Human <span class="sc">|&gt;</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># split "Overlap" nto numeric gene count and pathway size</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Overlap, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Count"</span>, <span class="st">"Pathway.Size"</span>), <span class="at">sep =</span> <span class="st">"/"</span>, <span class="at">convert =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Adjusted.P.value) <span class="sc">|&gt;</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">15</span>)   <span class="co"># top 15 most significant pathways</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>kegg_intense <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Term, Count), </span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> Count, </span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fill =</span> Adjusted.P.value)) <span class="sc">+</span></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"red"</span>, <span class="at">high =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  <span class="co"># low p-adj = red = more significant</span></span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pathway"</span>, <span class="at">y =</span> <span class="st">"Gene Count"</span>, <span class="at">fill =</span> <span class="st">"Adj. P-value"</span>,</span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"KEGG Pathways Most Intense"</span>) <span class="sc">+</span></span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="co"># show plot</span></span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>kegg_intense</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save plot</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>kegg_intense <span class="sc">|&gt;</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/kegg_intense.png"</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section>
-<section id="reactome-for-most-intense-peptides" class="level4">
-<h4 class="anchored" data-anchor-id="reactome-for-most-intense-peptides">Reactome for Most Intense Peptides</h4>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create the reactome df</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> enriched<span class="sc">$</span>Reactome_2022 <span class="sc">|&gt;</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># split "Overlap" into numeric gene count and pathway size</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Overlap, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Count"</span>, <span class="st">"Pathway.Size"</span>), <span class="at">sep =</span> <span class="st">"/"</span>, <span class="at">convert =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Adjusted.P.value) <span class="sc">|&gt;</span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">15</span>)   <span class="co"># top 15 most significant pathways</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="co"># create the plot</span></span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>reactome_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Term,Count), </span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> Count, </span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fill =</span> Adjusted.P.value)) <span class="sc">+</span></span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"red"</span>, <span class="at">high =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  <span class="co"># low p-adj = red = more significant</span></span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pathway"</span>, <span class="at">y =</span> <span class="st">"Gene Count"</span>, <span class="at">fill =</span> <span class="st">"Adj. P-value"</span>,</span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Reactome Most Intense"</span>) <span class="sc">+</span></span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a><span class="co"># show plot</span></span>
-<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>reactome_plot</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="960"></p>
-</figure>
-</div>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save the plot into plots folder</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>reactome_plot <span class="sc">|&gt;</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/reactome_intense.png"</span>, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section>
-<section id="gene-ontology-terms-for-most-intense-peptides" class="level4">
-<h4 class="anchored" data-anchor-id="gene-ontology-terms-for-most-intense-peptides">Gene Ontology Terms for Most Intense Peptides</h4>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create GO df </span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> enriched<span class="sc">$</span>GO_Biological_Process_2023 <span class="sc">|&gt;</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># split "Overlap" into numeric gene count and pathway size</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Overlap, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Count"</span>, <span class="st">"Pathway.Size"</span>), <span class="at">sep =</span> <span class="st">"/"</span>, <span class="at">convert =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Adjusted.P.value) <span class="sc">|&gt;</span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">15</span>)   <span class="co"># top 15 most significant pathways</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="co"># create plot into variable</span></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>GO_intense <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Term, Count), </span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> Count, </span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fill =</span> Adjusted.P.value)) <span class="sc">+</span></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"red"</span>, <span class="at">high =</span> <span class="st">"blue"</span>) <span class="sc">+</span> </span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pathway"</span>, <span class="at">y =</span> <span class="st">"Gene Count"</span>, <span class="at">fill =</span> <span class="st">"Adj. P-value"</span>,</span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"GO Terms Intense"</span>) <span class="sc">+</span></span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a><span class="co"># display the plot</span></span>
-<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>GO_intense</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use enrichplot barplot to show Kegg pathways with most significant </span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>kegg_cluster <span class="ot">&lt;-</span> <span class="fu">barplot</span>(kegg_enrich, <span class="at">showCategory =</span> <span class="dv">15</span>) <span class="sc">+</span> </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Kegg Pathways from Cluster Profiler"</span>) <span class="sc">+</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_cowplot</span>()</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>kegg_cluster</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -722,21 +762,31 @@ Parsing results... Done.</code></pre>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save the plot</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>GO_intense <span class="sc">|&gt;</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/GO_intense.png"</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="side-by-side-gprofiler2-and-clusterprofiler-kegg-pathways" class="level5">
+<h5 class="anchored" data-anchor-id="side-by-side-gprofiler2-and-clusterprofiler-kegg-pathways">Side by Side gprofiler2 and clusterProfiler KEGG Pathways</h5>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid</span>(kegg_abundant, kegg_cluster)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="1920"></p>
+</figure>
+</div>
+</div>
 </div>
 </section>
 </section>
-</section>
-<section id="use-cluster-profiler-on-for-most-intense-peptides" class="level2">
-<h2 class="anchored" data-anchor-id="use-cluster-profiler-on-for-most-intense-peptides">Use Cluster Profiler on for Most Intense Peptides</h2>
-<section id="kegg-pathways-from-cluster-profiler-for-most-intense-peptides" class="level4">
-<h4 class="anchored" data-anchor-id="kegg-pathways-from-cluster-profiler-for-most-intense-peptides">Kegg Pathways From Cluster Profiler for Most Intense Peptides</h4>
+<section id="go-terms-from-cluster-profiler-for-most-intense-peptides" class="level4">
+<h4 class="anchored" data-anchor-id="go-terms-from-cluster-profiler-for-most-intense-peptides">GO Terms From Cluster Profiler for Most Intense Peptides</h4>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use enrichplot barplot to show Kegg pathways with most significant </span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(kegg_enrich, <span class="at">showCategory =</span> <span class="dv">15</span>) <span class="sc">+</span> </span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Kegg Pathways from Cluster Profiler"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># change fig size</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create plot variable</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>dot_cluster <span class="ot">&lt;-</span> <span class="fu">dotplot</span>(go_enrich, <span class="at">showCategory =</span> <span class="dv">15</span>, <span class="at">title=</span><span class="st">"Dot Plot GO Terms Most Intense From Cluster Profiler"</span>, <span class="at">font.size =</span> <span class="dv">12</span>) </span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="co"># display dot plot of GO terms</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>dot_cluster </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -744,47 +794,28 @@ Parsing results... Done.</code></pre>
 </figure>
 </div>
 </div>
-</div>
-</section>
-<section id="go-terms-from-cluster-profiler-for-most-intense-peptides" class="level4">
-<h4 class="anchored" data-anchor-id="go-terms-from-cluster-profiler-for-most-intense-peptides">GO Terms From Cluster Profiler for Most Intense Peptides</h4>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># change fig size</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create plot variable</span></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>dot_cluster <span class="ot">&lt;-</span> <span class="fu">dotplot</span>(go_enrich, <span class="at">showCategory =</span> <span class="dv">15</span>, <span class="at">title=</span><span class="st">"Dot Plot GO Terms Most Intense From Cluster Profiler"</span>, <span class="at">font.size =</span> <span class="dv">12</span>) </span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co"># display dot plot of GO terms</span></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>dot_cluster </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save plot</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>dot_cluster <span class="sc">|&gt;</span>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/dot_cluster.png"</span>, <span class="at">width =</span> <span class="dv">7</span>, <span class="at">height =</span> <span class="dv">9</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save plot</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>dot_cluster <span class="sc">|&gt;</span>  <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/dot_cluster.png"</span>, <span class="at">width =</span> <span class="dv">7</span>, <span class="at">height =</span> <span class="dv">9</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="cnet-plot-from-cluster-profiler-for-most-intense-peptides" class="level4">
 <h4 class="anchored" data-anchor-id="cnet-plot-from-cluster-profiler-for-most-intense-peptides">CNet Plot from Cluster Profiler for Most Intense Peptides</h4>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create plot variable</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>cnet_cluster <span class="ot">&lt;-</span> <span class="fu">cnetplot</span>(go_enrich, <span class="at">showCategory =</span> <span class="dv">15</span>) <span class="sc">+</span> </span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"CNET Plot From Cluster Profiler"</span>)</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="co"># display plot</span></span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>cnet_cluster</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create plot variable</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>cnet_cluster <span class="ot">&lt;-</span> <span class="fu">cnetplot</span>(go_enrich, <span class="at">showCategory =</span> <span class="dv">15</span>) <span class="sc">+</span> </span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"CNET Plot From Cluster Profiler"</span>)</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="co"># display plot</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>cnet_cluster</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="960"></p>
+<p><img src="sHLA_covid_peptides_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save plot</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>cnet_cluster <span class="sc">|&gt;</span> <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/cnet_cluster.png"</span>, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save plot</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>cnet_cluster <span class="sc">|&gt;</span> <span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"plots/cnet_cluster.png"</span>, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
