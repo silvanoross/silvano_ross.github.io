@@ -6,6 +6,7 @@ title: "Publications"
 ### Oxytocin-receptor-expressing neurons in the parabrachial nucleus regulate fluid intake
 [Full Article Link](https://doi.org/10.1038/s41593-017-0014-z)
 
+![Title](../photos/title_oxtr.png)
 ![Figure 1](../photos/oxtr_neurons.webp)
 
 **Abstract**
@@ -18,6 +19,7 @@ Brain regions that regulate fluid satiation are not well characterized, yet are 
 ### A case study involving dual heart transplant rejections and a potential link to MICA and AT1R antibodies
 [Full Article Link](https://doi.org/10.1016/j.trim.2023.101811)
 
+![Title](../photos/transplant_title.png)
 ![Figure 2](../photos/heart_txp.jpg)
 
 **Background:**

@@ -10,25 +10,27 @@ about:
   - text: Email
     href: mailto:silvano-ross@ou.edu
     icon: email
+  - text: ORCID
+    href: https://orcid.org/0000-0002-1761-2180
 ---
 
 ::: columnpage
 # Greetings fellow scientists 🧬
 
-Welcome to my research profile website. I'm a student in the Intro to Reproducible Data Analysis Using R course. Lindsay and Eleana are awesome!
+This website is aimed at showcasing my scientific research. I'm a student in the Intro to Reproducible Data Analysis Using R course taught by Lindsay Hayes and Eleana Cabello, who are both awesome!
 
 ## About Me
 
 - **Name:** Silvano Ross
 - **Institution:** The University of Oklahoma
-- **Research Interests:** Immunopeptidomics
+- **Research Interests:** Immunopeptidomics, Human Leukocyte Antigen (HLA), and Mass Spectrometry
 - **Email:** silvano-ross\@ou.edu
 
 ## My Research
 
-I'm interested in understanding how soluble HLA molecules present peptides in the context of different diseases ie cancer, autoimmunity, viral infection, and bacterial infection. Through this course, I've learned how to:
+I'm interested in understanding how soluble HLA molecules present peptides in the context of different diseases ie cancer, autoimmunity, viral infection, and/or bacterial infection. Through this course, I've learned how to:
 
-- Use R for data analysis
+- Use R for data analysis, plotting, and biological pathway analysis
 - Create reproducible research workflows
 - Build websites to share my work
 - Manage my research projects with Git and GitHub

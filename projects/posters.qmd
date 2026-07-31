@@ -3,11 +3,15 @@ title: "Posters"
 ---
 
 ## Mary Gates Undergraduate Research Symposium Spring 2017
-**I received a research scholarship for Winter and Spring of 2017 while I 
-was an undergraduate at the University of Washington in Seattle. I then 
-presented my research findings at the end of the year**
+**After receiving a research scholarship for both Winter and Spring of 2017 while I 
+was an undergraduate at the University of Washington in Seattle I then 
+presented my research findings at the end of the year.**
 
 ### CGRP neurons in the parabrachial nucleus may play a role in anorexia associated with a diet devoid in essential amino acids
+
+*Summary*
+
+*There is a phenomenon where mice will gradually stop eating a diet devoid in essential amino acids (EAAs). We were interested to see if CGRP<sup>PBN</sup> might play a role. Previous work in the lab had shown mice that eat poisonous/toxic food will develop an aversion and CGRP<sup>PBN</sup> play a role in this aversion. I was hypothesized that anorexia associated with diet devoid of EAAs may be governed by . To test this hypothesis I took a group of mice injected with an AAV1 DIO GFP-TetTox virus into a Calca<sup>CRE</sup> (gene for CGRP) to permanently ablate these neurons. After successfully recapitulating the paradigm, we found that after a single night of the EAA devoid diet TetTox mice showed no difference in food intake from GFP controls. However, with a prolonged exposure to the EAA devoid diet, TetTox mice at significantly more compared to YFP controls (p < 0.0001). Even after 3 days after reintroduction to the control diet, TetTox mice continued to eat significantly more compared to YFP mice (p < 0.001) despite both groups recovering food intake. In conclusion we determined that CGRP neurons help to partially attenuate anorexia associated with a diet devoid in essential amino acids.*
 
 ![](../photos/mary_gates_2017.png)
 
